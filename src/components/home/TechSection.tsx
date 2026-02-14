@@ -15,21 +15,21 @@ export default function TechSection() {
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="text-section text-center mb-12"
+          className="text-section font-display text-center mb-12"
         >
           Technologies We Work With
         </motion.h2>
 
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-6">
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
           {techs.map((tech, i) => (
             <motion.div
               key={tech}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: i * 0.05 }}
-              className="flex items-center justify-center h-20 bg-muted rounded-lg hover:bg-secondary hover:scale-105 transition-all duration-300 cursor-default"
+              className="flex items-center justify-center h-20 glass rounded-xl hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 cursor-default"
             >
-              <span className="text-small font-semibold text-muted-foreground hover:text-foreground transition-colors">{tech}</span>
+              <span className="text-small font-semibold text-muted-foreground">{tech}</span>
             </motion.div>
           ))}
         </div>

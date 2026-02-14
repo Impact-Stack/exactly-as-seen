@@ -9,21 +9,18 @@ const posts = [
   {
     image: blogFlutter,
     tag: "DEVELOPMENT",
-    tagColor: "bg-primary",
     title: "Why Flutter is Transforming Mobile Development in Africa",
     date: "15 Feb 2026 • 5 min read",
   },
   {
     image: blogPopia,
     tag: "COMPLIANCE",
-    tagColor: "bg-success",
     title: "POPIA Compliance: Essential Guide for SA Businesses",
     date: "10 Feb 2026 • 7 min read",
   },
   {
     image: blogGovt,
     tag: "TRANSFORMATION",
-    tagColor: "bg-accent",
     title: "Government Digital Services: Opportunities for Tech Suppliers",
     date: "5 Feb 2026 • 6 min read",
   },
@@ -39,7 +36,7 @@ export default function InsightsSection() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            className="text-section mb-4"
+            className="text-section font-display mb-4"
           >
             Latest Insights
           </motion.h2>
@@ -53,21 +50,21 @@ export default function InsightsSection() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {posts.map((p, i) => (
             <motion.article
               key={p.title}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 + i * 0.15 }}
-              className="bg-background rounded-lg overflow-hidden card-hover border border-border"
+              className="glass rounded-xl overflow-hidden card-hover"
             >
               <img src={p.image} alt={p.title} className="w-full h-52 object-cover" loading="lazy" />
               <div className="p-6">
-                <span className={`inline-block ${p.tagColor} text-primary-foreground text-[11px] uppercase tracking-wider font-semibold px-3 py-1 rounded-sm mb-3`}>
+                <span className="inline-block text-primary text-[11px] uppercase tracking-wider font-semibold mb-3">
                   {p.tag}
                 </span>
-                <h3 className="text-subtitle mb-2 hover:underline cursor-pointer">{p.title}</h3>
+                <h3 className="text-subtitle mb-2 hover:text-primary transition-colors cursor-pointer">{p.title}</h3>
                 <p className="text-small text-muted-foreground mb-3">{p.date}</p>
                 <span className="text-small text-primary font-medium hover:underline cursor-pointer">Read More →</span>
               </div>
@@ -78,7 +75,7 @@ export default function InsightsSection() {
         <div className="text-center">
           <Link
             to="/"
-            className="inline-block border-2 border-primary text-primary px-8 py-4 rounded-md text-body font-semibold hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+            className="inline-block border border-border text-foreground px-8 py-4 rounded-lg text-body font-semibold hover:bg-card transition-all duration-300"
           >
             View All Insights
           </Link>

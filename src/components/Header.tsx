@@ -46,15 +46,14 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 ${scrolled ? "shadow-md" : ""}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-lg shadow-background/50" : "bg-transparent"}`}>
       <div className="container-narrow flex items-center justify-between h-[72px]">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-0.5 text-xl font-bold">
-          <span className="text-primary">ImpactStack</span>
-          <span className="text-success font-normal">Africa</span>
+        <Link to="/" className="flex items-center gap-0.5 text-xl font-bold font-display">
+          <span className="text-foreground">Impact</span>
+          <span className="text-primary">Stack</span>
+          <span className="text-success font-normal ml-0.5">Africa</span>
         </Link>
 
-        {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) =>
             link.hasDropdown ? (
@@ -64,13 +63,13 @@ export default function Header() {
                 onMouseEnter={() => setActiveMenu(link.label)}
                 onMouseLeave={() => setActiveMenu(null)}
               >
-                <button className="flex items-center gap-1 text-body text-foreground link-hover font-medium">
+                <button className="flex items-center gap-1 text-sm text-foreground/70 link-hover font-medium">
                   {link.label}
-                  <ChevronDown className="w-4 h-4" />
+                  <ChevronDown className="w-3.5 h-3.5" />
                 </button>
                 {activeMenu === link.label && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2">
-                    <div className="bg-background rounded-lg shadow-xl border p-10 min-w-[500px]">
+                    <div className="glass rounded-xl shadow-2xl p-8 min-w-[500px]">
                       <div className={`grid gap-8 ${megaMenus[link.label].columns.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
                         {megaMenus[link.label].columns.map((col, i) => (
                           <div key={i}>
@@ -78,7 +77,7 @@ export default function Header() {
                             <ul className="space-y-2">
                               {col.links.map((l) => (
                                 <li key={l.label}>
-                                  <Link to={l.href} className="text-body text-foreground link-hover block py-1">
+                                  <Link to={l.href} className="text-sm text-foreground/70 link-hover block py-1">
                                     {l.label}
                                   </Link>
                                 </li>
@@ -92,35 +91,32 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <Link key={link.label} to={link.href!} className="text-body text-foreground link-hover font-medium">
+              <Link key={link.label} to={link.href!} className="text-sm text-foreground/70 link-hover font-medium">
                 {link.label}
               </Link>
             )
           )}
         </nav>
 
-        {/* Right Side */}
         <div className="hidden lg:flex items-center gap-4">
-          <button className="text-foreground link-hover" aria-label="Search">
-            <Search className="w-5 h-5" />
+          <button className="text-foreground/60 link-hover" aria-label="Search">
+            <Search className="w-4.5 h-4.5" />
           </button>
           <Link
             to="/contact"
-            className="bg-primary text-primary-foreground text-label uppercase px-6 py-3 rounded-md hover:bg-primary-dark transition-colors duration-300"
+            className="bg-primary text-primary-foreground text-label uppercase px-6 py-3 rounded-lg hover:bg-primary-dark transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
           >
             Get Started
           </Link>
         </div>
 
-        {/* Mobile Toggle */}
         <button className="lg:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-background border-t px-4 pb-6">
+        <div className="lg:hidden bg-background/95 backdrop-blur-xl border-t border-border px-4 pb-6">
           <nav className="flex flex-col gap-4 pt-4">
             {navLinks.map((link) => (
               <Link
@@ -134,7 +130,7 @@ export default function Header() {
             ))}
             <Link
               to="/contact"
-              className="bg-primary text-primary-foreground text-center text-label uppercase px-6 py-3 rounded-md mt-2"
+              className="bg-primary text-primary-foreground text-center text-label uppercase px-6 py-3 rounded-lg mt-2"
               onClick={() => setMobileOpen(false)}
             >
               Get Started

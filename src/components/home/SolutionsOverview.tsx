@@ -20,7 +20,7 @@ export default function SolutionsOverview() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            className="text-section mb-4"
+            className="text-section font-display mb-4"
           >
             Solutions That Drive Growth
           </motion.h2>
@@ -34,7 +34,7 @@ export default function SolutionsOverview() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {solutions.map((s, i) => (
             <motion.div
               key={s.title}
@@ -44,14 +44,14 @@ export default function SolutionsOverview() {
             >
               <Link
                 to={s.link}
-                className="block bg-background border border-border rounded-lg p-10 card-hover group relative overflow-hidden"
+                className="block glass rounded-xl p-8 card-hover group relative overflow-hidden"
               >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                <s.icon className="w-12 h-12 text-primary mb-4" />
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary to-primary/0 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                <s.icon className="w-10 h-10 text-primary mb-4" />
                 <h3 className="text-card-title mb-3">{s.title}</h3>
                 <p className="text-body text-muted-foreground mb-4">{s.desc}</p>
                 <p className={`text-small font-bold ${s.priceGray ? "text-muted-foreground" : "text-success"}`}>{s.price}</p>
-                <span className="text-primary text-body font-medium mt-3 inline-block group-hover:translate-x-1 transition-transform duration-300">
+                <span className="text-primary text-sm font-medium mt-3 inline-block group-hover:translate-x-1 transition-transform duration-300">
                   Explore →
                 </span>
               </Link>

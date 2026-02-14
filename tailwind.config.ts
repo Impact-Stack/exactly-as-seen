@@ -15,10 +15,11 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
+        display: ["Space Grotesk", "Inter", "system-ui", "sans-serif"],
       },
       fontSize: {
-        "hero": ["48px", { lineHeight: "1.1", letterSpacing: "-0.5px", fontWeight: "700" }],
-        "section": ["36px", { lineHeight: "1.2", fontWeight: "700" }],
+        "hero": ["56px", { lineHeight: "1.05", letterSpacing: "-1.5px", fontWeight: "700" }],
+        "section": ["40px", { lineHeight: "1.15", letterSpacing: "-0.5px", fontWeight: "700" }],
         "card-title": ["24px", { lineHeight: "1.3", fontWeight: "600" }],
         "subtitle": ["20px", { lineHeight: "1.4", fontWeight: "600" }],
         "body": ["16px", { lineHeight: "1.6" }],
@@ -97,11 +98,16 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(8px)" },
         },
+        "glow": {
+          "0%, 100%": { opacity: "0.4" },
+          "50%": { opacity: "0.8" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "bounce-down": "bounce-down 2s ease-in-out infinite",
+        "glow": "glow 3s ease-in-out infinite",
       },
     },
   },
