@@ -12,10 +12,10 @@ function StatItem({ value, suffix, label, start }: { value: number; suffix: stri
   const count = useCountUp(value, 2000, start);
   return (
     <div className="text-center">
-      <p className="text-hero text-primary-foreground">
+      <p className="text-hero font-display text-primary">
         {count}{suffix}
       </p>
-      <p className="tag-label text-primary-foreground/80 tracking-[1px] mt-2">{label}</p>
+      <p className="tag-label text-muted-foreground tracking-[1px] mt-2">{label}</p>
     </div>
   );
 }
@@ -24,12 +24,12 @@ export default function StatsSection() {
   const { ref, isInView } = useInView(0.3);
 
   return (
-    <section className="bg-primary section-padding" ref={ref}>
+    <section className="bg-card border-y border-border section-padding" ref={ref}>
       <div className="container-narrow">
         <motion.p
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          className="text-center text-card-title text-primary-foreground/90 font-light mb-12"
+          className="text-center text-card-title text-foreground/60 font-light mb-12"
         >
           Proven Track Record
         </motion.p>

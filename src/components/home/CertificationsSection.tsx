@@ -16,21 +16,21 @@ export default function CertificationsSection() {
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="text-section text-center mb-12"
+          className="text-section font-display text-center mb-12"
         >
           Certified & Recognized
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {certs.map((c, i) => (
             <motion.div
               key={c.name}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.1 + i * 0.1 }}
-              className="text-center"
+              className="text-center glass rounded-xl p-8"
             >
-              <div className="text-6xl mb-4">{c.logo}</div>
+              <div className="text-5xl mb-4">{c.logo}</div>
               <p className="text-body font-bold">{c.name}</p>
               <p className="text-small text-muted-foreground">{c.sub}</p>
             </motion.div>

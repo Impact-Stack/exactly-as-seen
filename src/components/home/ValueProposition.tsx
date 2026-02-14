@@ -21,10 +21,10 @@ export default function ValueProposition() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.2 }}
-              className="text-center"
+              className="text-center p-8 rounded-xl glass"
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary mb-4">
-                <item.icon className="w-8 h-8 text-primary" />
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 mb-4">
+                <item.icon className="w-7 h-7 text-primary" />
               </div>
               <h3 className="text-subtitle mb-2">{item.title}</h3>
               <p className="text-body text-muted-foreground">{item.text}</p>

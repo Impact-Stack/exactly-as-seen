@@ -19,7 +19,7 @@ export default function WhyChooseUs() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            className="tag-label text-success mb-3"
+            className="tag-label text-primary mb-3"
           >
             OUR ADVANTAGE
           </motion.p>
@@ -27,7 +27,7 @@ export default function WhyChooseUs() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.1 }}
-            className="text-section mb-4"
+            className="text-section font-display mb-4"
           >
             Enterprise Quality. Startup Pricing.
           </motion.h2>
@@ -41,16 +41,16 @@ export default function WhyChooseUs() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {cards.map((card, i) => (
             <motion.div
               key={card.title}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.3 + i * 0.15 }}
-              className={`bg-background rounded-lg p-10 card-hover ${card.highlight ? "border-2 border-primary" : "border border-border"}`}
+              className={`rounded-xl p-8 card-hover ${card.highlight ? "bg-primary/10 border border-primary/30" : "glass"}`}
             >
-              <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full mb-4 ${card.highlight ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
+              <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 ${card.highlight ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"}`}>
                 <card.icon className="w-6 h-6" />
               </div>
               <h3 className="text-card-title mb-3">{card.title}</h3>
@@ -62,7 +62,7 @@ export default function WhyChooseUs() {
         <div className="text-center">
           <Link
             to="/services/web"
-            className="inline-block bg-primary text-primary-foreground px-8 py-4 rounded-md text-body font-semibold hover:bg-primary-dark transition-colors duration-300"
+            className="inline-block bg-primary text-primary-foreground px-8 py-4 rounded-lg text-body font-semibold hover:bg-primary-dark transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
           >
             See Our Pricing
           </Link>
