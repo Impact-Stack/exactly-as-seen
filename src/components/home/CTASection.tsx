@@ -6,17 +6,16 @@ export default function CTASection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="py-24 px-4 relative overflow-hidden" ref={ref}>
-      <div className="absolute inset-0 bg-card" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px]" />
-      
+    <section className="py-24 px-4 relative overflow-hidden bg-background" ref={ref}>
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-transparent to-accent/8" />
+
       <div className="container-narrow text-center relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           className="text-section font-display mb-4"
         >
-          Ready to Transform Your Business?
+          Ready To Modernize Your Digital Delivery?
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -24,7 +23,7 @@ export default function CTASection() {
           transition={{ delay: 0.1 }}
           className="text-subtitle text-muted-foreground font-normal mb-10"
         >
-          Let's discuss how we can help you achieve your goals
+          Tell us your goals, current challenges, and timeline. We will map a practical implementation path.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -34,12 +33,12 @@ export default function CTASection() {
         >
           <Link
             to="/contact"
-            className="inline-block bg-primary text-primary-foreground px-12 py-5 rounded-lg text-lg font-semibold hover:bg-primary-dark transition-all duration-300 hover:shadow-xl hover:shadow-primary/20"
+            className="inline-block bg-primary text-primary-foreground px-12 py-5 rounded-lg text-lg font-semibold hover:bg-primary-dark transition-colors"
           >
-            Get Started
+            Request A Consultation
           </Link>
-          <a href="tel:0838947546" className="text-body text-muted-foreground underline-offset-4 hover:underline hover:text-foreground transition-colors">
-            Or call us at 083 894 7546
+          <a href="tel:+27838947546" className="text-body text-muted-foreground underline-offset-4 hover:underline hover:text-foreground transition-colors">
+            Or call +27 83 894 7546
           </a>
         </motion.div>
       </div>

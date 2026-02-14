@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 interface PageShellProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ export default function PageShell({ children }: PageShellProps) {
       <Header />
       <main className="pt-[72px]">{children}</main>
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }

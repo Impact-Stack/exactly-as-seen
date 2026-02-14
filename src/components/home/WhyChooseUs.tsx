@@ -1,27 +1,40 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
-import { Check, DollarSign, Zap } from "lucide-react";
+import { Building2, Clock3, ShieldCheck, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const cards = [
-  { icon: Check, title: "Enterprise-Grade Solutions", text: "Same technology stack as BCX/Accenture. React, Node.js, Flutter, AWS. Production-proven code.", highlight: false },
-  { icon: DollarSign, title: "60% More Affordable", text: "R150,000 avg MVP vs R400,000+ from competitors. Lower overhead = better value for you.", highlight: true },
-  { icon: Zap, title: "3x Faster Delivery", text: "8-week average vs 6-month industry standard. Modern stack. Agile methodology. No bureaucracy.", highlight: false },
+const differentiators = [
+  {
+    icon: Building2,
+    title: "Enterprise Operating Mindset",
+    text: "Structured delivery discipline with architecture, governance, and documentation built into execution.",
+  },
+  {
+    icon: Clock3,
+    title: "Faster Time To Value",
+    text: "Lean decision cycles and focused scope management to move from plan to production quickly.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Security Embedded By Default",
+    text: "Security controls and compliance-aware engineering integrated from day one, not added late.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Business-Centered Outcomes",
+    text: "Delivery aligned to operational priorities, measurable outcomes, and stakeholder expectations.",
+  },
 ];
 
 export default function WhyChooseUs() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-muted" ref={ref}>
+    <section className="section-padding bg-background" ref={ref}>
       <div className="container-narrow">
-        <div className="text-center max-w-[800px] mx-auto mb-12">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            className="tag-label text-primary mb-3"
-          >
-            OUR ADVANTAGE
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} className="tag-label text-primary mb-3">
+            WHY IMPACTSTACK
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -29,7 +42,7 @@ export default function WhyChooseUs() {
             transition={{ delay: 0.1 }}
             className="text-section font-display mb-4"
           >
-            Enterprise Quality. Startup Pricing.
+            Built To Feel Like A Trusted Enterprise Partner
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -37,34 +50,34 @@ export default function WhyChooseUs() {
             transition={{ delay: 0.2 }}
             className="text-lg text-muted-foreground"
           >
-            We deliver BCX-level quality at 40-60% lower cost. No compromise on excellence.
+            Corporate-grade delivery quality with direct, agile collaboration and practical execution speed.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {cards.map((card, i) => (
-            <motion.div
-              key={card.title}
-              initial={{ opacity: 0, y: 30 }}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          {differentiators.map((item, i) => (
+            <motion.article
+              key={item.title}
+              initial={{ opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 + i * 0.15 }}
-              className={`rounded-xl p-8 card-hover ${card.highlight ? "bg-primary/10 border border-primary/30" : "glass"}`}
+              transition={{ duration: 0.45, delay: 0.25 + i * 0.08 }}
+              className="glass rounded-xl p-7 card-hover"
             >
-              <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 ${card.highlight ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"}`}>
-                <card.icon className="w-6 h-6" />
+              <div className="w-12 h-12 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+                <item.icon className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="text-card-title mb-3">{card.title}</h3>
-              <p className="text-body text-muted-foreground">{card.text}</p>
-            </motion.div>
+              <h3 className="text-subtitle mb-2">{item.title}</h3>
+              <p className="text-body text-muted-foreground">{item.text}</p>
+            </motion.article>
           ))}
         </div>
 
         <div className="text-center">
           <Link
             to="/services/web"
-            className="inline-block bg-primary text-primary-foreground px-8 py-4 rounded-lg text-body font-semibold hover:bg-primary-dark transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
+            className="inline-flex items-center justify-center bg-primary text-primary-foreground px-8 py-4 rounded-lg text-body font-semibold hover:bg-primary-dark transition-colors"
           >
-            See Our Pricing
+            Explore Delivery Capabilities
           </Link>
         </div>
       </div>

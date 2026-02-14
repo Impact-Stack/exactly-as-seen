@@ -9,20 +9,20 @@ const posts = [
   {
     image: blogFlutter,
     tag: "DEVELOPMENT",
-    title: "Why Flutter is Transforming Mobile Development in Africa",
-    date: "15 Feb 2026 • 5 min read",
+    title: "Why Flutter Is Expanding Mobile Delivery Across Africa",
+    date: "15 Feb 2026 | 5 min read",
   },
   {
     image: blogPopia,
     tag: "COMPLIANCE",
-    title: "POPIA Compliance: Essential Guide for SA Businesses",
-    date: "10 Feb 2026 • 7 min read",
+    title: "POPIA Compliance Priorities For South African Businesses",
+    date: "10 Feb 2026 | 7 min read",
   },
   {
     image: blogGovt,
     tag: "TRANSFORMATION",
-    title: "Government Digital Services: Opportunities for Tech Suppliers",
-    date: "5 Feb 2026 • 6 min read",
+    title: "Digital Service Opportunities For Public Sector Teams",
+    date: "5 Feb 2026 | 6 min read",
   },
 ];
 
@@ -30,7 +30,7 @@ export default function InsightsSection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-background" ref={ref}>
+    <section className="section-padding bg-secondary" ref={ref}>
       <div className="container-narrow">
         <div className="mb-12">
           <motion.h2
@@ -46,7 +46,7 @@ export default function InsightsSection() {
             transition={{ delay: 0.1 }}
             className="text-lg text-muted-foreground"
           >
-            Perspectives on technology and innovation
+            Practical perspectives on technology strategy and delivery.
           </motion.p>
         </div>
 
@@ -56,17 +56,19 @@ export default function InsightsSection() {
               key={p.title}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 + i * 0.15 }}
-              className="glass rounded-xl overflow-hidden card-hover"
+              transition={{ duration: 0.45, delay: 0.2 + i * 0.08 }}
+              className="glass rounded-xl overflow-hidden card-hover bg-card"
             >
               <img src={p.image} alt={p.title} className="w-full h-52 object-cover" loading="lazy" />
               <div className="p-6">
                 <span className="inline-block text-primary text-[11px] uppercase tracking-wider font-semibold mb-3">
                   {p.tag}
                 </span>
-                <h3 className="text-subtitle mb-2 hover:text-primary transition-colors cursor-pointer">{p.title}</h3>
+                <h3 className="text-subtitle mb-2">{p.title}</h3>
                 <p className="text-small text-muted-foreground mb-3">{p.date}</p>
-                <span className="text-small text-primary font-medium hover:underline cursor-pointer">Read More →</span>
+                <Link to="/insights" className="text-small text-primary font-semibold hover:underline">
+                  Read More -&gt;
+                </Link>
               </div>
             </motion.article>
           ))}
@@ -74,8 +76,8 @@ export default function InsightsSection() {
 
         <div className="text-center">
           <Link
-            to="/"
-            className="inline-block border border-border text-foreground px-8 py-4 rounded-lg text-body font-semibold hover:bg-card transition-all duration-300"
+            to="/insights"
+            className="inline-block border border-border text-foreground bg-card px-8 py-4 rounded-lg text-body font-semibold hover:bg-background transition-colors"
           >
             View All Insights
           </Link>

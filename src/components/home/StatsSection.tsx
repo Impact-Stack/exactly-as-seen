@@ -2,20 +2,31 @@ import { useInView, useCountUp } from "@/hooks/use-in-view";
 import { motion } from "framer-motion";
 
 const stats = [
-  { value: 50, suffix: "+", label: "DAILY USERS" },
-  { value: 3, suffix: "", label: "APPS LIVE" },
-  { value: 8, suffix: " Weeks", label: "AVG DELIVERY" },
-  { value: 15, suffix: "", label: "JOBS 2026" },
+  { value: 50, suffix: "+", label: "Daily Active Users Supported" },
+  { value: 8, suffix: " weeks", label: "Average Delivery Cycle" },
+  { value: 6, suffix: "", label: "Industries Served" },
+  { value: 15, suffix: "+", label: "Jobs Created Pipeline (2026)" },
 ];
 
-function StatItem({ value, suffix, label, start }: { value: number; suffix: string; label: string; start: boolean }) {
+function StatItem({
+  value,
+  suffix,
+  label,
+  start,
+}: {
+  value: number;
+  suffix: string;
+  label: string;
+  start: boolean;
+}) {
   const count = useCountUp(value, 2000, start);
   return (
-    <div className="text-center">
+    <div className="text-center rounded-xl bg-card border border-border p-6">
       <p className="text-hero font-display text-primary">
-        {count}{suffix}
+        {count}
+        {suffix}
       </p>
-      <p className="tag-label text-muted-foreground tracking-[1px] mt-2">{label}</p>
+      <p className="text-sm text-muted-foreground mt-2">{label}</p>
     </div>
   );
 }
@@ -24,16 +35,16 @@ export default function StatsSection() {
   const { ref, isInView } = useInView(0.3);
 
   return (
-    <section className="bg-card border-y border-border section-padding" ref={ref}>
+    <section className="section-padding bg-secondary" ref={ref}>
       <div className="container-narrow">
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          className="text-center text-card-title text-foreground/60 font-light mb-12"
+        <motion.h2
+          initial={{ opacity: 0, y: 18 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          className="text-center text-section font-display mb-12"
         >
-          Proven Track Record
-        </motion.p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          Delivery Metrics
+        </motion.h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((s) => (
             <StatItem key={s.label} {...s} start={isInView} />
           ))}

@@ -1,0 +1,16 @@
+{
+  "name": "ImpactStack Africa",
+  "short_name": "ImpactStack",
+  "description": "Enterprise Software Development Cape Town",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48 32x32 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

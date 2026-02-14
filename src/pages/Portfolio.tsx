@@ -1,4 +1,6 @@
 import PageShell from "@/components/PageShell";
+import SEO from "@/components/SEO";
+import { absoluteUrl } from "@/lib/site";
 import { Link } from "react-router-dom";
 import caseNfc from "@/assets/case-nfc.jpg";
 import caseHr from "@/assets/case-hr.jpg";
@@ -36,47 +38,62 @@ const projects = [
 
 export default function PortfolioPage() {
   return (
-    <PageShell>
-      <section className="bg-primary-dark py-24 px-4">
-        <div className="container-narrow text-center">
-          <h1 className="text-hero text-primary-foreground mb-4">Delivering Results for Diverse Clients</h1>
-          <p className="text-card-title text-primary-foreground/80 font-light">Proven solutions across industries and technologies</p>
-        </div>
-      </section>
+    <>
+      <SEO
+        title="Portfolio | ImpactStack Africa Case Studies"
+        description="Explore real software projects delivered by ImpactStack Africa across education technology, enterprise systems, and e-commerce."
+        url={absoluteUrl("/portfolio")}
+      />
+      <PageShell>
+        <section className="bg-primary-dark py-24 px-4">
+          <div className="container-narrow text-center">
+            <h1 className="text-hero text-primary-foreground mb-4">Delivering Results for Diverse Clients</h1>
+            <p className="text-card-title text-primary-foreground/80 font-light">
+              Proven solutions across industries and technologies
+            </p>
+          </div>
+        </section>
 
-      <section className="section-padding bg-background">
-        <div className="container-narrow space-y-16">
-          {projects.map((p) => (
-            <div key={p.title} className="bg-background border border-border rounded-lg overflow-hidden card-hover">
-              <img src={p.image} alt={p.title} className="w-full h-72 object-cover" loading="lazy" />
-              <div className="p-10">
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {p.tags.map((t) => (
-                    <span key={t} className="bg-secondary text-secondary-foreground text-label px-3 py-1 rounded-sm">{t}</span>
-                  ))}
-                </div>
-                <h2 className="text-section mb-2">{p.title}</h2>
-                <p className="text-small text-muted-foreground mb-4">Client: {p.client} • Duration: {p.duration}</p>
-                <p className="text-body text-muted-foreground mb-6 max-w-[700px]">{p.desc}</p>
-                <div className="flex flex-wrap gap-6">
-                  {p.stats.map((s) => (
-                    <span key={s} className="text-small font-semibold text-primary">{s}</span>
-                  ))}
+        <section className="section-padding bg-background">
+          <div className="container-narrow space-y-16">
+            {projects.map((p) => (
+              <div key={p.title} className="bg-background border border-border rounded-lg overflow-hidden card-hover">
+                <img src={p.image} alt={p.title} className="w-full h-72 object-cover" loading="lazy" />
+                <div className="p-10">
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {p.tags.map((t) => (
+                      <span key={t} className="bg-secondary text-secondary-foreground text-label px-3 py-1 rounded-sm">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <h2 className="text-section mb-2">{p.title}</h2>
+                  <p className="text-small text-muted-foreground mb-4">
+                    Client: {p.client} | Duration: {p.duration}
+                  </p>
+                  <p className="text-body text-muted-foreground mb-6 max-w-[700px]">{p.desc}</p>
+                  <div className="flex flex-wrap gap-6">
+                    {p.stats.map((s) => (
+                      <span key={s} className="text-small font-semibold text-primary">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="container-narrow text-center mt-16">
-          <Link
-            to="/contact"
-            className="inline-block bg-primary text-primary-foreground px-10 py-4 rounded-md text-body font-semibold hover:bg-primary-dark transition-colors duration-300"
-          >
-            Request Free Consultation
-          </Link>
-        </div>
-      </section>
-    </PageShell>
+          <div className="container-narrow text-center mt-16">
+            <Link
+              to="/contact"
+              className="inline-block bg-primary text-primary-foreground px-10 py-4 rounded-md text-body font-semibold hover:bg-primary-dark transition-colors duration-300"
+            >
+              Request Free Consultation
+            </Link>
+          </div>
+        </section>
+      </PageShell>
+    </>
   );
 }
