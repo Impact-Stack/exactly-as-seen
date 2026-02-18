@@ -18,39 +18,24 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com/company/impactstack-africa",
-    icon: Linkedin,
-  },
-  {
-    label: "GitHub",
-    href: "https://github.com/impactstack-africa",
-    icon: Github,
-  },
+  { label: "LinkedIn", href: "https://linkedin.com/company/impactstack-africa", icon: Linkedin },
+  { label: "GitHub", href: "https://github.com/impactstack-africa", icon: Github },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-footer text-footer-foreground border-t border-white/10">
+    <footer className="bg-[#050505] text-slate-400 border-t border-white/10">
       <div className="container-narrow section-padding">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
             <Link to="/" className="text-xl font-bold font-display block mb-3">
-              <span className="text-white">ImpactStack</span>
-              <span className="text-sky-300"> Africa</span>
+              <span className="text-blue-500">ImpactStack</span>
+              <span className="text-white"> Africa</span>
             </Link>
-            <p className="text-small text-white/70 mb-4">Enterprise-grade software delivery for South African organizations.</p>
+            <p className="text-small text-slate-500 mb-4">Enterprise-grade software delivery for South African organizations.</p>
             <div className="flex gap-4">
               {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/70 hover:text-white transition-colors"
-                  aria-label={social.label}
-                >
+                <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-white transition-colors" aria-label={social.label}>
                   <social.icon className="w-5 h-5" />
                 </a>
               ))}
@@ -58,46 +43,28 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="tag-label text-sky-200 mb-4">SOLUTIONS</h4>
+            <h4 className="tag-label text-blue-400 mb-4">SOLUTIONS</h4>
             <ul className="space-y-2">
               {footerLinks.solutions.map((l) => (
-                <li key={l.label}>
-                  <Link to={l.href} className="text-sm text-white/75 hover:text-white transition-colors">
-                    {l.label}
-                  </Link>
-                </li>
+                <li key={l.label}><Link to={l.href} className="text-sm text-slate-500 hover:text-white transition-colors">{l.label}</Link></li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="tag-label text-sky-200 mb-4">COMPANY</h4>
+            <h4 className="tag-label text-blue-400 mb-4">COMPANY</h4>
             <ul className="space-y-2">
               {footerLinks.company.map((l) => (
-                <li key={l.label}>
-                  <Link to={l.href} className="text-sm text-white/75 hover:text-white transition-colors">
-                    {l.label}
-                  </Link>
-                </li>
+                <li key={l.label}><Link to={l.href} className="text-sm text-slate-500 hover:text-white transition-colors">{l.label}</Link></li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="tag-label text-sky-200 mb-4">CONTACT</h4>
-            <ul className="space-y-3 text-sm text-white/75">
-              <li>
-                <a href="mailto:hello@impactstack.africa" className="hover:text-white transition-colors inline-flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  hello@impactstack.africa
-                </a>
-              </li>
-              <li>
-                <a href="tel:+27838947546" className="hover:text-white transition-colors inline-flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  +27 83 894 7546
-                </a>
-              </li>
+            <h4 className="tag-label text-blue-400 mb-4">CONTACT</h4>
+            <ul className="space-y-3 text-sm text-slate-500">
+              <li><a href="mailto:hello@impactstack.africa" className="hover:text-white transition-colors inline-flex items-center gap-2"><Mail className="w-4 h-4" />hello@impactstack.africa</a></li>
+              <li><a href="tel:+27838947546" className="hover:text-white transition-colors inline-flex items-center gap-2"><Phone className="w-4 h-4" />+27 83 894 7546</a></li>
               <li>Kommetjie, Cape Town</li>
               <li>Mon-Fri, 8AM-5PM SAST</li>
             </ul>
@@ -106,18 +73,12 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-narrow py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-small text-white/65">
+        <div className="container-narrow py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-small text-slate-600">
           <p>(c) 2026 ImpactStack Africa (Pty) Ltd. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link to="/legal/privacy-policy" className="hover:text-white transition-colors">
-              Privacy Policy
-            </Link>
-            <Link to="/legal/terms-of-service" className="hover:text-white transition-colors">
-              Terms of Service
-            </Link>
-            <Link to="/legal/cookie-policy" className="hover:text-white transition-colors">
-              Cookie Policy
-            </Link>
+            <Link to="/legal/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/legal/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link to="/legal/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link>
           </div>
         </div>
       </div>

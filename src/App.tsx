@@ -18,13 +18,19 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const ScrollToTop = () => {
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  }, [location.pathname]);
+  return null;
+};
+
 const RouteAnalyticsTracker = () => {
   const location = useLocation();
-
   useEffect(() => {
     pageview(location.pathname + location.search);
   }, [location.pathname, location.search]);
-
   return null;
 };
 
@@ -57,6 +63,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <AppRoutes />
           </BrowserRouter>
         </TooltipProvider>
