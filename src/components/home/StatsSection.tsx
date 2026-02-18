@@ -8,25 +8,14 @@ const stats = [
   { value: 15, suffix: "+", label: "Jobs Created Pipeline (2026)" },
 ];
 
-function StatItem({
-  value,
-  suffix,
-  label,
-  start,
-}: {
-  value: number;
-  suffix: string;
-  label: string;
-  start: boolean;
-}) {
+function StatItem({ value, suffix, label, start }: { value: number; suffix: string; label: string; start: boolean }) {
   const count = useCountUp(value, 2000, start);
   return (
-    <div className="text-center rounded-xl bg-card border border-border p-6">
-      <p className="text-hero font-display text-primary">
-        {count}
-        {suffix}
+    <div className="text-center rounded-2xl bg-white/5 border border-white/10 p-6">
+      <p className="text-hero font-display text-blue-400">
+        {count}{suffix}
       </p>
-      <p className="text-sm text-muted-foreground mt-2">{label}</p>
+      <p className="text-sm text-slate-500 mt-2">{label}</p>
     </div>
   );
 }
@@ -35,13 +24,9 @@ export default function StatsSection() {
   const { ref, isInView } = useInView(0.3);
 
   return (
-    <section className="section-padding bg-secondary" ref={ref}>
+    <section className="section-padding bg-[#0D0D0D]" ref={ref}>
       <div className="container-narrow">
-        <motion.h2
-          initial={{ opacity: 0, y: 18 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="text-center text-section font-display mb-12"
-        >
+        <motion.h2 initial={{ opacity: 0, y: 18 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-center text-section font-display mb-12 text-white">
           Delivery Metrics
         </motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

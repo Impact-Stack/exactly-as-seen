@@ -15,7 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Manrope", "system-ui", "sans-serif"],
-        display: ["Sora", "Manrope", "system-ui", "sans-serif"],
+        display: ["Space Grotesk", "Manrope", "system-ui", "sans-serif"],
       },
       fontSize: {
         "hero": ["56px", { lineHeight: "1.05", letterSpacing: "-1.5px", fontWeight: "700" }],
