@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { useSearchParams } from "react-router-dom";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { toast } from "@/components/ui/sonner";
@@ -6,9 +7,20 @@ import { event as trackEvent } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/site";
 
 const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID?.trim();
+const PROJECT_TYPE_OPTIONS = [
+  { value: "Web Application", label: "Web Application" },
+  { value: "Mobile App", label: "Mobile App" },
+  { value: "Security and Compliance", label: "Security & Compliance" },
+  { value: "Government Project", label: "Government Project" },
+  { value: "InvestSwipe Partnership", label: "InvestSwipe Partnership" },
+  { value: "Other", label: "Other" },
+];
 
 export default function ContactPage() {
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+  const requestedProjectType = searchParams.get("projectType")?.trim() || "";
+  const prefilledProjectType = PROJECT_TYPE_OPTIONS.some((option) => option.value === requestedProjectType) ? requestedProjectType : "";
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,6 +59,11 @@ export default function ContactPage() {
               <div className="lg:col-span-3">
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
+                  {prefilledProjectType && (
+                    <p className="text-small text-blue-300 bg-blue-500/10 border border-blue-500/30 rounded-md px-4 py-3">
+                      Project type preselected from your previous page: <span className="font-semibold">{prefilledProjectType}</span>
+                    </p>
+                  )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="fullName" className="block text-small font-medium text-slate-300 mb-2">Full Name *</label>
@@ -70,14 +87,11 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="projectType" className="block text-small font-medium text-slate-300 mb-2">Project Type *</label>
-                      <select id="projectType" name="projectType" required defaultValue="" className={inputClass}>
+                      <select id="projectType" name="projectType" required defaultValue={prefilledProjectType || ""} className={inputClass}>
                         <option value="" disabled>Select project type</option>
-                        <option value="Web Application">Web Application</option>
-                        <option value="Mobile App">Mobile App</option>
-                        <option value="Security and Compliance">Security &amp; Compliance</option>
-                        <option value="Government Project">Government Project</option>
-                        <option value="InvestSwipe Partnership">InvestSwipe Partnership</option>
-                        <option value="Other">Other</option>
+                        {PROJECT_TYPE_OPTIONS.map((option) => (
+                          <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
                       </select>
                     </div>
                     <div>
