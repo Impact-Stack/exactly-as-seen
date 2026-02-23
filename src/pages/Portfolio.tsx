@@ -17,14 +17,14 @@ export default function PortfolioPage() {
     <>
       <SEO title="Portfolio | ImpactStack Africa Case Studies" description="Explore real software projects delivered by ImpactStack Africa across education technology, enterprise systems, and e-commerce." url={absoluteUrl("/portfolio")} />
       <PageShell>
-        <section className="bg-gradient-to-br from-blue-950 to-[#0A0A0A] py-24 px-4">
+        <section className="bg-[#000000] py-24 px-4 border-b border-white/5">
           <div className="container-narrow text-center">
             <h1 className="text-hero text-white mb-4">Delivering Results for Diverse Clients</h1>
-            <p className="text-card-title text-slate-400 font-light">Proven solutions across industries and technologies</p>
+            <p className="text-card-title text-[#9CA3AF] font-light">Proven solutions across industries and technologies</p>
           </div>
         </section>
 
-        <section className="section-padding bg-[#0A0A0A]">
+        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
           <div className="container-narrow space-y-16">
             {projects.map((p) => (
               <div key={p.title} className="glass overflow-hidden card-hover">
@@ -32,15 +32,15 @@ export default function PortfolioPage() {
                 <div className="p-10">
                   <div className="flex flex-wrap gap-2 mb-4">
                     {p.tags.map((t) => (
-                      <span key={t} className="bg-blue-500/10 text-blue-400 text-label px-3 py-1 rounded-sm border border-blue-500/20">{t}</span>
+                      <span key={t} className="bg-[#0047BB]/10 text-[#0047BB] text-label px-3 py-1 rounded-sm border border-[#0047BB]/25">{t}</span>
                     ))}
                   </div>
                   <h2 className="text-section text-white mb-2">{p.title}</h2>
-                  <p className="text-small text-slate-500 mb-4">Client: {p.client} | Duration: {p.duration}</p>
-                  <p className="text-body text-slate-400 mb-6 max-w-[700px]">{p.desc}</p>
+                  <p className="text-small text-[#6B7280] mb-4">Client: {p.client} | Duration: {p.duration}</p>
+                  <p className="text-body text-[#9CA3AF] mb-6 max-w-[700px]">{p.desc}</p>
                   <div className="flex flex-wrap gap-6">
                     {p.stats.map((s) => (
-                      <span key={s} className="text-small font-semibold text-blue-400">{s}</span>
+                      <span key={s} className="text-small font-semibold text-[#0047BB]">{s}</span>
                     ))}
                   </div>
                 </div>
@@ -49,8 +49,8 @@ export default function PortfolioPage() {
           </div>
 
           <div className="container-narrow text-center mt-16">
-            <Link to="/contact" className="inline-block bg-blue-500 text-white px-10 py-4 rounded-md text-body font-semibold hover:bg-blue-400 transition-colors duration-300">
-              Request Free Consultation
+            <Link to="/contact" className="inline-flex items-center justify-center bg-[#0047BB] text-white px-10 py-4 rounded-md text-body font-semibold hover:bg-[#003494] transition-colors duration-200">
+              Book a Consultation
             </Link>
           </div>
         </section>

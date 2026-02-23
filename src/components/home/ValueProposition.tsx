@@ -24,7 +24,7 @@ export default function ValueProposition() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-[#0D0D0D]" ref={ref}>
+    <section className="section-padding bg-[#0A0A0A] border-t border-white/5" ref={ref}>
       <div className="container-narrow">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {valueProps.map((item, index) => (
@@ -35,11 +35,11 @@ export default function ValueProposition() {
               transition={{ duration: 0.45, delay: index * 0.1 }}
               className="glass p-7 card-hover"
             >
-              <div className="inline-flex w-12 h-12 items-center justify-center rounded-lg bg-blue-500/10 border border-blue-500/20 mb-4">
-                <item.icon className="w-6 h-6 text-primary" />
+              <div className="icon-shell w-12 h-12 mb-4">
+                <item.icon className="w-6 h-6" />
               </div>
               <h3 className="text-subtitle text-white mb-2">{item.title}</h3>
-              <p className="text-body text-slate-400">{item.text}</p>
+              <p className="text-body text-[#9CA3AF]">{item.text}</p>
             </motion.article>
           ))}
         </div>

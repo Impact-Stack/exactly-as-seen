@@ -6,23 +6,21 @@ export default function CTASection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="py-24 px-4 relative overflow-hidden bg-[#0A0A0A]" ref={ref}>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-transparent to-cyan-500/10" />
-
-      <div className="container-narrow text-center relative z-10">
+    <section className="py-24 px-4 bg-[#0A0A0A] border-t border-[#0047BB]" ref={ref}>
+      <div className="container-narrow text-center">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display mb-4 text-white">
-          Ready To Modernize Your Digital Delivery?
+          Ready to transform how your organization operates?
         </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-subtitle text-slate-400 font-normal mb-10">
+        <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-subtitle text-[#6B7280] font-normal mb-10">
           Tell us your goals, current challenges, and timeline. We will map a practical implementation path.
         </motion.p>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} className="flex flex-col items-center gap-4">
-          <Link to="/contact" className="inline-block bg-blue-500 text-white px-12 py-5 rounded-lg text-lg font-semibold hover:bg-blue-400 transition-colors">
-            Request A Consultation
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link to="/contact" className="inline-flex items-center justify-center bg-[#0047BB] text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-[#003494] transition-colors">
+            Book a Consultation
           </Link>
-          <a href="tel:+27838947546" className="text-body text-slate-500 underline-offset-4 hover:underline hover:text-white transition-colors">
-            Or call +27 83 894 7546
-          </a>
+          <Link to="/portfolio" className="inline-flex items-center justify-center border border-white/20 text-white px-10 py-4 rounded-lg text-base font-semibold hover:border-white/50 hover:bg-white/5 transition-all">
+            View Our Work
+          </Link>
         </motion.div>
       </div>
     </section>

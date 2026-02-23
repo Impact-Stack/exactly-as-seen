@@ -18,13 +18,13 @@ export default function SkillsSection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-[#0D0D0D]" ref={ref}>
+    <section className="section-padding bg-[#0A0A0A] border-t border-white/5" ref={ref}>
       <div className="container-narrow">
         <div className="text-center mb-12">
           <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display mb-4 text-white">
             Technical and Project Delivery Expertise
           </motion.h2>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-slate-400 max-w-3xl mx-auto">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-[#9CA3AF] max-w-3xl mx-auto">
             Core competencies across software engineering, cloud delivery, security, and project execution.
           </motion.p>
         </div>
@@ -33,15 +33,15 @@ export default function SkillsSection() {
           {skillCategories.map((category, index) => (
             <motion.article key={category.title} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay: 0.15 + index * 0.05 }} className="glass p-6 card-hover">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-11 h-11 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                  <category.icon className="w-5 h-5 text-primary" />
+                <div className="icon-shell w-11 h-11">
+                  <category.icon className="w-5 h-5" />
                 </div>
                 <h3 className="text-sm font-bold text-white">{category.title}</h3>
               </div>
               <ul className="space-y-2">
                 {category.skills.map((skill) => (
-                  <li key={skill} className="flex items-start gap-2 text-sm text-slate-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />
+                  <li key={skill} className="flex items-start gap-2 text-sm text-[#9CA3AF]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0047BB] mt-2 shrink-0" />
                     <span>{skill}</span>
                   </li>
                 ))}
@@ -52,7 +52,7 @@ export default function SkillsSection() {
 
         <div className="mt-10 glass p-6 md:p-8">
           <h3 className="text-subtitle text-white mb-3">Current Growth Focus</h3>
-          <p className="text-slate-400 leading-relaxed">
+          <p className="text-[#9CA3AF] leading-relaxed">
             DevOps and CI/CD delivery pipelines, algorithmic problem solving, and practical cybersecurity labs. The focus
             is to improve delivery speed, resilience, and enterprise security posture across real-world projects.
           </p>

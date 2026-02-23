@@ -20,15 +20,15 @@ export default function LegalPage() {
     <>
       <SEO title={`${doc.title} | ImpactStack Africa`} description={doc.description} url={absoluteUrl(`/legal/${safeSlug}`)} />
       <PageShell>
-        <section className="section-padding bg-[#0A0A0A]">
+        <section className="section-padding bg-[#000000] border-t border-white/5">
           <div className="container-narrow max-w-[900px]">
             <h1 className="text-hero text-white mb-4">{doc.title}</h1>
-            <p className="text-slate-500 mb-10">Last updated: {doc.updated}</p>
+            <p className="text-[#6B7280] mb-10">Last updated: {doc.updated}</p>
             <div className="space-y-8">
               {doc.sections.map((section) => (
                 <article key={section.heading}>
                   <h2 className="text-subtitle text-white mb-3">{section.heading}</h2>
-                  <p className="text-body text-slate-400 leading-relaxed">{section.body}</p>
+                  <p className="text-body text-[#9CA3AF] leading-relaxed">{section.body}</p>
                 </article>
               ))}
             </div>

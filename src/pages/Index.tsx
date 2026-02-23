@@ -29,7 +29,6 @@ const structuredData = {
     addressRegion: "Western Cape",
     addressCountry: "ZA",
   },
-  priceRange: "R50000-R500000",
   openingHours: "Mo-Fr 08:00-17:00",
 };
 
@@ -38,7 +37,7 @@ const Index = () => {
     <>
       <SEO
         title="ImpactStack Africa | Enterprise Software Development Cape Town"
-        description="Youth-led Cape Town software agency. Web apps from R50k, mobile apps from R80k. Google Cybersecurity certified. Enterprise quality. Startup pricing."
+        description="Enterprise technology delivery partner in Cape Town. Secure software, mobile platforms, and compliance-focused implementation for South African organizations."
         url={absoluteUrl("/")}
         structuredData={structuredData}
       />

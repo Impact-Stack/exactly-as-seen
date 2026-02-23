@@ -12,7 +12,7 @@ interface SEOProps {
 
 const DEFAULT_TITLE = "ImpactStack Africa | Enterprise Software Development Cape Town";
 const DEFAULT_DESCRIPTION =
-  "Youth-led Cape Town software agency. Web apps from R50k, mobile apps from R80k. Google Cybersecurity certified. Enterprise quality. Startup pricing.";
+  "Enterprise technology delivery partner in Cape Town. Secure software, mobile platforms, and compliance-focused implementation for South African organizations.";
 const DEFAULT_IMAGE = "/placeholder.svg";
 
 const upsertMeta = (attribute: "name" | "property", key: string, content: string) => {

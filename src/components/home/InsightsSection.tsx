@@ -15,31 +15,41 @@ export default function InsightsSection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-[#0D0D0D]" ref={ref}>
+    <section className="section-padding bg-[#0A0A0A] border-t border-white/5" ref={ref}>
       <div className="container-narrow">
         <div className="mb-12">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display mb-4 text-white">Latest Insights</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-slate-400">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display mb-4 text-white">
+            Latest Insights
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-[#9CA3AF]">
             Practical perspectives on technology strategy and delivery.
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {posts.map((p, i) => (
-            <motion.article key={p.title} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.45, delay: 0.2 + i * 0.08 }} className="glass overflow-hidden card-hover">
-              <img src={p.image} alt={p.title} className="w-full h-52 object-cover" loading="lazy" />
+          {posts.map((post, i) => (
+            <motion.article
+              key={post.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.45, delay: 0.2 + i * 0.08 }}
+              className="glass overflow-hidden card-hover"
+            >
+              <img src={post.image} alt={post.title} className="w-full h-52 object-cover" loading="lazy" />
               <div className="p-6">
-                <span className="inline-block text-blue-400 text-[11px] uppercase tracking-wider font-semibold mb-3">{p.tag}</span>
-                <h3 className="text-subtitle text-white mb-2">{p.title}</h3>
-                <p className="text-small text-slate-500 mb-3">{p.date}</p>
-                <Link to="/insights" className="text-small text-blue-400 font-semibold hover:text-blue-300 transition-colors">Read More →</Link>
+                <span className="tag-label mb-3">{post.tag}</span>
+                <h3 className="text-subtitle text-white mb-2">{post.title}</h3>
+                <p className="text-small text-[#6B7280] mb-3">{post.date}</p>
+                <Link to="/insights" className="text-small text-[#0047BB] font-semibold">
+                  Read More -&gt;
+                </Link>
               </div>
             </motion.article>
           ))}
         </div>
 
         <div className="text-center">
-          <Link to="/insights" className="inline-block border border-white/10 text-white bg-white/5 px-8 py-4 rounded-lg text-body font-semibold hover:bg-white/10 transition-colors">
+          <Link to="/insights" className="inline-block border border-white/20 text-white bg-transparent px-8 py-4 rounded-lg text-body font-semibold hover:border-white/50 hover:bg-white/5 transition-all">
             View All Insights
           </Link>
         </div>

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 const megaMenus: Record<string, { columns: { title: string; links: { label: string; href: string }[] }[] }> = {
@@ -97,53 +97,78 @@ const navLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
+const isActive = (pathname: string, label: string, href?: string) => {
+  if (!href) return false;
+  if (label === "Solutions" || label === "Services") return pathname.startsWith("/services") || pathname.startsWith("/investswipe");
+  return pathname === href || pathname.startsWith(`${href}/`);
+};
+
+const navLinkClass = (active: boolean) =>
+  `relative inline-flex items-center gap-1 text-sm font-semibold text-[#9CA3AF] transition-colors hover:text-white after:absolute after:left-0 after:-bottom-2 after:h-[2px] after:w-full after:bg-[#0047BB] after:transition-opacity ${
+    active ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-100"
+  }`;
+
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { pathname } = useLocation();
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-black/80 backdrop-blur-xl border-b border-white/10 ${
-        scrolled ? "shadow-lg shadow-black/20" : ""
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-white/[0.07]">
       <div className="container-narrow flex items-center justify-between h-[72px]">
         <Link to="/" className="flex items-center gap-1 text-xl font-bold font-display">
-          <span className="text-blue-500">ImpactStack</span>
+          <span className="text-[#0047BB]">ImpactStack</span>
           <span className="text-white">Africa</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) =>
-            link.hasDropdown ? (
+          {navLinks.map((link) => {
+            const menuId = `menu-${link.label.toLowerCase()}`;
+            return link.hasDropdown ? (
               <div
                 key={link.label}
                 className="relative"
                 onMouseEnter={() => setActiveMenu(link.label)}
                 onMouseLeave={() => setActiveMenu(null)}
+                onFocus={() => setActiveMenu(link.label)}
+                onBlur={(event) => {
+                  const next = event.relatedTarget as Node | null;
+                  if (!event.currentTarget.contains(next)) {
+                    setActiveMenu(null);
+                  }
+                }}
               >
-                <button className="flex items-center gap-1 text-sm text-slate-300 hover:text-white transition-colors font-semibold">
+                <button
+                  type="button"
+                  className={navLinkClass(isActive(pathname, link.label, link.href))}
+                  aria-haspopup="true"
+                  aria-expanded={activeMenu === link.label}
+                  aria-controls={menuId}
+                  onClick={() => setActiveMenu((prev) => (prev === link.label ? null : link.label))}
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") {
+                      setActiveMenu(null);
+                    }
+                  }}
+                >
                   {link.label}
                   <ChevronDown className="w-3.5 h-3.5" />
                 </button>
                 {activeMenu === link.label && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2">
-                    <div className="bg-[#0F0F0F]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl p-8 min-w-[620px]">
+                  <div id={menuId} className="absolute top-full left-1/2 -translate-x-1/2 pt-3" role="menu">
+                    <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-xl shadow-2xl shadow-black/80 p-8 min-w-[620px]" onKeyDown={(event) => {
+                      if (event.key === "Escape") {
+                        setActiveMenu(null);
+                      }
+                    }}>
                       <div className={`grid gap-8 ${megaMenus[link.label].columns.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
                         {megaMenus[link.label].columns.map((col) => (
                           <div key={col.title}>
-                            <p className="tag-label text-blue-400 mb-3">{col.title}</p>
+                            <p className="tag-label mb-3">{col.title}</p>
                             <ul className="space-y-2">
                               {col.links.map((l) => (
                                 <li key={l.label}>
-                                  <Link to={l.href} className="text-sm text-slate-400 hover:text-white transition-colors block py-1">
+                                  <Link to={l.href} className="text-sm text-[#9CA3AF] hover:text-white transition-colors block py-1" role="menuitem">
                                     {l.label}
                                   </Link>
                                 </li>
@@ -157,35 +182,35 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <Link key={link.label} to={link.href!} className="text-sm text-slate-300 hover:text-white transition-colors font-semibold">
+              <Link key={link.label} to={link.href!} className={navLinkClass(isActive(pathname, link.label, link.href))}>
                 {link.label}
               </Link>
-            )
-          )}
+            );
+          })}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center">
           <Link
             to="/contact"
-            className="bg-primary text-primary-foreground text-label uppercase px-6 py-3 rounded-lg hover:bg-blue-400 transition-all duration-300"
+            className="bg-[#0047BB] text-white px-6 py-2.5 rounded-md text-sm font-semibold hover:bg-[#003494] transition-colors"
           >
-            Get Started
+            Book a Consultation
           </Link>
         </div>
 
-        <button className="lg:hidden text-white" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
+        <button className="lg:hidden text-white" onClick={() => setMobileOpen((open) => !open)} aria-label="Menu" aria-expanded={mobileOpen} aria-controls="mobile-nav">
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
       {mobileOpen && (
-        <div className="lg:hidden bg-[#0A0A0A] border-t border-white/10 px-4 pb-6">
-          <nav className="flex flex-col gap-4 pt-4">
+        <div id="mobile-nav" className="lg:hidden bg-[#0A0A0A] border-t border-white/5 px-4 pb-6">
+          <nav className="flex flex-col gap-3 pt-4">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 to={link.href || "/"}
-                className="text-body text-slate-300 font-semibold py-2"
+                className="text-body text-[#9CA3AF] hover:text-white font-semibold py-2"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
@@ -193,10 +218,10 @@ export default function Header() {
             ))}
             <Link
               to="/contact"
-              className="bg-primary text-primary-foreground text-center text-label uppercase px-6 py-3 rounded-lg mt-2"
+              className="bg-[#0047BB] text-white text-center px-6 py-2.5 rounded-md mt-2 text-sm font-semibold hover:bg-[#003494] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
-              Get Started
+              Book a Consultation
             </Link>
           </nav>
         </div>

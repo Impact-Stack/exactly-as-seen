@@ -11,8 +11,8 @@ import { absoluteUrl } from "@/lib/site";
 
 const faqs = [
   { q: "Is InvestSwipe safe and legal?", a: "Yes. We partner with a licensed FSCA-regulated broker. Your investments are held by the broker in segregated accounts." },
-  { q: "What is the minimum investment?", a: "R10 per asset. Buy fractional shares. No account minimums." },
-  { q: "Are there fees?", a: "R49/month subscription for premium (ad-free, analytics). Free tier available. Small transaction fee (R2-5 per trade)." },
+  { q: "What is the minimum investment?", a: "Low-barrier entry with fractional investing built for first-time users." },
+  { q: "Are there fees?", a: "A free access model is planned for launch, with optional premium capabilities introduced later." },
   { q: "Can I lose money?", a: "Yes. All investing carries risk. Only invest what you can afford to lose. Our 60-second videos explain risks for each asset." },
   { q: "When does it launch?", a: "Q3 2026 for beta (500 users). Q4 2026 for public launch. Join waitlist for early access." },
   { q: "Who built this?", a: "ImpactStack Africa, a youth-led Cape Town tech company. Led by Google Cybersecurity certified developer Liso Hlatshwayo, 21." },
@@ -49,7 +49,7 @@ export default function InvestSwipePage() {
       category: "Fintech Platform",
       url: absoluteUrl("/investswipe"),
       image: absoluteUrl(investswipeMockup),
-      description: "A mobile-first investing platform for young South Africans with swipe interactions and fractional investing from R10.",
+      description: "A mobile-first investing platform for young South Africans with swipe interactions and fractional investing.",
       brand: {
         "@type": "Brand",
         name: "ImpactStack Africa",
@@ -57,8 +57,6 @@ export default function InvestSwipePage() {
       offers: {
         "@type": "Offer",
         url: absoluteUrl(CONTACT_INVESTSWIPE_HREF),
-        price: "0",
-        priceCurrency: "ZAR",
         availability: "https://schema.org/PreOrder",
         description: "Join the waitlist for beta access.",
       },
@@ -72,7 +70,7 @@ export default function InvestSwipePage() {
       url: absoluteUrl("/investswipe"),
       image: absoluteUrl(investswipeMockup),
       description:
-        "InvestSwipe makes entry-level investing accessible to young South Africans with swipe interactions, short-form education, and fractional investing from R10.",
+        "InvestSwipe makes entry-level investing accessible to young South Africans with swipe interactions, short-form education, and fractional investing.",
       publisher: {
         "@type": "Organization",
         name: "ImpactStack Africa",
@@ -82,17 +80,8 @@ export default function InvestSwipePage() {
         {
           "@type": "Offer",
           url: absoluteUrl(CONTACT_INVESTSWIPE_HREF),
-          price: "0",
-          priceCurrency: "ZAR",
           availability: "https://schema.org/PreOrder",
           description: "Join the waitlist for beta access.",
-        },
-        {
-          "@type": "Offer",
-          price: "49",
-          priceCurrency: "ZAR",
-          availability: "https://schema.org/PreOrder",
-          description: "Planned premium subscription price per month.",
         },
       ],
       isAccessibleForFree: true,
@@ -168,37 +157,37 @@ export default function InvestSwipePage() {
         structuredData={structuredData}
       />
       <PageShell>
-        <section className="bg-gradient-to-br from-blue-950 to-[#0A0A0A] py-24 px-4">
+        <section className="bg-[#000000] py-24 px-4 border-b border-white/5">
           <div className="container-narrow text-center">
             <h1 className="text-hero text-white mb-4">The Future of Investing in South Africa</h1>
-            <p className="text-card-title text-slate-400 font-light mb-8">Making wealth creation accessible to 18 million young South Africans</p>
+            <p className="text-card-title text-[#9CA3AF] font-light mb-8">Making wealth creation accessible to 18 million young South Africans</p>
             <Link
               to={CONTACT_INVESTSWIPE_HREF}
               onClick={() => trackEvent({ action: "hero_waitlist_click", category: "InvestSwipe", label: "Hero CTA" })}
-              className="inline-block bg-white text-blue-600 px-10 py-4 rounded-md text-body font-semibold hover:shadow-xl transition-shadow"
+              className="inline-flex items-center justify-center bg-[#0047BB] text-white px-10 py-4 rounded-md text-body font-semibold hover:bg-[#003494] transition-colors"
             >
               Join Waitlist
             </Link>
-            <p className="text-small text-slate-500 mt-4">Launching Q3 2026 | Be among the first 500 beta users</p>
+            <p className="text-small text-[#6B7280] mt-4">Launching Q3 2026 | Be among the first 500 beta users</p>
           </div>
         </section>
 
-        <section className="section-padding bg-[#080808] border-y border-white/10">
+        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
           <div className="container-narrow grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             <div>
-              <p className="tag-label text-blue-400 mb-3">JOIN THE BETA</p>
+              <p className="tag-label mb-3">JOIN THE BETA</p>
               <h2 className="text-section text-white mb-4">Fast Waitlist Flow</h2>
-              <p className="text-body text-slate-400 mb-8">
+              <p className="text-body text-[#9CA3AF] mb-8">
                 Step 1 reserves your beta spot in under 30 seconds. Step 2 is optional and lets you share goals so we can prioritize onboarding.
               </p>
               <div className="space-y-4">
                 <div className="glass p-4">
                   <p className="text-subtitle text-white mb-1">Step 1</p>
-                  <p className="text-small text-slate-400">Submit quick details for beta access.</p>
+                  <p className="text-small text-[#9CA3AF]">Submit quick details for beta access.</p>
                 </div>
                 <div className="glass p-4">
                   <p className="text-subtitle text-white mb-1">Step 2 (Optional)</p>
-                  <p className="text-small text-slate-400">Continue to full brief with project context and business goals.</p>
+                  <p className="text-small text-[#9CA3AF]">Continue to full brief with project context and business goals.</p>
                 </div>
               </div>
             </div>
@@ -207,7 +196,7 @@ export default function InvestSwipePage() {
               <form className="space-y-5" onSubmit={handleQuickWaitlistSubmit}>
                 <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
                 <div>
-                  <label htmlFor="waitlistName" className="block text-small font-medium text-slate-300 mb-2">
+                  <label htmlFor="waitlistName" className="block text-small font-medium text-white/80 mb-2">
                     Full Name *
                   </label>
                   <input
@@ -215,12 +204,12 @@ export default function InvestSwipePage() {
                     name="fullName"
                     type="text"
                     required
-                    className="w-full bg-white/5 border border-white/10 rounded-md px-4 py-3 text-body text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-[#0F0F0F] border border-white/[0.07] rounded-md px-4 py-3 text-body text-white placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#0047BB]"
                     placeholder="Your name"
                   />
                 </div>
                 <div>
-                  <label htmlFor="waitlistEmail" className="block text-small font-medium text-slate-300 mb-2">
+                  <label htmlFor="waitlistEmail" className="block text-small font-medium text-white/80 mb-2">
                     Email Address *
                   </label>
                   <input
@@ -228,38 +217,38 @@ export default function InvestSwipePage() {
                     name="email"
                     type="email"
                     required
-                    className="w-full bg-white/5 border border-white/10 rounded-md px-4 py-3 text-body text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-[#0F0F0F] border border-white/[0.07] rounded-md px-4 py-3 text-body text-white placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#0047BB]"
                     placeholder="you@company.com"
                   />
                 </div>
                 <div>
-                  <label htmlFor="waitlistPhone" className="block text-small font-medium text-slate-300 mb-2">
+                  <label htmlFor="waitlistPhone" className="block text-small font-medium text-white/80 mb-2">
                     Phone Number (Optional)
                   </label>
                   <input
                     id="waitlistPhone"
                     name="phone"
                     type="tel"
-                    className="w-full bg-white/5 border border-white/10 rounded-md px-4 py-3 text-body text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-[#0F0F0F] border border-white/[0.07] rounded-md px-4 py-3 text-body text-white placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#0047BB]"
                     placeholder="+27"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={waitlistSubmitting}
-                  className="w-full bg-blue-500 text-white py-3 rounded-md text-body font-semibold hover:bg-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#0047BB] text-white py-3 rounded-md text-body font-semibold hover:bg-[#003494] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {waitlistSubmitting ? "Saving..." : "Save My Beta Spot"}
                 </button>
               </form>
 
-              <div className={`mt-4 rounded-lg border px-4 py-3 ${waitlistSubmitted ? "border-green-500/40 bg-green-500/10" : "border-white/10 bg-white/5"}`}>
-                <p className="text-small text-slate-300 mb-3">
+              <div className={`mt-4 rounded-lg border px-4 py-3 ${waitlistSubmitted ? "border-[#00A651]/40 bg-[#00A651]/10" : "border-white/[0.07] bg-[#0F0F0F]"}`}>
+                <p className="text-small text-[#9CA3AF] mb-3">
                   {waitlistSubmitted ? "Step 1 complete. Continue to step 2 for priority onboarding." : "Step 2 is optional, but helps us prioritize your rollout."}
                 </p>
                 <Link
                   to={CONTACT_INVESTSWIPE_HREF}
-                  className="inline-block text-small font-semibold text-blue-300 hover:text-blue-200 transition-colors"
+                  className="inline-block text-small font-semibold text-[#0047BB]"
                   onClick={() => trackEvent({ action: "investswipe_full_brief_click", category: "InvestSwipe", label: "Quick Form Follow-up Link" })}
                 >
                   Continue to Full Project Brief
@@ -269,31 +258,31 @@ export default function InvestSwipePage() {
           </div>
         </section>
 
-        <section className="section-padding bg-[#0A0A0A]">
+        <section className="section-padding bg-[#000000] border-t border-white/5">
           <div className="container-narrow text-center">
-            <p className="tag-label text-blue-400 mb-3">THE CHALLENGE</p>
+            <p className="tag-label mb-3">THE CHALLENGE</p>
             <h2 className="text-section text-white mb-12">Why 18 Million Young South Africans Do Not Invest</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 { num: "18M", label: "Youth Ages 18-35", desc: "Do not currently invest in stocks or crypto" },
-                { num: "R10B+", label: "Lost Wealth Opportunity", desc: "Annual compound growth not captured" },
+                { num: "10B+", label: "Lost Wealth Opportunity", desc: "Annual compound growth not captured" },
                 { num: "83%", label: "Feel Excluded", desc: "Traditional platforms are not designed for them" },
               ].map((s) => (
                 <div key={s.num} className="glass p-8">
-                  <p className="text-hero text-blue-400">{s.num}</p>
+                  <p className="text-hero text-[#0047BB]">{s.num}</p>
                   <p className="text-subtitle text-white mt-2">{s.label}</p>
-                  <p className="text-small text-slate-500 mt-1">{s.desc}</p>
+                  <p className="text-small text-[#6B7280] mt-1">{s.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="section-padding bg-[#080808] border-y border-white/10">
+        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
           <div className="container-narrow">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
               <div>
-                <p className="tag-label text-blue-400 mb-2">FIGMA MOCKUP</p>
+                <p className="tag-label mb-2">FIGMA MOCKUP</p>
                 <h2 className="text-section text-white">InvestSwipe Product Preview</h2>
               </div>
               {INVESTSWIPE_FIGMA_URL && (
@@ -302,14 +291,14 @@ export default function InvestSwipePage() {
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => trackEvent({ action: "figma_open_click", category: "InvestSwipe", label: "Figma Prototype Link" })}
-                  className="inline-flex items-center justify-center rounded-md border border-white/20 bg-white/5 px-5 py-3 text-body text-white hover:bg-white/10 transition-colors"
+                  className="inline-flex items-center justify-center rounded-md border border-white/20 bg-transparent px-5 py-3 text-body text-white hover:border-white/50 hover:bg-white/5 transition-all"
                 >
                   Open in Figma
                 </a>
               )}
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-black/30 overflow-hidden">
+            <div className="rounded-xl border border-white/[0.07] bg-[#0F0F0F] overflow-hidden">
               {INVESTSWIPE_FIGMA_EMBED_URL ? (
                 <iframe
                   title="InvestSwipe Figma mockup"
@@ -320,11 +309,11 @@ export default function InvestSwipePage() {
                 />
               ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-8">
-                  <img src={investswipeMockup} alt="InvestSwipe mockup preview" className="max-w-[320px] w-full mx-auto drop-shadow-2xl" loading="lazy" />
+                  <img src={investswipeMockup} alt="InvestSwipe mockup preview" className="max-w-[320px] w-full mx-auto" loading="lazy" />
                   <div>
                     <p className="text-subtitle text-white mb-3">Figma link not configured</p>
-                    <p className="text-body text-slate-400">
-                      Add <code className="text-blue-300">VITE_INVESTSWIPE_FIGMA_URL</code> to your <code className="text-blue-300">.env</code> file to embed the live prototype here.
+                    <p className="text-body text-[#9CA3AF]">
+                      Add <code className="text-[#0047BB]">VITE_INVESTSWIPE_FIGMA_URL</code> to your <code className="text-[#0047BB]">.env</code> file to embed the live prototype here.
                     </p>
                   </div>
                 </div>
@@ -333,24 +322,24 @@ export default function InvestSwipePage() {
           </div>
         </section>
 
-        <section className="section-padding bg-[#0D0D0D]">
+        <section className="section-padding bg-[#000000] border-t border-white/5">
           <div className="container-narrow grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center">
-              <img src={investswipeMockup} alt="InvestSwipe app" className="max-w-[300px] drop-shadow-2xl" />
+              <img src={investswipeMockup} alt="InvestSwipe app" className="max-w-[300px]" />
             </div>
             <div>
               <h2 className="text-section text-white mb-4">Swipe Right to Build Wealth</h2>
-              <p className="text-lg text-slate-400 mb-6">Familiar interface. Revolutionary impact.</p>
+              <p className="text-lg text-[#9CA3AF] mb-6">Familiar interface. Revolutionary impact.</p>
               <ul className="space-y-4">
                 {[
-                  "Tinder-style swipe interface. Swipe right to invest R10, left to skip.",
+                  "Tinder-style swipe interface designed for quick investing decisions.",
                   "60-second education videos. Every stock explained simply.",
-                  "R10 minimum investment. Lower barrier than any SA competitor.",
+                  "Low-friction minimums for first-time investors.",
                   "Social trading. See friends portfolios and learn together.",
                   "Gamified learning. Earn credits toward your first investment.",
                 ].map((f) => (
-                  <li key={f} className="flex items-start gap-3 text-body text-slate-300">
-                    <Check className="w-4 h-4 text-green-400 mt-1 shrink-0" aria-hidden="true" />
+                  <li key={f} className="flex items-start gap-3 text-body text-[#9CA3AF]">
+                    <Check className="w-4 h-4 text-[#00A651] mt-1 shrink-0" aria-hidden="true" />
                     <span>{f}</span>
                   </li>
                 ))}
@@ -359,27 +348,27 @@ export default function InvestSwipePage() {
           </div>
         </section>
 
-        <section className="section-padding bg-[#0A0A0A]">
+        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
           <div className="container-narrow max-w-[800px] mx-auto">
             <h2 className="text-section text-white mb-10">Frequently Asked Questions</h2>
             <Accordion type="single" collapsible className="space-y-2">
               {faqs.map((faq, i) => (
-                <AccordionItem key={i} value={`faq-${i}`} className="bg-white/5 rounded-lg border border-white/10 px-6">
+                <AccordionItem key={i} value={`faq-${i}`} className="bg-[#0F0F0F] rounded-lg border border-white/[0.07] px-6">
                   <AccordionTrigger className="text-body font-semibold text-white">{faq.q}</AccordionTrigger>
-                  <AccordionContent className="text-body text-slate-400">{faq.a}</AccordionContent>
+                  <AccordionContent className="text-body text-[#9CA3AF]">{faq.a}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
           </div>
         </section>
 
-        <section className="bg-gradient-to-br from-blue-950 to-[#0A0A0A] py-24 px-4 text-center">
+        <section className="bg-[#000000] py-24 px-4 text-center border-t border-white/5">
           <h2 className="text-section text-white mb-4">Join the Financial Revolution</h2>
-          <p className="text-subtitle text-slate-400 font-normal mb-8">500 beta spots. Be among the first to invest with InvestSwipe.</p>
+          <p className="text-subtitle text-[#9CA3AF] font-normal mb-8">500 beta spots. Be among the first to invest with InvestSwipe.</p>
           <Link
             to={CONTACT_INVESTSWIPE_HREF}
             onClick={() => trackEvent({ action: "footer_waitlist_click", category: "InvestSwipe", label: "Footer CTA" })}
-            className="inline-block bg-white text-blue-600 px-10 py-4 rounded-md text-body font-semibold hover:shadow-xl transition-shadow"
+            className="inline-flex items-center justify-center bg-[#0047BB] text-white px-10 py-4 rounded-md text-body font-semibold hover:bg-[#003494] transition-colors"
           >
             Join Waitlist Now
           </Link>

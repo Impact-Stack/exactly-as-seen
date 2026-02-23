@@ -7,7 +7,7 @@ export default function TechSection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-[#0A0A0A]" ref={ref}>
+    <section className="section-padding bg-[#000000] border-t border-white/5" ref={ref}>
       <div className="container-narrow">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display text-center mb-12 text-white">
           Core Technology Stack
@@ -20,9 +20,9 @@ export default function TechSection() {
               initial={{ opacity: 0, scale: 0.94 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: i * 0.04 }}
-              className="flex items-center justify-center h-16 rounded-lg border border-white/10 bg-white/5 hover:border-blue-500/40 hover:bg-blue-500/5 transition-colors cursor-default"
+              className="flex items-center justify-center h-16 rounded-lg border border-white/[0.07] bg-[#0F0F0F] hover:border-[#0047BB]/60 hover:bg-[#111111] transition-all duration-200 cursor-default"
             >
-              <span className="text-sm font-semibold text-slate-400">{tech}</span>
+              <span className="text-sm font-semibold text-[#9CA3AF]">{tech}</span>
             </motion.div>
           ))}
         </div>

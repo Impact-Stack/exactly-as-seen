@@ -16,11 +16,11 @@ export default function ProjectsSection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-[#0A0A0A]" ref={ref}>
+    <section className="section-padding bg-[#000000] border-t border-white/5" ref={ref}>
       <div className="container-narrow">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-center mb-12">
           <h2 className="text-section font-display mb-4 text-white">Project Delivery Portfolio</h2>
-          <p className="text-lg text-slate-400 max-w-3xl mx-auto">
+          <p className="text-lg text-[#9CA3AF] max-w-3xl mx-auto">
             Real problems solved through secure architecture, pragmatic technical choices, and disciplined execution.
           </p>
         </motion.div>
@@ -29,44 +29,44 @@ export default function ProjectsSection() {
           {projects.map((project, index) => (
             <motion.article key={project.title} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.45, delay: 0.1 + index * 0.06 }} className="glass p-6 card-hover">
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-11 h-11 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-                  <project.icon className="w-5 h-5 text-primary" />
+                <div className="icon-shell w-11 h-11 shrink-0">
+                  <project.icon className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="text-subtitle text-white">{project.title}</h3>
-                  <p className="text-small text-slate-500">{project.subtitle}</p>
+                  <p className="text-small text-[#6B7280]">{project.subtitle}</p>
                 </div>
               </div>
-              <p className="text-body text-slate-400 mb-4">{project.description}</p>
+              <p className="text-body text-[#9CA3AF] mb-4">{project.description}</p>
 
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.techStack.map((tech) => (
-                  <span key={tech} className="text-xs px-2.5 py-1 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 font-semibold">
+                  <span key={tech} className="text-xs px-2.5 py-1 rounded-lg border border-[#0047BB]/20 bg-[#0047BB]/10 text-[#0047BB] font-semibold">
                     {tech}
                   </span>
                 ))}
               </div>
 
               <Accordion type="single" collapsible>
-                <AccordionItem value={`details-${project.title}`} className="border-white/10">
+                <AccordionItem value={`details-${project.title}`} className="border-white/5">
                   <AccordionTrigger className="text-sm font-semibold text-white">Technical Brief</AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-4 pt-2">
                       <div>
-                        <h4 className="text-sm font-semibold text-white flex items-center gap-2 mb-1"><Lightbulb className="w-4 h-4 text-blue-400" />Problem</h4>
-                        <p className="text-sm text-slate-400">{project.problem}</p>
+                        <h4 className="text-sm font-semibold text-white flex items-center gap-2 mb-1"><Lightbulb className="w-4 h-4 text-[#0047BB]" />Problem</h4>
+                        <p className="text-sm text-[#9CA3AF]">{project.problem}</p>
                       </div>
                       <div>
-                        <h4 className="text-sm font-semibold text-white flex items-center gap-2 mb-1"><GitBranch className="w-4 h-4 text-blue-400" />Approach</h4>
-                        <p className="text-sm text-slate-400">{project.approach}</p>
+                        <h4 className="text-sm font-semibold text-white flex items-center gap-2 mb-1"><GitBranch className="w-4 h-4 text-[#0047BB]" />Approach</h4>
+                        <p className="text-sm text-[#9CA3AF]">{project.approach}</p>
                       </div>
                       <div>
-                        <h4 className="text-sm font-semibold text-white flex items-center gap-2 mb-1"><Shield className="w-4 h-4 text-blue-400" />Security</h4>
-                        <p className="text-sm text-slate-400">{project.security}</p>
+                        <h4 className="text-sm font-semibold text-white flex items-center gap-2 mb-1"><Shield className="w-4 h-4 text-[#0047BB]" />Security</h4>
+                        <p className="text-sm text-[#9CA3AF]">{project.security}</p>
                       </div>
                       <ul className="space-y-1">
                         {project.highlights.map((h) => (
-                          <li key={h} className="text-sm text-slate-400 flex items-start gap-2"><span className="text-blue-400 mt-1">-</span><span>{h}</span></li>
+                          <li key={h} className="text-sm text-[#9CA3AF] flex items-start gap-2"><span className="text-[#0047BB] mt-1">-</span><span>{h}</span></li>
                         ))}
                       </ul>
                     </div>
@@ -75,7 +75,7 @@ export default function ProjectsSection() {
               </Accordion>
 
               <div className="mt-4">
-                <Button asChild variant="outline" className="w-full border-blue-500/30 text-blue-400 hover:bg-blue-500/5">
+                <Button asChild variant="outline" className="w-full border-[#0047BB]/30 text-[#0047BB] hover:bg-[#0047BB]/10">
                   <a href={project.github} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="w-4 h-4 mr-2" />View Source Repository
                   </a>
