@@ -15,11 +15,11 @@ export default function InsightsSection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-[#0D0D0D]" ref={ref}>
+    <section className="section-padding bg-secondary" ref={ref}>
       <div className="container-narrow">
         <div className="mb-12">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display mb-4 text-white">Latest Insights</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-slate-400">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display mb-4 heading-gradient">Latest Insights</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-muted-foreground">
             Practical perspectives on technology strategy and delivery.
           </motion.p>
         </div>
@@ -29,18 +29,21 @@ export default function InsightsSection() {
             <motion.article key={p.title} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.45, delay: 0.2 + i * 0.08 }} className="glass overflow-hidden card-hover">
               <img src={p.image} alt={p.title} className="w-full h-52 object-cover" loading="lazy" />
               <div className="p-6">
-                <span className="inline-block text-blue-400 text-[11px] uppercase tracking-wider font-semibold mb-3">{p.tag}</span>
-                <h3 className="text-subtitle text-white mb-2">{p.title}</h3>
-                <p className="text-small text-slate-500 mb-3">{p.date}</p>
-                <Link to="/insights" className="text-small text-blue-400 font-semibold hover:text-blue-300 transition-colors">Read More →</Link>
+                <span className="inline-block text-primary text-[11px] uppercase tracking-wider font-semibold mb-3">{p.tag}</span>
+                <h3 className="text-subtitle text-foreground mb-2">{p.title}</h3>
+                <p className="text-small text-muted-foreground mb-3">{p.date}</p>
+                <Link to="/insights" className="text-small text-primary font-semibold hover:text-accent transition-colors">Read More →</Link>
               </div>
             </motion.article>
           ))}
         </div>
 
-        <div className="text-center">
-          <Link to="/insights" className="inline-block border border-white/10 text-white bg-white/5 px-8 py-4 rounded-lg text-body font-semibold hover:bg-white/10 transition-colors">
+        <div className="text-center flex flex-col items-center gap-3">
+          <Link to="/insights" className="inline-block border border-white/[0.08] text-foreground bg-white/[0.04] px-8 py-4 rounded-lg text-body font-semibold hover:bg-white/10 transition-colors">
             View All Insights
+          </Link>
+          <Link to="/contact" className="text-accent text-sm font-semibold hover:text-accent/80 transition-colors">
+            Want expert advice tailored to your organization? Book a consultation →
           </Link>
         </div>
       </div>

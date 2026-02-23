@@ -6,52 +6,52 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 210 40% 98%;
+    --background: 220 50% 7%;
+    --foreground: 225 100% 97%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 40% 9%;
+    --card-foreground: 225 100% 97%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 40% 9%;
+    --popover-foreground: 225 100% 97%;
 
-    --primary: 217 91% 60%;
+    --primary: 221 80% 48%;
     --primary-foreground: 0 0% 100%;
 
-    --primary-dark: 217 91% 50%;
+    --primary-dark: 221 80% 41%;
     --primary-dark-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 7%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 45% 8%;
+    --secondary-foreground: 225 100% 97%;
 
-    --muted: 0 0% 9%;
+    --muted: 220 40% 10%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 199 89% 48%;
+    --accent: 187 92% 42%;
     --accent-foreground: 0 0% 100%;
 
-    --success: 142 71% 45%;
+    --success: 160 64% 40%;
     --success-foreground: 0 0% 100%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 217 91% 60%;
+    --border: 220 20% 14%;
+    --input: 220 20% 14%;
+    --ring: 221 80% 48%;
 
     --radius: 0.7rem;
 
-    --sidebar-background: 0 0% 4%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-background: 220 50% 7%;
+    --sidebar-foreground: 225 100% 97%;
+    --sidebar-primary: 221 80% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 7%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 0 0% 14%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 220 40% 9%;
+    --sidebar-accent-foreground: 225 100% 97%;
+    --sidebar-border: 220 20% 14%;
+    --sidebar-ring: 221 80% 48%;
 
-    --footer-bg: 0 0% 2%;
+    --footer-bg: 220 50% 4%;
     --footer-foreground: 215 20% 65%;
   }
 }
@@ -89,7 +89,7 @@
   }
 
   .card-hover {
-    @apply transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10;
+    @apply transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 hover:border-blue-500/30;
   }
 
   .link-hover {
@@ -97,6 +97,14 @@
   }
 
   .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+    @apply bg-white/[0.04] backdrop-blur-md border border-white/[0.08] rounded-2xl;
+  }
+
+  .heading-gradient {
+    @apply bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent;
+  }
+
+  .btn-primary-glow {
+    @apply shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40;
   }
 }
