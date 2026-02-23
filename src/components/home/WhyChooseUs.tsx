@@ -20,7 +20,7 @@ export default function WhyChooseUs() {
           <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} className="tag-label mb-3">
             WHY IMPACTSTACK
           </motion.p>
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-section font-display mb-4 text-white">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-section font-display mb-4 heading-gradient">
             Built To Feel Like A Trusted Enterprise Partner
           </motion.h2>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} className="text-lg text-[#9CA3AF]">

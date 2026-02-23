@@ -1,5 +1,6 @@
 import { useInView, useCountUp } from "@/hooks/use-in-view";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const stats = [
   { value: 50, suffix: "+", label: "Daily Active Users Supported" },
@@ -26,13 +27,18 @@ export default function StatsSection() {
   return (
     <section className="section-padding bg-[#000000] border-t border-white/5" ref={ref}>
       <div className="container-narrow">
-        <motion.h2 initial={{ opacity: 0, y: 18 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-center text-section font-display mb-12 text-white">
+        <motion.h2 initial={{ opacity: 0, y: 18 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-center text-section font-display mb-12 heading-gradient">
           Delivery Metrics
         </motion.h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((s) => (
             <StatItem key={s.label} {...s} start={isInView} />
           ))}
+        </div>
+        <div className="text-center">
+          <Link to="/contact" className="text-primary hover:text-accent text-sm font-semibold transition-colors">
+            Join the organizations already transforming with ImpactStack →
+          </Link>
         </div>
       </div>
     </section>

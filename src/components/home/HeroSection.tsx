@@ -24,7 +24,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-hero font-display mb-6 text-white"
+              className="text-hero font-display mb-6 heading-gradient"
             >
               Enterprise Technology Execution Built For Real-World Operations
             </motion.h1>
@@ -75,7 +75,7 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-5 bg-[#0F0F0F] border border-white/[0.08] rounded-xl p-6 md:p-8"
           >
-            <h2 className="text-subtitle text-white mb-4">Priority Solution Areas</h2>
+            <h2 className="text-subtitle text-foreground mb-4">Priority Solution Areas</h2>
             <ul className="space-y-3 mb-6">
               {focusAreas.map((area) => (
                 <li key={area} className="text-[#9CA3AF]">

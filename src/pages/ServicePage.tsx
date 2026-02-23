@@ -2,7 +2,7 @@ import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import { Link, useParams } from "react-router-dom";
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 
 interface ServiceData {
   title: string;

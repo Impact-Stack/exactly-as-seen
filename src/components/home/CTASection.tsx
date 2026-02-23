@@ -22,6 +22,9 @@ export default function CTASection() {
             View Our Work
           </Link>
         </motion.div>
+        <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.4 }} className="text-white/50 text-sm">
+          Trusted by education, enterprise, and public sector organizations across South Africa
+        </motion.p>
       </div>
     </section>
   );

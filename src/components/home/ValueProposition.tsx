@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
 import { ShieldCheck, Gauge, Handshake } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const valueProps = [
   {
@@ -33,7 +34,7 @@ export default function ValueProposition() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.45, delay: index * 0.1 }}
-              className="glass p-7 card-hover"
+              className="group glass p-7 card-hover"
             >
               <div className="icon-shell w-12 h-12 mb-4">
                 <item.icon className="w-6 h-6" />

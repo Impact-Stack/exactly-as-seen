@@ -78,9 +78,9 @@ export default function Footer() {
         <div className="container-narrow py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-small text-white/30">
           <p>Copyright {currentYear} ImpactStack Africa (Pty) Ltd. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link to="/legal/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="/legal/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link to="/legal/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link>
+            <Link to="/legal/privacy-policy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+            <Link to="/legal/terms-of-service" className="hover:text-foreground transition-colors">Terms of Service</Link>
+            <Link to="/legal/cookie-policy" className="hover:text-foreground transition-colors">Cookie Policy</Link>
           </div>
         </div>
       </div>

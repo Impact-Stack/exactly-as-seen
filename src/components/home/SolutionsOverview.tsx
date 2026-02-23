@@ -122,6 +122,22 @@ export default function SolutionsOverview() {
             </motion.div>
           ))}
         </div>
+
+        {/* CTA strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.6 }}
+          className="mt-12 glass p-8 text-center"
+        >
+          <p className="text-lg text-foreground mb-4">Not sure which solution fits your needs?</p>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 border border-white/[0.08] text-foreground px-8 py-4 rounded-lg text-body font-semibold hover:bg-white/10 transition-colors"
+          >
+            Talk to an Expert →
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

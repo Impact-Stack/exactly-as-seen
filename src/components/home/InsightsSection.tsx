@@ -52,6 +52,9 @@ export default function InsightsSection() {
           <Link to="/insights" className="inline-block border border-white/20 text-white bg-transparent px-8 py-4 rounded-lg text-body font-semibold hover:border-white/50 hover:bg-white/5 transition-all">
             View All Insights
           </Link>
+          <Link to="/contact" className="text-accent text-sm font-semibold hover:text-accent/80 transition-colors">
+            Want expert advice tailored to your organization? Book a consultation →
+          </Link>
         </div>
       </div>
     </section>
