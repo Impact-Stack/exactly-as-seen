@@ -1,123 +1,65 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
 import { Link } from "react-router-dom";
-import { Layers, Cloud, Monitor, Wrench, BarChart3, ShieldCheck, Cpu, Wifi, Users, Smartphone, Landmark } from "lucide-react";
+import {
+  Layers, Cloud, Monitor, Wrench, BarChart3, ShieldCheck, Cpu, Wifi, Users, Smartphone, Bot,
+} from "lucide-react";
 
 const solutions = [
-  {
-    icon: Layers,
-    title: "Digital Transformation",
-    desc: "Modern operating models for enterprise service delivery.",
-    link: "/services/web",
-  },
-  {
-    icon: Cloud,
-    title: "Cloud and Infrastructure",
-    desc: "Reliable cloud-first foundations for scale and resilience.",
-    link: "/services/web",
-  },
-  {
-    icon: Monitor,
-    title: "Enterprise Web Applications",
-    desc: "Scalable by design",
-    link: "/services/web",
-  },
-  {
-    icon: Wrench,
-    title: "Managed Services",
-    desc: "Ongoing support, maintenance, and delivery continuity.",
-    link: "/services/web",
-  },
-  {
-    icon: BarChart3,
-    title: "Analytics and Data Platforms",
-    desc: "Operational intelligence from structured data pipelines.",
-    link: "/services/web",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Security and Compliance",
-    desc: "POPIA-ready architecture",
-    link: "/services/security",
-  },
-  {
-    icon: Cpu,
-    title: "Devices",
-    desc: "End-user device strategy, rollout, and lifecycle management.",
-    link: "/services/web",
-  },
-  {
-    icon: Wifi,
-    title: "Connectivity",
-    desc: "Network capabilities that keep distributed teams connected.",
-    link: "/services/web",
-  },
-  {
-    icon: Users,
-    title: "HR and Payroll",
-    desc: "People systems with reliable workflows and reporting.",
-    link: "/services/web",
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile Solutions",
-    desc: "iOS and Android, one codebase",
-    link: "/services/mobile",
-  },
-  {
-    icon: Landmark,
-    title: "Government Services",
-    desc: "Built for public sector mandates",
-    link: "/services/government",
-  },
+  { icon: Layers, title: "Digital Transformation", desc: "Meet the needs of current and future customers by integrating processes, systems and people.", link: "/services/web" },
+  { icon: Cloud, title: "Cloud", desc: "Take your business into a cloud-first future with best-of-breed cloud services and tools to reinvent infrastructure performance and availability.", link: "/services/web" },
+  { icon: Monitor, title: "Applications", desc: "Improve and digitise your business processes and enhance productivity and efficiency with intelligent business tools.", link: "/services/web" },
+  { icon: Wrench, title: "Services", desc: "Address a wide variety of business needs and positively impact your ways of working. Reduce costs, increase profits and improve productivity.", link: "/services/web" },
+  { icon: BarChart3, title: "Analytics", desc: "Extract meaningful knowledge from complex data sets with analytics tools that filter, correlate and present data to create reports.", link: "/services/web" },
+  { icon: ShieldCheck, title: "Cybersecurity", desc: "Reimagine trust with an integrated approach to cybersecurity. Gain greater resilience through proactive security, compliance and continuity.", link: "/services/security" },
+  { icon: Cpu, title: "Devices", desc: "Enable connective intelligence through IT procurement as well as hardware management and maintenance.", link: "/services/web" },
+  { icon: Wifi, title: "Connectivity", desc: "Stand out in a highly competitive market with an agile network. Software-defined solutions will power your applications.", link: "/services/web" },
+  { icon: Users, title: "HR and Payroll", desc: "Cloud-based HR solutions that transform your business-critical HR operations to deliver more effective and efficient people-critical services.", link: "/services/web" },
+  { icon: Smartphone, title: "Mobile Development", desc: "Cross-platform mobile solutions optimised for adoption, performance and operational reliability across iOS and Android.", link: "/services/mobile" },
+  { icon: Bot, title: "AI and Automation", desc: "Combine human expertise with intelligent technology. Our AI and Automation suite delivers speed, precision and insight at every level.", link: "/services/web" },
 ];
 
 export default function SolutionsOverview() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-[#0A0A0A] border-t border-white/5" ref={ref}>
+    <section className="section-padding bg-secondary" ref={ref}>
       <div className="container-narrow">
-        <div className="mb-12">
+        <div className="text-center mb-12">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            className="text-section font-display mb-4 text-white"
+            className="text-section font-display mb-4 heading-gradient"
           >
-            What We Deliver
+            Our Solutions
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.1 }}
-            className="text-lg text-[#6B7280]"
+            className="text-lg text-muted-foreground"
           >
-            End-to-end technology solutions for enterprise and public sector.
+            Technology services aligned to enterprise and institutional priorities.
           </motion.p>
         </div>
 
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {solutions.map((s, i) => (
             <motion.div
               key={s.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 25 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.12 + i * 0.04 }}
+              transition={{ duration: 0.45, delay: 0.2 + i * 0.05 }}
             >
-              <Link
-                to={s.link}
-                className="block border-l-2 border-[#0047BB] bg-[#0F0F0F] border border-white/[0.07] rounded-xl p-5 hover:bg-[#111111] transition-all duration-200"
-              >
-                <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  <div className="icon-shell w-11 h-11 shrink-0">
-                    <s.icon className="w-5 h-5" />
-                  </div>
-                  <div className="md:flex-1">
-                    <h3 className="text-base font-semibold text-white mb-1">{s.title}</h3>
-                    <p className="text-sm text-[#9CA3AF]">{s.desc}</p>
-                  </div>
-                  <span className="text-sm font-semibold text-[#0047BB] md:text-right">Explore -&gt;</span>
+              <Link to={s.link} className="block glass p-6 card-hover">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+                  <s.icon className="w-5 h-5 text-primary" />
                 </div>
+                <h3 className="text-base font-semibold text-foreground mb-2">{s.title}</h3>
+                <p className="text-sm text-muted-foreground mb-3">{s.desc}</p>
+                <span className="text-primary text-sm font-semibold inline-block hover:text-accent transition-colors">
+                  Explore more →
+                </span>
               </Link>
             </motion.div>
           ))}

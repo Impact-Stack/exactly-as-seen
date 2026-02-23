@@ -91,14 +91,14 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-black/80 backdrop-blur-xl border-b border-white/10 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#080D1A]/90 backdrop-blur-xl border-b border-white/[0.08] ${
         scrolled ? "shadow-lg shadow-black/20" : ""
       }`}
     >
       <div className="container-narrow flex items-center justify-between h-[72px]">
         <Link to="/" className="flex items-center gap-1 text-xl font-bold font-display">
-          <span className="text-blue-500">ImpactStack</span>
-          <span className="text-white">Africa</span>
+          <span className="text-primary">ImpactStack</span>
+          <span className="text-foreground">Africa</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8">
@@ -111,21 +111,21 @@ export default function Header() {
                 onMouseEnter={() => setActiveMenu(link.label)}
                 onMouseLeave={() => setActiveMenu(null)}
               >
-                <button className="flex items-center gap-1 text-sm text-slate-300 hover:text-white transition-colors font-semibold">
+                <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-semibold">
                   {link.label}
                   <ChevronDown className="w-3.5 h-3.5" />
                 </button>
                 {activeMenu === link.label && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2">
-                    <div className="bg-[#0F0F0F]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl p-8 min-w-[620px]">
+                    <div className="bg-[#0B1120]/95 backdrop-blur-xl border border-white/[0.08] rounded-xl shadow-xl p-8 min-w-[620px]">
                       <div className={`grid gap-8 ${megaMenus[link.label].columns.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
                         {megaMenus[link.label].columns.map((col) => (
                           <div key={col.title}>
-                            <p className="tag-label text-blue-400 mb-3">{col.title}</p>
+                            <p className="tag-label text-primary mb-3">{col.title}</p>
                             <ul className="space-y-2">
                               {col.links.map((l) => (
                                 <li key={l.label}>
-                                  <Link to={l.href} className="text-sm text-slate-400 hover:text-white transition-colors block py-1">
+                                  <Link to={l.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors block py-1">
                                     {l.label}
                                   </Link>
                                 </li>
@@ -139,7 +139,7 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <Link key={link.label} to={link.href!} className="text-sm text-slate-300 hover:text-white transition-colors font-semibold">
+              <Link key={link.label} to={link.href!} className="text-sm text-muted-foreground hover:text-foreground transition-colors font-semibold">
                 {link.label}
               </Link>
             );
@@ -149,25 +149,25 @@ export default function Header() {
         <div className="hidden lg:flex items-center">
           <Link
             to="/contact"
-            className="bg-primary text-primary-foreground text-label uppercase px-6 py-3 rounded-lg hover:bg-blue-400 transition-all duration-300"
+            className="bg-primary text-primary-foreground text-label uppercase px-6 py-3 rounded-lg hover:bg-primary-dark transition-all duration-300 btn-primary-glow"
           >
-            Get Started
+            Book Consultation
           </Link>
         </div>
 
-        <button className="lg:hidden text-white" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
+        <button className="lg:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
       {mobileOpen && (
-        <div className="lg:hidden bg-[#0A0A0A] border-t border-white/10 px-4 pb-6">
+        <div className="lg:hidden bg-background border-t border-white/[0.08] px-4 pb-6">
           <nav className="flex flex-col gap-4 pt-4">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 to={link.href || "/"}
-                className="text-body text-slate-300 font-semibold py-2"
+                className="text-body text-muted-foreground font-semibold py-2"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
@@ -175,10 +175,10 @@ export default function Header() {
             ))}
             <Link
               to="/contact"
-              className="bg-primary text-primary-foreground text-center text-label uppercase px-6 py-3 rounded-lg mt-2"
+              className="bg-primary text-primary-foreground text-center text-label uppercase px-6 py-3 rounded-lg mt-2 btn-primary-glow"
               onClick={() => setMobileOpen(false)}
             >
-              Get Started
+              Book Consultation
             </Link>
           </nav>
         </div>

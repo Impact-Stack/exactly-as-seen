@@ -10,7 +10,7 @@ export default function WhatsAppButton() {
       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-[#00A651] hover:bg-[#008A44] text-white p-4 rounded-full shadow-lg shadow-black/50 transition-colors"
+      className="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-400 text-white p-4 rounded-full shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all duration-300 hover:scale-105"
       aria-label="Chat on WhatsApp"
       onClick={() =>
         trackEvent({

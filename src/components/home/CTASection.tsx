@@ -6,20 +6,23 @@ export default function CTASection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="py-24 px-4 bg-[#0A0A0A] border-t border-[#0047BB]" ref={ref}>
-      <div className="container-narrow text-center">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display mb-4 text-white">
-          Ready to transform how your organization operates?
+    <section className="py-24 px-4 relative overflow-hidden bg-gradient-to-br from-[#0B1120] via-primary/20 to-[#080D1A]" ref={ref}>
+      {/* Diagonal overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10" />
+
+      <div className="container-narrow text-center relative z-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display mb-4 heading-gradient">
+          Ready to Modernize How Your Organization Delivers?
         </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-subtitle text-[#6B7280] font-normal mb-10">
-          Tell us your goals, current challenges, and timeline. We will map a practical implementation path.
+        <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-muted-foreground font-normal mb-10 max-w-2xl mx-auto">
+          Tell us your goals. We'll map a practical path forward — at no cost.
         </motion.p>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link to="/contact" className="inline-flex items-center justify-center bg-[#0047BB] text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-[#003494] transition-colors">
-            Book a Consultation
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+          <Link to="/contact" className="inline-block bg-white text-[#080D1A] px-12 py-5 rounded-lg text-lg font-semibold hover:bg-slate-100 transition-colors shadow-lg shadow-white/10">
+            Book Free Consultation
           </Link>
-          <Link to="/portfolio" className="inline-flex items-center justify-center border border-white/20 text-white px-10 py-4 rounded-lg text-base font-semibold hover:border-white/50 hover:bg-white/5 transition-all">
-            View Our Work
+          <Link to="/portfolio" className="inline-block border border-white/20 text-white px-10 py-5 rounded-lg text-lg font-semibold hover:bg-white/10 transition-colors">
+            View Case Studies
           </Link>
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.4 }} className="text-white/50 text-sm">
