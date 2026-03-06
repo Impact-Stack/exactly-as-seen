@@ -3,6 +3,7 @@ import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import { Link, useParams } from "react-router-dom";
 import { Check } from "lucide-react";
+import { allProjects } from "@/lib/projects";
 
 interface ServiceData {
   title: string;
@@ -81,10 +82,18 @@ const engagementSteps = [
   },
 ];
 
+const serviceProjectMap: Record<string, string[]> = {
+  web: ["findr-community-map", "moderntech-hr-platform", "biofuel-ecommerce-platform", "quick-chat-mvp", "mern-training-project"],
+  mobile: ["shopwise-price-comparison"],
+  security: ["bluewatch-soc-lab"],
+  government: [],
+};
+
 export default function ServicePage() {
   const { slug } = useParams<{ slug: string }>();
   const safeSlug = slug && serviceData[slug] ? slug : "web";
   const data = serviceData[safeSlug];
+  const relatedProjects = allProjects.filter((project) => (serviceProjectMap[safeSlug] || []).includes(project.id));
 
   return (
     <>
@@ -112,6 +121,22 @@ export default function ServicePage() {
                 </li>
               ))}
             </ul>
+            {relatedProjects.length > 0 ? (
+              <div className="mt-8 p-5 rounded-xl bg-[#0F0F0F] border border-white/[0.07]">
+                <h3 className="text-subtitle text-white mb-3">Related Delivery Proof</h3>
+                <div className="flex flex-wrap gap-2">
+                  {relatedProjects.map((project) => (
+                    <Link
+                      key={project.id}
+                      to={`/portfolio#${project.id}`}
+                      className="text-xs px-3 py-1.5 rounded-full border border-[#0047BB]/25 bg-[#0047BB]/10 text-[#0047BB] font-semibold hover:bg-[#0047BB]/20 transition-colors"
+                    >
+                      {project.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         </section>
 

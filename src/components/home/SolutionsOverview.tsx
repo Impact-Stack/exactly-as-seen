@@ -1,73 +1,94 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
 import { Link } from "react-router-dom";
-import { Layers, Cloud, Monitor, Wrench, BarChart3, ShieldCheck, Cpu, Wifi, Users, Smartphone, Landmark } from "lucide-react";
+import {
+  Layers,
+  Cloud,
+  Monitor,
+  Wrench,
+  BarChart3,
+  ShieldCheck,
+  Cpu,
+  Wifi,
+  Users,
+  Smartphone,
+  Landmark,
+  ArrowUpRight,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const solutions = [
+interface SolutionCard {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+  link: string;
+}
+
+const solutions: SolutionCard[] = [
   {
     icon: Layers,
     title: "Digital Transformation",
-    desc: "Modern operating models for enterprise service delivery.",
+    desc: "Digital transformation programs for Cape Town and South African organizations modernizing service delivery.",
     link: "/services/web",
   },
   {
     icon: Cloud,
     title: "Cloud and Infrastructure",
-    desc: "Reliable cloud-first foundations for scale and resilience.",
+    desc: "Cloud and infrastructure implementation focused on resilient enterprise software operations in South Africa.",
     link: "/services/web",
   },
   {
     icon: Monitor,
     title: "Enterprise Web Applications",
-    desc: "Scalable by design",
+    desc: "Custom enterprise software platforms designed for secure scale, integrations, and measurable outcomes.",
     link: "/services/web",
   },
   {
     icon: Wrench,
     title: "Managed Services",
-    desc: "Ongoing support, maintenance, and delivery continuity.",
+    desc: "Managed support and maintenance services that protect uptime and delivery continuity for business-critical systems.",
     link: "/services/web",
   },
   {
     icon: BarChart3,
     title: "Analytics and Data Platforms",
-    desc: "Operational intelligence from structured data pipelines.",
+    desc: "Data platforms and analytics pipelines that improve reporting, forecasting, and operational intelligence.",
     link: "/services/web",
   },
   {
     icon: ShieldCheck,
     title: "Security and Compliance",
-    desc: "POPIA-ready architecture",
+    desc: "POPIA compliance services with security hardening for authentication, data handling, and governance controls.",
     link: "/services/security",
   },
   {
     icon: Cpu,
     title: "Devices",
-    desc: "End-user device strategy, rollout, and lifecycle management.",
+    desc: "End-user device strategy, rollout, and lifecycle management aligned with secure enterprise operations.",
     link: "/services/web",
   },
   {
     icon: Wifi,
     title: "Connectivity",
-    desc: "Network capabilities that keep distributed teams connected.",
+    desc: "Connectivity and networking capabilities that keep distributed teams and branch operations reliably online.",
     link: "/services/web",
   },
   {
     icon: Users,
     title: "HR and Payroll",
-    desc: "People systems with reliable workflows and reporting.",
+    desc: "HR and payroll software workflows with dependable reporting and integration-ready data structures.",
     link: "/services/web",
   },
   {
     icon: Smartphone,
     title: "Mobile Solutions",
-    desc: "iOS and Android, one codebase",
+    desc: "Cross-platform iOS and Android mobile solutions built for speed, quality, and long-term support.",
     link: "/services/mobile",
   },
   {
     icon: Landmark,
     title: "Government Services",
-    desc: "Built for public sector mandates",
+    desc: "Government digital services designed around procurement realities, compliance needs, and public-sector mandates.",
     link: "/services/government",
   },
 ];
@@ -92,36 +113,56 @@ export default function SolutionsOverview() {
             transition={{ delay: 0.1 }}
             className="text-lg text-[#6B7280]"
           >
-            End-to-end technology solutions for enterprise and public sector.
+            Enterprise software, POPIA compliance, and government digital services delivered from Cape Town for clients
+            across South Africa.
           </motion.p>
         </div>
 
-        <div className="space-y-3">
-          {solutions.map((s, i) => (
-            <motion.div
-              key={s.title}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {solutions.map((solution, i) => (
+            <motion.article
+              key={solution.title}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.12 + i * 0.04 }}
+              className="h-full"
             >
               <Link
-                to={s.link}
-                className="block border-l-2 border-[#0047BB] bg-[#0F0F0F] border border-white/[0.07] rounded-xl p-5 hover:bg-[#111111] transition-all duration-200"
+                to={solution.link}
+                className="group flex flex-col h-full bg-[#0F0F0F] border border-white/[0.07] rounded-xl p-6 card-hover"
+                aria-label={`Explore ${solution.title} service details`}
               >
-                <div className="flex flex-col md:flex-row md:items-center gap-4">
+                <div className="flex items-start justify-between gap-4 mb-5">
                   <div className="icon-shell w-11 h-11 shrink-0">
-                    <s.icon className="w-5 h-5" />
+                    <solution.icon className="w-5 h-5" />
                   </div>
-                  <div className="md:flex-1">
-                    <h3 className="text-base font-semibold text-white mb-1">{s.title}</h3>
-                    <p className="text-sm text-[#9CA3AF]">{s.desc}</p>
-                  </div>
-                  <span className="text-sm font-semibold text-[#0047BB] md:text-right">Explore -&gt;</span>
+                  <ArrowUpRight className="w-4 h-4 text-[#0047BB] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
+                <h3 className="text-base font-semibold text-white mb-2">{solution.title}</h3>
+                <p className="text-sm text-[#9CA3AF] mb-5">{solution.desc}</p>
+                <span className="mt-auto text-sm font-semibold text-[#0047BB]">Explore service</span>
               </Link>
-            </motion.div>
+            </motion.article>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.4, delay: 0.4 }}
+          className="mt-8 p-5 rounded-xl bg-[#0F0F0F] border border-white/[0.07] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+        >
+          <p className="text-sm text-[#9CA3AF]">
+            Need clear budget guidance? See starting prices for our four flagship services, with final commercial terms
+            scoped to your requirements.
+          </p>
+          <Link
+            to="/pricing"
+            className="inline-flex items-center justify-center text-sm font-semibold text-white bg-[#0047BB] px-4 py-2.5 rounded-md hover:bg-[#003494] transition-colors"
+          >
+            View Pricing
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

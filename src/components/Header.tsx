@@ -91,6 +91,7 @@ const megaMenus: Record<string, { columns: { title: string; links: { label: stri
 const navLinks = [
   { label: "Solutions", hasDropdown: true, href: "/services/web" },
   { label: "Services", hasDropdown: true, href: "/services/web" },
+  { label: "Pricing", href: "/pricing" },
   { label: "About", hasDropdown: true, href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Insights", href: "/insights" },

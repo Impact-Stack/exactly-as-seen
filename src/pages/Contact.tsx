@@ -20,7 +20,10 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const requestedProjectType = searchParams.get("projectType")?.trim() || "";
+  const requestedProjectInterest = searchParams.get("projectInterest")?.trim() || "";
+  const leadSource = searchParams.get("source")?.trim() || "website";
   const prefilledProjectType = PROJECT_TYPE_OPTIONS.some((option) => option.value === requestedProjectType) ? requestedProjectType : "";
+  const prefilledProjectInterest = requestedProjectInterest;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,6 +36,13 @@ export default function ContactPage() {
       const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(payload) });
       if (!response.ok) throw new Error("Form submission failed");
       trackEvent({ action: "submit_contact_form", category: "Contact", label: "Website Contact Form" });
+      if (prefilledProjectType || prefilledProjectInterest || leadSource !== "website") {
+        trackEvent({
+          action: "contact_prefill_submit",
+          category: "Contact",
+          label: `${prefilledProjectType || "unspecified"}|${prefilledProjectInterest || "unspecified"}|${leadSource}`,
+        });
+      }
       toast.success("Message sent. We will respond within 24 hours.");
       form.reset();
     } catch {
@@ -59,9 +69,27 @@ export default function ContactPage() {
               <div className="lg:col-span-3">
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
-                  {prefilledProjectType && (
+                  <input type="hidden" name="projectInterest" defaultValue={prefilledProjectInterest} />
+                  <input type="hidden" name="leadSource" defaultValue={leadSource} />
+                  {(prefilledProjectType || prefilledProjectInterest || leadSource !== "website") && (
                     <p className="text-small text-[#0047BB] bg-[#0047BB]/10 border border-[#0047BB]/30 rounded-md px-4 py-3">
-                      Project type preselected from your previous page: <span className="font-semibold">{prefilledProjectType}</span>
+                      {prefilledProjectType ? (
+                        <>
+                          Project type preselected: <span className="font-semibold">{prefilledProjectType}</span>.
+                        </>
+                      ) : null}
+                      {prefilledProjectInterest ? (
+                        <>
+                          {" "}
+                          Project interest captured: <span className="font-semibold">{prefilledProjectInterest}</span>.
+                        </>
+                      ) : null}
+                      {leadSource !== "website" ? (
+                        <>
+                          {" "}
+                          Source: <span className="font-semibold">{leadSource}</span>.
+                        </>
+                      ) : null}
                     </p>
                   )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

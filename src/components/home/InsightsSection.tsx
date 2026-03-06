@@ -4,12 +4,34 @@ import blogFlutter from "@/assets/blog-flutter.jpg";
 import blogPopia from "@/assets/blog-popia.jpg";
 import blogGovt from "@/assets/blog-govt.jpg";
 import { Link } from "react-router-dom";
+import { event as trackEvent } from "@/lib/analytics";
+import { getProjectById, projectInsightsSeed } from "@/lib/projects";
 
-const posts = [
-  { image: blogFlutter, tag: "DEVELOPMENT", title: "Why Flutter Is Expanding Mobile Delivery Across Africa", date: "15 Feb 2026 | 5 min read" },
-  { image: blogPopia, tag: "COMPLIANCE", title: "POPIA Compliance Priorities For South African Businesses", date: "10 Feb 2026 | 7 min read" },
-  { image: blogGovt, tag: "TRANSFORMATION", title: "Digital Service Opportunities For Public Sector Teams", date: "5 Feb 2026 | 6 min read" },
-];
+const postImages = [blogPopia, blogGovt, blogFlutter];
+
+const posts = projectInsightsSeed.reduce<Array<{
+  id: string;
+  title: string;
+  category: "Security" | "Architecture" | "Mobile";
+  date: string;
+  summary: string;
+  projectId: string;
+  image: string;
+  relatedProject: NonNullable<ReturnType<typeof getProjectById>>;
+}>>((acc, item, index) => {
+    const relatedProject = getProjectById(item.projectId);
+    if (!relatedProject) {
+      return acc;
+    }
+
+    acc.push({
+      ...item,
+      relatedProject,
+      image: postImages[index % postImages.length],
+    });
+
+    return acc;
+  }, []);
 
 export default function InsightsSection() {
   const { ref, isInView } = useInView();
@@ -22,7 +44,7 @@ export default function InsightsSection() {
             Latest Insights
           </motion.h2>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-[#9CA3AF]">
-            Practical perspectives on technology strategy and delivery.
+            Technical briefs grounded in real project delivery decisions.
           </motion.p>
         </div>
 
@@ -37,11 +59,21 @@ export default function InsightsSection() {
             >
               <img src={post.image} alt={post.title} className="w-full h-52 object-cover" loading="lazy" />
               <div className="p-6">
-                <span className="tag-label mb-3">{post.tag}</span>
+                <span className="tag-label mb-3">{post.category}</span>
                 <h3 className="text-subtitle text-white mb-2">{post.title}</h3>
-                <p className="text-small text-[#6B7280] mb-3">{post.date}</p>
-                <Link to="/insights" className="text-small text-[#0047BB] font-semibold">
-                  Read More -&gt;
+                <p className="text-small text-[#6B7280] mb-4">{post.date}</p>
+                <Link
+                  to={`/portfolio#${post.relatedProject.id}`}
+                  onClick={() =>
+                    trackEvent({
+                      action: "insight_project_click",
+                      category: "Home Insights",
+                      label: `home_link:${post.relatedProject.id}`,
+                    })
+                  }
+                  className="text-small text-[#0047BB] font-semibold"
+                >
+                  View related project -&gt;
                 </Link>
               </div>
             </motion.article>

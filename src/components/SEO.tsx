@@ -7,6 +7,10 @@ interface SEOProps {
   image?: string;
   url?: string;
   robots?: string;
+  type?: "website" | "article";
+  siteName?: string;
+  locale?: string;
+  keywords?: string[];
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -14,6 +18,8 @@ const DEFAULT_TITLE = "ImpactStack Africa | Enterprise Software Development Cape
 const DEFAULT_DESCRIPTION =
   "Enterprise technology delivery partner in Cape Town. Secure software, mobile platforms, and compliance-focused implementation for South African organizations.";
 const DEFAULT_IMAGE = "/placeholder.svg";
+const DEFAULT_SITE_NAME = "ImpactStack Africa";
+const DEFAULT_LOCALE = "en_ZA";
 
 const upsertMeta = (attribute: "name" | "property", key: string, content: string) => {
   let element = document.querySelector(`meta[${attribute}="${key}"]`) as HTMLMetaElement | null;
@@ -23,6 +29,13 @@ const upsertMeta = (attribute: "name" | "property", key: string, content: string
     document.head.appendChild(element);
   }
   element.setAttribute("content", content);
+};
+
+const removeMeta = (attribute: "name" | "property", key: string) => {
+  const element = document.querySelector(`meta[${attribute}="${key}"]`);
+  if (element) {
+    element.remove();
+  }
 };
 
 const upsertCanonical = (href: string) => {
@@ -41,6 +54,10 @@ export default function SEO({
   image = DEFAULT_IMAGE,
   url = "/",
   robots = "index, follow",
+  type = "website",
+  siteName = DEFAULT_SITE_NAME,
+  locale = DEFAULT_LOCALE,
+  keywords,
   structuredData,
 }: SEOProps) {
   useEffect(() => {
@@ -50,17 +67,26 @@ export default function SEO({
     document.title = title;
     upsertMeta("name", "description", description);
     upsertMeta("name", "robots", robots);
+    if (keywords && keywords.length > 0) {
+      upsertMeta("name", "keywords", keywords.join(", "));
+    } else {
+      removeMeta("name", "keywords");
+    }
 
-    upsertMeta("property", "og:type", "website");
+    upsertMeta("property", "og:type", type);
     upsertMeta("property", "og:url", canonicalUrl);
+    upsertMeta("property", "og:site_name", siteName);
+    upsertMeta("property", "og:locale", locale);
     upsertMeta("property", "og:title", title);
     upsertMeta("property", "og:description", description);
     upsertMeta("property", "og:image", resolvedImage);
+    upsertMeta("property", "og:image:alt", `${title} social preview`);
 
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", title);
     upsertMeta("name", "twitter:description", description);
     upsertMeta("name", "twitter:image", resolvedImage);
+    upsertMeta("name", "twitter:image:alt", `${title} preview image`);
 
     upsertCanonical(canonicalUrl);
 
@@ -78,7 +104,7 @@ export default function SEO({
     } else if (existing) {
       existing.remove();
     }
-  }, [description, image, robots, structuredData, title, url]);
+  }, [description, image, keywords, locale, robots, siteName, structuredData, title, type, url]);
 
   return null;
 }

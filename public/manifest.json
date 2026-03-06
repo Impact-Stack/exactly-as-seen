@@ -1,7 +1,8 @@
 {
   "name": "ImpactStack Africa",
   "short_name": "ImpactStack",
-  "description": "Enterprise Software Development Cape Town",
+  "description": "Enterprise software development, POPIA compliance, and government digital services in Cape Town, South Africa.",
+  "lang": "en-ZA",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
