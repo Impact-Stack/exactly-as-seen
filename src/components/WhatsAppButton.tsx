@@ -1,4 +1,5 @@
-import { MessageCircle } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
+import { Fab } from "@mui/material";
 import { event as trackEvent } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = "27838947546";
@@ -6,12 +7,19 @@ const WHATSAPP_TEXT = encodeURIComponent("Hi ImpactStack, I would like to discus
 
 export default function WhatsAppButton() {
   return (
-    <a
+    <Fab
+      component="a"
       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-[#00A651] hover:bg-[#008A44] text-white p-4 rounded-full shadow-lg shadow-black/50 transition-colors"
+      className="fixed bottom-6 right-6 z-50"
       aria-label="Chat on WhatsApp"
+      sx={{
+        backgroundColor: "#00A651",
+        color: "#FFFFFF",
+        boxShadow: "0 12px 28px rgba(0,0,0,0.5)",
+        "&:hover": { backgroundColor: "#008A44" },
+      }}
       onClick={() =>
         trackEvent({
           action: "click_whatsapp_button",
@@ -20,7 +28,7 @@ export default function WhatsAppButton() {
         })
       }
     >
-      <MessageCircle className="w-6 h-6" />
-    </a>
+      <FaWhatsapp className="w-6 h-6" />
+    </Fab>
   );
 }

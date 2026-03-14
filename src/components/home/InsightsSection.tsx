@@ -6,6 +6,7 @@ import blogGovt from "@/assets/blog-govt.jpg";
 import { Link } from "react-router-dom";
 import { event as trackEvent } from "@/lib/analytics";
 import { getProjectById, projectInsightsSeed } from "@/lib/projects";
+import { Button, Card, CardContent, Chip } from "@mui/material";
 
 const postImages = [blogPopia, blogGovt, blogFlutter];
 
@@ -43,7 +44,7 @@ export default function InsightsSection() {
           <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-section font-display mb-4 text-white">
             Latest Insights
           </motion.h2>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-[#9CA3AF]">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="text-lg text-[#B5B7C6]">
             Technical briefs grounded in real project delivery decisions.
           </motion.p>
         </div>
@@ -55,37 +56,42 @@ export default function InsightsSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.45, delay: 0.2 + i * 0.08 }}
-              className="glass overflow-hidden card-hover"
             >
-              <img src={post.image} alt={post.title} className="w-full h-52 object-cover" loading="lazy" />
-              <div className="p-6">
-                <span className="tag-label mb-3">{post.category}</span>
-                <h3 className="text-subtitle text-white mb-2">{post.title}</h3>
-                <p className="text-small text-[#6B7280] mb-4">{post.date}</p>
-                <Link
-                  to={`/portfolio#${post.relatedProject.id}`}
-                  onClick={() =>
-                    trackEvent({
-                      action: "insight_project_click",
-                      category: "Home Insights",
-                      label: `home_link:${post.relatedProject.id}`,
-                    })
-                  }
-                  className="text-small text-[#0047BB] font-semibold"
-                >
-                  View related project -&gt;
-                </Link>
-              </div>
+              <Card className="surface-card overflow-hidden card-hover">
+                <img src={post.image} alt={post.title} className="w-full h-52 object-cover opacity-90" loading="lazy" />
+                <CardContent className="p-6">
+                  <Chip label={post.category} size="small" variant="outlined" sx={{ borderColor: "rgba(139,92,246,0.35)", color: "#C4B5FD", mb: 2 }} />
+                  <h3 className="text-subtitle text-white mb-2">{post.title}</h3>
+                  <p className="text-small text-[#A1A1B5] mb-4">{post.date}</p>
+                  <Button
+                    component={Link}
+                    to={`/portfolio#${post.relatedProject.id}`}
+                    onClick={() =>
+                      trackEvent({
+                        action: "insight_project_click",
+                        category: "Home Insights",
+                        label: `home_link:${post.relatedProject.id}`,
+                      })
+                    }
+                    variant="text"
+                    color="secondary"
+                    sx={{ justifyContent: "flex-start", paddingLeft: 0, color: "#C4B5FD" }}
+                  >
+                    View related project →
+                  </Button>
+                </CardContent>
+              </Card>
             </motion.article>
           ))}
         </div>
 
         <div className="text-center">
-          <Link to="/insights" className="inline-block border border-white/20 text-white bg-transparent px-8 py-4 rounded-lg text-body font-semibold hover:border-white/50 hover:bg-white/5 transition-all">
+          <Button component={Link} to="/insights" variant="outlined" color="secondary" className="button-secondary px-8 py-4 text-body">
             View All Insights
-          </Link>
+          </Button>
         </div>
       </div>
     </section>
   );
 }
+

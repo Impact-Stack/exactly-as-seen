@@ -1,14 +1,19 @@
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import HeroSection from "@/components/home/HeroSection";
+import ProofStrip from "@/components/home/ProofStrip";
 import ValueProposition from "@/components/home/ValueProposition";
-import WhyChooseUs from "@/components/home/WhyChooseUs";
 import SolutionsOverview from "@/components/home/SolutionsOverview";
+import IndustriesSection from "@/components/home/IndustriesSection";
 import ProjectsSection from "@/components/home/ProjectsSection";
 import InvestSwipeSection from "@/components/home/InvestSwipeSection";
 import CertificationsSection from "@/components/home/CertificationsSection";
 import InsightsSection from "@/components/home/InsightsSection";
-import CTASection from "@/components/home/CTASection";
+import ProcurementBadgeStrip from "@/components/home/ProcurementBadgeStrip";
+import SpeakToExpertCTA from "@/components/home/SpeakToExpertCTA";
+import FaqSection from "@/components/home/FaqSection";
 import { absoluteUrl } from "@/lib/site";
 import { flagshipPricingOffers } from "@/lib/pricing";
 import { featuredProjects } from "@/lib/projects";
@@ -74,24 +79,45 @@ const featuredProjectsStructuredData = buildProjectItemListSchema(
 );
 
 const Index = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.hash === "#industries") {
+      navigate("/industries", { replace: true });
+    }
+  }, [location.hash, navigate]);
+
   return (
     <>
       <SEO
         title="ImpactStack Africa | Enterprise Software Development Cape Town"
         description="Enterprise software development in Cape Town for South African organizations, including POPIA compliance, secure mobile platforms, and government digital services."
         url={absoluteUrl("/")}
+        keywords={[
+          "South Africa enterprise software",
+          "Cape Town digital transformation",
+          "government technology partner",
+          "public sector software delivery",
+          "cybersecurity services",
+          "mobile app development South Africa",
+          "IT infrastructure delivery",
+        ]}
         structuredData={[localBusinessStructuredData, flagshipOfferStructuredData, featuredProjectsStructuredData]}
       />
       <PageShell>
         <HeroSection />
+        <ProofStrip />
         <ValueProposition />
-        <WhyChooseUs />
         <SolutionsOverview />
+        <ProcurementBadgeStrip />
+        <IndustriesSection />
         <ProjectsSection />
         <CertificationsSection />
         <InsightsSection />
         <InvestSwipeSection />
-        <CTASection />
+        <FaqSection />
+        <SpeakToExpertCTA />
       </PageShell>
     </>
   );

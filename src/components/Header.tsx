@@ -1,65 +1,35 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { MdMenu, MdClose, MdExpandMore } from "react-icons/md";
+import { Button, IconButton } from "@mui/material";
 
 const megaMenus: Record<string, { columns: { title: string; links: { label: string; href: string }[] }[] }> = {
   Solutions: {
     columns: [
       {
-        title: "By Technology",
+        title: "Core Services",
         links: [
-          { label: "Web Applications", href: "/services/web" },
-          { label: "Mobile Development", href: "/services/mobile" },
-          { label: "Cloud Solutions", href: "/services/web" },
+          { label: "Enterprise Web Apps", href: "/services/web" },
+          { label: "Mobile Solutions", href: "/services/mobile" },
           { label: "Security and Compliance", href: "/services/security" },
+          { label: "Government Delivery", href: "/services/government" },
         ],
       },
       {
-        title: "By Need",
+        title: "Delivery Support",
         links: [
-          { label: "Digital Transformation", href: "/services/web" },
+          { label: "Discovery and Scoping", href: "/contact" },
           { label: "System Integration", href: "/services/web" },
           { label: "Legacy Modernization", href: "/services/web" },
-          { label: "Custom Development", href: "/services/web" },
+          { label: "Quality Assurance", href: "/services/web" },
         ],
       },
       {
         title: "Featured",
         links: [
           { label: "InvestSwipe Platform", href: "/investswipe" },
-          { label: "Government Solutions", href: "/services/government" },
-          { label: "Enterprise Software", href: "/services/web" },
-        ],
-      },
-    ],
-  },
-  Services: {
-    columns: [
-      {
-        title: "Development",
-        links: [
-          { label: "Software Development", href: "/services/web" },
-          { label: "Mobile App Development", href: "/services/mobile" },
-          { label: "API Development", href: "/services/web" },
-          { label: "UX and Product Design", href: "/services/web" },
-        ],
-      },
-      {
-        title: "Cloud and Security",
-        links: [
-          { label: "Cloud Services", href: "/services/web" },
-          { label: "Security Services", href: "/services/security" },
-          { label: "POPIA Compliance", href: "/services/security" },
-          { label: "Infrastructure Advisory", href: "/services/web" },
-        ],
-      },
-      {
-        title: "Support",
-        links: [
-          { label: "Consulting", href: "/contact" },
-          { label: "Training", href: "/contact" },
-          { label: "Managed Services", href: "/contact" },
-          { label: "Quality Assurance", href: "/services/web" },
+          { label: "Portfolio", href: "/portfolio" },
+          { label: "Pricing Overview", href: "/pricing" },
         ],
       },
     ],
@@ -90,7 +60,7 @@ const megaMenus: Record<string, { columns: { title: string; links: { label: stri
 
 const navLinks = [
   { label: "Solutions", hasDropdown: true, href: "/services/web" },
-  { label: "Services", hasDropdown: true, href: "/services/web" },
+  { label: "Industries", href: "/industries" },
   { label: "Pricing", href: "/pricing" },
   { label: "About", hasDropdown: true, href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
@@ -100,12 +70,12 @@ const navLinks = [
 
 const isActive = (pathname: string, label: string, href?: string) => {
   if (!href) return false;
-  if (label === "Solutions" || label === "Services") return pathname.startsWith("/services") || pathname.startsWith("/investswipe");
+  if (label === "Solutions") return pathname.startsWith("/services") || pathname.startsWith("/investswipe");
   return pathname === href || pathname.startsWith(`${href}/`);
 };
 
 const navLinkClass = (active: boolean) =>
-  `relative inline-flex items-center gap-1 text-sm font-semibold text-[#9CA3AF] transition-colors hover:text-white after:absolute after:left-0 after:-bottom-2 after:h-[2px] after:w-full after:bg-[#0047BB] after:transition-opacity ${
+  `relative inline-flex items-center gap-1 text-sm font-semibold text-[#9CA3AF] transition-colors hover:text-white after:absolute after:left-0 after:-bottom-2 after:h-[2px] after:w-full after:bg-[#8B5CF6] after:transition-opacity ${
     active ? "after:opacity-100" : "after:opacity-0 hover:after:opacity-100"
   }`;
 
@@ -115,10 +85,10 @@ export default function Header() {
   const { pathname } = useLocation();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-white/[0.07]">
-      <div className="container-narrow flex items-center justify-between h-[72px]">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06] bg-[#05050A]/80 backdrop-blur-xl">
+      <div className="container-narrow flex items-center justify-between h-[76px]">
         <Link to="/" className="flex items-center gap-1 text-xl font-bold font-display">
-          <span className="text-[#0047BB]">ImpactStack</span>
+          <span className="text-[#8B5CF6]">ImpactStack</span>
           <span className="text-white">Africa</span>
         </Link>
 
@@ -139,7 +109,7 @@ export default function Header() {
                   }
                 }}
               >
-                <button
+                <Button
                   type="button"
                   className={navLinkClass(isActive(pathname, link.label, link.href))}
                   aria-haspopup="true"
@@ -151,10 +121,14 @@ export default function Header() {
                       setActiveMenu(null);
                     }
                   }}
+                  variant="text"
+                  color="inherit"
+                  disableRipple
+                  endIcon={<MdExpandMore className="w-3.5 h-3.5" />}
+                  sx={{ minWidth: "auto", padding: 0 }}
                 >
                   {link.label}
-                  <ChevronDown className="w-3.5 h-3.5" />
-                </button>
+                </Button>
                 {activeMenu === link.label && (
                   <div id={menuId} className="absolute top-full left-1/2 -translate-x-1/2 pt-3" role="menu">
                     <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-xl shadow-2xl shadow-black/80 p-8 min-w-[620px]" onKeyDown={(event) => {
@@ -191,21 +165,25 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:flex items-center">
-          <Link
-            to="/contact"
-            className="bg-[#0047BB] text-white px-6 py-2.5 rounded-md text-sm font-semibold hover:bg-[#003494] transition-colors"
-          >
+          <Button component={Link} to="/contact" variant="contained" color="primary" className="button-primary px-6 py-2.5 text-sm">
             Book a Consultation
-          </Link>
+          </Button>
         </div>
 
-        <button className="lg:hidden text-white" onClick={() => setMobileOpen((open) => !open)} aria-label="Menu" aria-expanded={mobileOpen} aria-controls="mobile-nav">
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <IconButton
+          className="lg:hidden"
+          onClick={() => setMobileOpen((open) => !open)}
+          aria-label="Menu"
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-nav"
+          sx={{ color: "#FFFFFF" }}
+        >
+          {mobileOpen ? <MdClose className="w-6 h-6" /> : <MdMenu className="w-6 h-6" />}
+        </IconButton>
       </div>
 
       {mobileOpen && (
-        <div id="mobile-nav" className="lg:hidden bg-[#0A0A0A] border-t border-white/5 px-4 pb-6">
+        <div id="mobile-nav" className="lg:hidden bg-[#0B0B12] border-t border-white/5 px-4 pb-6">
           <nav className="flex flex-col gap-3 pt-4">
             {navLinks.map((link) => (
               <Link
@@ -217,16 +195,20 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
+            <Button
+              component={Link}
               to="/contact"
-              className="bg-[#0047BB] text-white text-center px-6 py-2.5 rounded-md mt-2 text-sm font-semibold hover:bg-[#003494] transition-colors"
+              variant="contained"
+              color="primary"
+              className="button-primary mt-2"
               onClick={() => setMobileOpen(false)}
             >
               Book a Consultation
-            </Link>
+            </Button>
           </nav>
         </div>
       )}
     </header>
   );
 }
+

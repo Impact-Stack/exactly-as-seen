@@ -15,6 +15,7 @@ import ServicePage from "./pages/ServicePage";
 import InsightsPage from "./pages/Insights";
 import LegalPage from "./pages/Legal";
 import Pricing from "./pages/Pricing";
+import IndustriesPage from "./pages/Industries";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const AppRoutes = () => (
       <Route path="/" element={<Index />} />
       <Route path="/about" element={<About />} />
       <Route path="/portfolio" element={<Portfolio />} />
+      <Route path="/industries" element={<IndustriesPage />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/investswipe" element={<InvestSwipe />} />

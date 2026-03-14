@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
+import { Button } from "@mui/material";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const NotFound = () => {
   const location = useLocation();
@@ -18,13 +20,15 @@ const NotFound = () => {
         url={absoluteUrl(location.pathname)}
         robots="noindex, nofollow"
       />
-      <div className="flex min-h-screen items-center justify-center bg-muted">
-        <div className="text-center">
-          <h1 className="mb-4 text-4xl font-bold">404</h1>
-          <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-          <a href="/" className="text-primary underline hover:text-primary/90">
+      <div className="relative flex min-h-screen items-center justify-center bg-[#05050A] overflow-hidden">
+        <img src={heroBg} alt="" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15" aria-hidden="true" />
+        <div className="text-center relative">
+          <p className="tag-label mb-3">Not Found</p>
+          <h1 className="mb-4 text-4xl font-bold text-white">404</h1>
+          <p className="mb-6 text-xl text-[#B5B7C6]">That page doesn&apos;t exist yet.</p>
+          <Button href="/" variant="contained" color="primary" className="button-primary px-6 py-3 text-sm">
             Return to Home
-          </a>
+          </Button>
         </div>
       </div>
     </>

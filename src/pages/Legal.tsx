@@ -2,6 +2,9 @@ import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import { useParams } from "react-router-dom";
+import { Accordion as MuiAccordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { MdExpandMore } from "react-icons/md";
+import heroBg from "@/assets/hero-bg.jpg";
 
 interface LegalDoc { title: string; description: string; updated: string; sections: Array<{ heading: string; body: string }>; }
 
@@ -20,16 +23,29 @@ export default function LegalPage() {
     <>
       <SEO title={`${doc.title} | ImpactStack Africa`} description={doc.description} url={absoluteUrl(`/legal/${safeSlug}`)} />
       <PageShell>
-        <section className="section-padding bg-[#000000] border-t border-white/5">
-          <div className="container-narrow max-w-[900px]">
+        <section className="section-padding bg-[#05050A] border-t border-white/5 relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 opacity-15">
+            <img src={heroBg} alt="" className="w-full h-full object-cover" aria-hidden="true" />
+          </div>
+          <div className="container-narrow max-w-[900px] relative">
             <h1 className="text-hero text-white mb-4">{doc.title}</h1>
-            <p className="text-[#6B7280] mb-10">Last updated: {doc.updated}</p>
-            <div className="space-y-8">
+            <p className="text-[#A1A1B5] mb-10">Last updated: {doc.updated}</p>
+            <div className="space-y-3">
               {doc.sections.map((section) => (
-                <article key={section.heading}>
-                  <h2 className="text-subtitle text-white mb-3">{section.heading}</h2>
-                  <p className="text-body text-[#9CA3AF] leading-relaxed">{section.body}</p>
-                </article>
+                <MuiAccordion
+                  key={section.heading}
+                  defaultExpanded
+                  className="surface-card"
+                  disableGutters
+                  sx={{ "&:before": { display: "none" } }}
+                >
+                  <AccordionSummary expandIcon={<MdExpandMore className="text-[#C4B5FD]" />}>
+                    <h2 className="text-subtitle text-white">{section.heading}</h2>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <p className="text-body text-[#B5B7C6] leading-relaxed">{section.body}</p>
+                  </AccordionDetails>
+                </MuiAccordion>
               ))}
             </div>
           </div>

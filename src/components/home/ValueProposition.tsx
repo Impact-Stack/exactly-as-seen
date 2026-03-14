@@ -1,20 +1,22 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
-import { ShieldCheck, Gauge, Handshake } from "lucide-react";
+import { MdVerified, MdSpeed, MdHandshake } from "react-icons/md";
+import { Card, CardContent, Chip } from "@mui/material";
+import abstractGrid from "@/assets/abstract-grid.svg";
 
 const valueProps = [
   {
-    icon: ShieldCheck,
+    icon: MdVerified,
     title: "Enterprise Assurance",
     text: "Security-first delivery standards aligned to modern compliance expectations.",
   },
   {
-    icon: Gauge,
+    icon: MdSpeed,
     title: "Execution Velocity",
     text: "Lean engineering and delivery governance that keeps projects moving.",
   },
   {
-    icon: Handshake,
+    icon: MdHandshake,
     title: "Outcome Partnership",
     text: "Direct collaboration with stakeholders from discovery to go-live support.",
   },
@@ -33,13 +35,21 @@ export default function ValueProposition() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.45, delay: index * 0.1 }}
-              className="glass p-7 card-hover"
+              className="h-full"
             >
-              <div className="icon-shell w-12 h-12 mb-4">
-                <item.icon className="w-6 h-6" />
-              </div>
-              <h3 className="text-subtitle text-white mb-2">{item.title}</h3>
-              <p className="text-body text-[#9CA3AF]">{item.text}</p>
+              <Card className="surface-card card-hover h-full overflow-hidden">
+                <img src={abstractGrid} alt="" className="w-full h-24 object-cover opacity-40" aria-hidden="true" />
+                <CardContent className="p-7">
+                  <div className="flex items-center gap-4 mb-5">
+                    <div className="icon-shell w-12 h-12">
+                      <item.icon className="w-6 h-6" />
+                    </div>
+                    <Chip label="Delivery Pillar" size="small" variant="outlined" sx={{ borderColor: "rgba(139,92,246,0.35)", color: "#C4B5FD" }} />
+                  </div>
+                  <h3 className="text-subtitle text-white mb-2">{item.title}</h3>
+                  <p className="text-body text-[#B5B7C6]">{item.text}</p>
+                </CardContent>
+              </Card>
             </motion.article>
           ))}
         </div>

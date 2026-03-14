@@ -9,6 +9,8 @@ import { event as trackEvent } from "@/lib/analytics";
 import { buildProjectInquiryHref } from "@/lib/lead-routing";
 import { getProjectById, projectInsightsSeed } from "@/lib/projects";
 import { buildProjectItemListSchema } from "@/lib/schema-projects";
+import { Button, Card, CardContent, Chip } from "@mui/material";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const insightImages = [blogPopia, blogGovt, blogFlutter];
 
@@ -51,12 +53,15 @@ export default function InsightsPage() {
         structuredData={insightsStructuredData}
       />
       <PageShell>
-        <section className="section-padding bg-[#000000] border-t border-white/5">
-          <div className="container-narrow">
+        <section className="section-padding bg-[#05050A] border-t border-white/5 relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 opacity-20">
+            <img src={heroBg} alt="" className="w-full h-full object-cover" aria-hidden="true" />
+          </div>
+          <div className="container-narrow relative">
             <div className="max-w-3xl mb-12">
               <p className="tag-label mb-3">INSIGHTS</p>
               <h1 className="text-hero text-white mb-4">Project-Derived Technical Briefs</h1>
-              <p className="text-lg text-[#9CA3AF]">
+              <p className="text-lg text-[#B5B7C6]">
                 Implementation notes derived from real delivery work across security operations, platform governance, and
                 mobile product execution.
               </p>
@@ -64,16 +69,19 @@ export default function InsightsPage() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {insights.map((item) => (
-                <article id={item.id} key={item.id} className="glass overflow-hidden card-hover">
+                <Card key={item.id} id={item.id} className="surface-card overflow-hidden card-hover">
                   <img src={item.image} alt={item.title} className="w-full h-52 object-cover" loading="lazy" />
-                  <div className="p-6">
-                    <p className="text-xs tracking-wide uppercase text-[#0047BB] font-semibold mb-2">{item.category}</p>
+                  <CardContent>
+                    <Chip label={item.category} size="small" sx={{ bgcolor: "rgba(139,92,246,0.2)", color: "#C4B5FD", mb: 1 }} />
                     <h2 className="text-subtitle text-white mb-2">{item.title}</h2>
-                    <p className="text-sm text-[#6B7280] mb-3">{item.date}</p>
-                    <p className="text-body text-[#9CA3AF] mb-4">{item.summary}</p>
+                    <p className="text-sm text-[#A1A1B5] mb-3">{item.date}</p>
+                    <p className="text-body text-[#B5B7C6] mb-4">{item.summary}</p>
                     <div className="flex flex-col gap-2">
-                      <Link
+                      <Button
+                        component={Link}
                         to={`/portfolio#${item.relatedProject.id}`}
+                        variant="text"
+                        color="secondary"
                         onClick={() =>
                           trackEvent({
                             action: "insight_project_click",
@@ -81,12 +89,15 @@ export default function InsightsPage() {
                             label: `portfolio_link:${item.relatedProject.id}`,
                           })
                         }
-                        className="text-[#0047BB] text-sm font-semibold"
+                        sx={{ justifyContent: "flex-start", color: "#C4B5FD", paddingLeft: 0 }}
                       >
-                        View related project -&gt;
-                      </Link>
-                      <Link
+                        View related project →
+                      </Button>
+                      <Button
+                        component={Link}
                         to={buildProjectInquiryHref(item.relatedProject, "insights_article")}
+                        variant="text"
+                        color="secondary"
                         onClick={() =>
                           trackEvent({
                             action: "insight_project_click",
@@ -94,13 +105,13 @@ export default function InsightsPage() {
                             label: `contact_link:${item.relatedProject.id}`,
                           })
                         }
-                        className="text-[#9CA3AF] text-sm font-semibold hover:text-white transition-colors"
+                        sx={{ justifyContent: "flex-start", color: "#B5B7C6", paddingLeft: 0 }}
                       >
-                        Discuss implementation -&gt;
-                      </Link>
+                        Discuss implementation →
+                      </Button>
                     </div>
-                  </div>
-                </article>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
@@ -109,3 +120,4 @@ export default function InsightsPage() {
     </>
   );
 }
+

@@ -2,14 +2,20 @@ import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import { Link, useParams } from "react-router-dom";
-import { Check } from "lucide-react";
+import { MdCheck } from "react-icons/md";
 import { allProjects } from "@/lib/projects";
+import { Button, Card, Chip, Stack } from "@mui/material";
+import serviceWebImg from "@/assets/case-hr.jpg";
+import serviceMobileImg from "@/assets/case-ecommerce.jpg";
+import serviceSecurityImg from "@/assets/blog-popia.jpg";
+import serviceGovtImg from "@/assets/blog-govt.jpg";
 
 interface ServiceData {
   title: string;
   tagline: string;
   overview: string;
   benefits: string[];
+  image: string;
 }
 
 const serviceData: Record<string, ServiceData> = {
@@ -25,6 +31,7 @@ const serviceData: Record<string, ServiceData> = {
       "Advanced security (POPIA compliant, encrypted)",
       "Seamless third-party integrations",
     ],
+    image: serviceWebImg,
   },
   mobile: {
     title: "Mobile Solutions",
@@ -38,6 +45,7 @@ const serviceData: Record<string, ServiceData> = {
       "Secure API and auth integration",
       "Store-readiness for iOS and Android",
     ],
+    image: serviceMobileImg,
   },
   security: {
     title: "Security and Compliance",
@@ -51,19 +59,22 @@ const serviceData: Record<string, ServiceData> = {
       "Security code review and hardening",
       "Staff security awareness enablement",
     ],
+    image: serviceSecurityImg,
   },
   government: {
     title: "Government Services",
     tagline: "Built for public sector mandates",
     overview:
-      "Specialized digital services for government departments, municipalities, and state-owned enterprises with procurement-aware implementation models.",
+      "Specialized digital services for government departments, municipalities, and state-owned enterprises with procurement-aware implementation models. ImpactStack Africa is CIPC-registered, CSD-listed, tax compliant, and EME B-BBEE compliant.",
     benefits: [
       "Citizen-facing portals and e-services",
       "Internal workflow automation",
       "Data dashboards and reporting",
       "Legacy system modernization",
       "POPIA and accessibility alignment",
+      "Procurement support aligned to 80/20 preference-point requirements",
     ],
+    image: serviceGovtImg,
   },
 };
 
@@ -99,63 +110,103 @@ export default function ServicePage() {
     <>
       <SEO title={`${data.title} | ImpactStack Africa`} description={data.tagline} url={absoluteUrl(`/services/${safeSlug}`)} />
       <PageShell>
-        <section className="bg-[#000000] py-24 px-4 border-b border-white/5">
-          <div className="container-narrow text-center">
-            <h1 className="text-hero text-white mb-4">{data.title}</h1>
-            <p className="text-card-title text-[#9CA3AF] font-light mb-8">{data.tagline}</p>
-            <Link to="/contact" className="inline-flex items-center justify-center bg-[#0047BB] text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-[#003494] transition-colors">
-              Book a Consultation
-            </Link>
+        <nav aria-label="Breadcrumb" className="bg-[#05050A] py-6 px-4 border-b border-white/5">
+          <div className="container-narrow">
+            <ol className="flex gap-2 text-small text-[#B5B7C6]">
+              <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li>/</li>
+              <li><Link to="/services/web" className="hover:text-white transition-colors">Services</Link></li>
+              <li>/</li>
+              <li aria-current="page" className="text-white">{data.title}</li>
+            </ol>
+          </div>
+        </nav>
+        <section className="bg-[#05050A] py-24 px-4 border-b border-white/5">
+          <div className="container-narrow">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+              <div>
+                <p className="tag-label mb-4">Service</p>
+                <h1 className="text-hero text-white mb-4">{data.title}</h1>
+                <p className="text-card-title text-[#B5B7C6] font-light mb-8">{data.tagline}</p>
+                <Button component={Link} to="/contact" variant="contained" color="primary" className="button-primary px-10 py-4 text-base">
+                  Book a Consultation
+                </Button>
+              </div>
+              <Card className="surface-card p-4 overflow-hidden">
+                <img src={data.image} alt={`${data.title} delivery preview`} className="w-full h-[320px] object-cover rounded-2xl" loading="lazy" />
+              </Card>
+            </div>
           </div>
         </section>
 
         <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
-          <div className="container-narrow max-w-[900px] mx-auto">
-            <h2 className="text-section text-white mb-6">{data.title}</h2>
-            <p className="text-body text-[#9CA3AF] mb-8">{data.overview}</p>
-            <ul className="space-y-3">
-              {data.benefits.map((benefit) => (
-                <li key={benefit} className="flex items-start gap-3 text-body text-[#9CA3AF]">
-                  <Check className="w-5 h-5 text-[#00A651] flex-shrink-0 mt-0.5" />
-                  <span>{benefit}</span>
-                </li>
-              ))}
-            </ul>
-            {relatedProjects.length > 0 ? (
-              <div className="mt-8 p-5 rounded-xl bg-[#0F0F0F] border border-white/[0.07]">
-                <h3 className="text-subtitle text-white mb-3">Related Delivery Proof</h3>
-                <div className="flex flex-wrap gap-2">
-                  {relatedProjects.map((project) => (
-                    <Link
-                      key={project.id}
-                      to={`/portfolio#${project.id}`}
-                      className="text-xs px-3 py-1.5 rounded-full border border-[#0047BB]/25 bg-[#0047BB]/10 text-[#0047BB] font-semibold hover:bg-[#0047BB]/20 transition-colors"
-                    >
-                      {project.title}
-                    </Link>
+          <div className="container-narrow">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+              <div>
+                <h2 className="text-section text-white mb-6">{data.title}</h2>
+                <p className="text-body text-[#B5B7C6] mb-8">{data.overview}</p>
+                <Stack direction="row" flexWrap="wrap" gap={1}>
+                  {data.benefits.map((benefit) => (
+                    <Chip
+                      key={benefit}
+                      icon={<MdCheck className="text-[#00A651]" />}
+                      label={benefit}
+                      variant="outlined"
+                      color="secondary"
+                      sx={{ borderColor: "rgba(139,92,246,0.35)", color: "#C4B5FD" }}
+                    />
                   ))}
-                </div>
+                </Stack>
+              </div>
+              <Card className="surface-card p-6">
+                <h3 className="text-subtitle text-white mb-4">Delivery Outcomes</h3>
+                <ul className="space-y-3">
+                  {data.benefits.slice(0, 3).map((benefit) => (
+                    <li key={benefit} className="flex items-start gap-3 text-sm text-[#B5B7C6]">
+                      <span className="w-2 h-2 rounded-full bg-[#A78BFA] mt-2" />
+                      <span>{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </div>
+            {relatedProjects.length > 0 ? (
+              <div className="mt-10 surface-card p-6">
+                <h3 className="text-subtitle text-white mb-3">Related Delivery Proof</h3>
+                <Stack direction="row" flexWrap="wrap" gap={1}>
+                  {relatedProjects.map((project) => (
+                    <Chip
+                      key={project.id}
+                      component={Link}
+                      to={`/portfolio#${project.id}`}
+                      clickable
+                      label={project.title}
+                      sx={{ borderColor: "rgba(139,92,246,0.35)", color: "#C4B5FD" }}
+                      variant="outlined"
+                    />
+                  ))}
+                </Stack>
               </div>
             ) : null}
           </div>
         </section>
 
-        <section className="section-padding bg-[#000000] border-t border-white/5">
+        <section className="section-padding bg-[#05050A] border-t border-white/5">
           <div className="container-narrow">
             <div className="text-center mb-12">
               <h2 className="text-section text-white mb-4">How We Engage</h2>
-              <p className="text-lg text-[#6B7280]">A focused delivery path from initial brief to production rollout.</p>
+              <p className="text-lg text-[#B5B7C6]">A focused delivery path from initial brief to production rollout.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {engagementSteps.map((step) => (
-                <article key={step.title} className="bg-[#0F0F0F] border border-white/[0.07] rounded-xl p-7 card-hover">
+                <Card key={step.title} className="surface-card p-7 card-hover">
                   <h3 className="text-subtitle text-white mb-3">{step.title}</h3>
-                  <p className="text-body text-[#9CA3AF] mb-5">{step.description}</p>
-                  <Link to="/contact" className="text-sm font-semibold text-[#0047BB] hover:text-[#0047BB]">
-                    Start here -&gt;
-                  </Link>
-                </article>
+                  <p className="text-body text-[#B5B7C6] mb-5">{step.description}</p>
+                  <Button component={Link} to="/contact" variant="text" color="secondary" sx={{ color: "#C4B5FD" }}>
+                    Start here →
+                  </Button>
+                </Card>
               ))}
             </div>
           </div>
@@ -164,3 +215,4 @@ export default function ServicePage() {
     </>
   );
 }
+

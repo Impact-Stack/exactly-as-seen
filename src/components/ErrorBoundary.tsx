@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
+import { Button } from "@mui/material";
 
 interface Props {
   children: ReactNode;
@@ -29,12 +30,14 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="text-center max-w-md">
             <h1 className="text-4xl font-bold mb-4">Oops!</h1>
             <p className="text-muted-foreground mb-6">Something went wrong. Please refresh the page.</p>
-            <button
+            <Button
               onClick={() => window.location.reload()}
-              className="bg-primary text-primary-foreground px-6 py-3 rounded-md"
+              variant="contained"
+              color="primary"
+              className="button-primary px-6 py-3 text-sm"
             >
               Refresh Page
-            </button>
+            </Button>
           </div>
         </div>
       );

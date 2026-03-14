@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ExternalLink } from "lucide-react";
+import { MdOpenInNew } from "react-icons/md";
+import { Button, Card, CardContent, Chip, Stack } from "@mui/material";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { event as trackEvent } from "@/lib/analytics";
@@ -8,6 +9,10 @@ import { buildProjectInquiryHref } from "@/lib/lead-routing";
 import { portfolioProjects, projectFilterOptions, type ProjectFilter } from "@/lib/projects";
 import { buildProjectFaqSchema, buildProjectItemListSchema } from "@/lib/schema-projects";
 import { absoluteUrl } from "@/lib/site";
+import heroBg from "@/assets/hero-bg.jpg";
+import caseEcommerce from "@/assets/case-ecommerce.jpg";
+import caseHr from "@/assets/case-hr.jpg";
+import caseNfc from "@/assets/case-nfc.jpg";
 
 const portfolioStructuredData = [
   buildProjectItemListSchema(portfolioProjects, "ImpactStack Africa Full Project Portfolio"),
@@ -51,39 +56,75 @@ export default function PortfolioPage() {
         title="Portfolio | ImpactStack Africa Project Delivery Proof"
         description="Review real project delivery evidence across SOC security labs, web platforms, and mobile products built by ImpactStack Africa."
         url={absoluteUrl("/portfolio")}
+        keywords={[
+          "security operations center lab",
+          "enterprise web applications South Africa",
+          "mobile MVP delivery",
+          "POPIA compliance engineering",
+          "government technology projects",
+          "role-based access control",
+        ]}
         structuredData={portfolioStructuredData}
       />
       <PageShell>
-        <section className="bg-[#000000] py-24 px-4 border-b border-white/5">
-          <div className="container-narrow text-center">
+        <section className="bg-[#05050A] py-24 px-4 border-b border-white/5 relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 opacity-15">
+            <img src={heroBg} alt="" className="w-full h-full object-cover" aria-hidden="true" />
+          </div>
+          <div className="container-narrow text-center relative">
             <h1 className="text-hero text-white mb-4">Project Delivery Portfolio</h1>
-            <p className="text-card-title text-[#9CA3AF] font-light">
+            <p className="text-card-title text-[#B5B7C6] font-light">
               Verified implementation evidence across security, web, and mobile delivery work.
             </p>
           </div>
         </section>
 
-        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
+        <section className="py-12 bg-[#05050A] border-t border-white/5">
           <div className="container-narrow">
-            <div className="mb-8 flex flex-wrap gap-2">
-              {projectFilterOptions.map((filterValue) => (
-                <button
-                  key={filterValue}
-                  type="button"
-                  onClick={() => changeFilter(filterValue)}
-                  aria-pressed={activeFilter === filterValue}
-                  className={`px-3.5 py-2 rounded-full text-xs font-semibold border transition-colors ${
-                    activeFilter === filterValue
-                      ? "bg-[#0047BB]/15 border-[#0047BB]/40 text-[#0047BB]"
-                      : "bg-[#111111] border-white/10 text-[#9CA3AF] hover:text-white hover:border-white/30"
-                  }`}
-                >
-                  {filterValue}
-                </button>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                { image: caseHr, label: "HR Systems", caption: "Secure workforce workflows" },
+                { image: caseEcommerce, label: "E-Commerce", caption: "Commerce platform delivery" },
+                { image: caseNfc, label: "Field Ops", caption: "Attendance + device integration" },
+              ].map((item) => (
+                <Card key={item.label} className="surface-card overflow-hidden">
+                  <img src={item.image} alt={item.caption} className="h-40 w-full object-cover" loading="lazy" />
+                  <CardContent>
+                    <p className="text-xs uppercase tracking-wide text-[#A1A1B5]">{item.label}</p>
+                    <p className="text-sm text-white mt-1">{item.caption}</p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
+          </div>
+        </section>
 
-            <p className="text-sm text-[#6B7280] mb-8">
+        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
+          <div className="container-narrow">
+            <Stack direction="row" flexWrap="wrap" gap={1} className="mb-8">
+              {projectFilterOptions.map((filterValue) => {
+                const active = activeFilter === filterValue;
+                return (
+                  <Chip
+                    key={filterValue}
+                    component="button"
+                    onClick={() => changeFilter(filterValue)}
+                    label={filterValue}
+                    variant={active ? "filled" : "outlined"}
+                    color={active ? "secondary" : "default"}
+                    sx={{
+                      borderColor: active ? "rgba(139,92,246,0.4)" : "rgba(255,255,255,0.12)",
+                      bgcolor: active ? "rgba(139,92,246,0.2)" : "transparent",
+                      color: active ? "#C4B5FD" : "#A1A1B5",
+                      "&:hover": { borderColor: "rgba(255,255,255,0.3)", color: "#ffffff" },
+                    }}
+                    aria-pressed={active}
+                  />
+                );
+              })}
+            </Stack>
+
+            <p className="text-sm text-[#A1A1B5] mb-8">
               Showing {filteredProjects.length} of {portfolioProjects.length} projects.
             </p>
 
@@ -92,43 +133,40 @@ export default function PortfolioPage() {
                 const repoLink = project.links.find((link) => link.kind === "github");
 
                 return (
-                  <article key={project.id} id={project.id} className="glass p-7 md:p-8 card-hover">
+                  <Card key={project.id} id={project.id} className="surface-card card-hover">
+                    <CardContent className="p-7 md:p-8">
                     <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-5">
                       <div>
                         <h2 className="text-subtitle text-white mb-2">{project.title}</h2>
-                        <p className="text-sm text-[#6B7280]">{project.subtitle}</p>
+                        <p className="text-sm text-[#A1A1B5]">{project.subtitle}</p>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        <span className="text-xs px-2.5 py-1 rounded-full border border-[#0047BB]/30 bg-[#0047BB]/10 text-[#0047BB] font-semibold">
-                          {project.type}
-                        </span>
-                        <span className="text-xs px-2.5 py-1 rounded-full border border-white/15 text-[#9CA3AF]">
-                          {project.role}
-                        </span>
+                        <Chip label={project.type} size="small" variant="outlined" sx={{ borderColor: "rgba(139,92,246,0.35)", color: "#C4B5FD" }} />
+                        <Chip label={project.role} size="small" variant="outlined" sx={{ borderColor: "rgba(255,255,255,0.2)", color: "#B5B7C6" }} />
                       </div>
                     </div>
 
-                    <p className="text-body text-[#9CA3AF] mb-6">{project.summary}</p>
+                    <p className="text-body text-[#B5B7C6] mb-6">{project.summary}</p>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
                       <div>
                         <h3 className="text-sm font-semibold text-white mb-2">Challenge</h3>
-                        <p className="text-sm text-[#9CA3AF]">{project.challenge}</p>
+                        <p className="text-sm text-[#B5B7C6]">{project.challenge}</p>
                       </div>
                       <div>
                         <h3 className="text-sm font-semibold text-white mb-2">Implementation</h3>
-                        <p className="text-sm text-[#9CA3AF]">{project.implementation}</p>
+                        <p className="text-sm text-[#B5B7C6]">{project.implementation}</p>
                       </div>
                       <div>
                         <h3 className="text-sm font-semibold text-white mb-2">Security Posture</h3>
-                        <p className="text-sm text-[#9CA3AF]">{project.security}</p>
+                        <p className="text-sm text-[#B5B7C6]">{project.security}</p>
                       </div>
                     </div>
 
                     <ul className="space-y-2 mb-6">
                       {project.evidence.map((item) => (
-                        <li key={item.title} className="text-sm text-[#9CA3AF] flex items-start gap-2">
-                          <span className="text-[#0047BB] mt-1">-</span>
+                        <li key={item.title} className="text-sm text-[#B5B7C6] flex items-start gap-2">
+                          <span className="text-[#C4B5FD] mt-1">-</span>
                           <span>
                             <span className="text-white/90 font-medium">{item.title}:</span> {item.detail}
                           </span>
@@ -136,21 +174,17 @@ export default function PortfolioPage() {
                       ))}
                     </ul>
 
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <Stack direction="row" flexWrap="wrap" gap={1} className="mb-6">
                       {project.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="text-xs px-2.5 py-1 rounded-lg border border-[#0047BB]/20 bg-[#0047BB]/10 text-[#0047BB] font-semibold"
-                        >
-                          {tech}
-                        </span>
+                        <Chip key={tech} label={tech} size="small" variant="outlined" sx={{ borderColor: "rgba(139,92,246,0.25)", color: "#C4B5FD" }} />
                       ))}
-                    </div>
+                    </Stack>
 
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                       <div className="flex items-center gap-4">
-                        <Link
+                        <Button
                           to={buildProjectInquiryHref(project, "portfolio_project_card")}
+                          component={Link}
                           onClick={() =>
                             trackEvent({
                               action: "project_card_cta_click",
@@ -158,12 +192,14 @@ export default function PortfolioPage() {
                               label: `portfolio:${project.id}`,
                             })
                           }
-                          className="inline-flex items-center justify-center bg-[#0047BB] text-white px-4 py-2.5 rounded-md text-sm font-semibold hover:bg-[#003494] transition-colors"
+                          variant="contained"
+                          color="primary"
+                          className="button-primary px-4 py-2.5 text-sm"
                         >
                           Discuss this project
-                        </Link>
+                        </Button>
                         {project.serviceHref ? (
-                          <Link to={project.serviceHref} className="text-sm font-semibold text-[#0047BB] hover:text-[#3b82f6] transition-colors">
+                          <Link to={project.serviceHref} className="text-sm font-semibold text-[#C4B5FD] hover:text-[#E9D5FF] transition-colors">
                             Related service
                           </Link>
                         ) : null}
@@ -174,25 +210,23 @@ export default function PortfolioPage() {
                           href={repoLink.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-sm font-semibold text-[#9CA3AF] hover:text-white transition-colors"
+                          className="inline-flex items-center text-sm font-semibold text-[#A1A1B5] hover:text-white transition-colors"
                         >
-                          <ExternalLink className="w-4 h-4 mr-2" />
+                          <MdOpenInNew className="w-4 h-4 mr-2" />
                           View source repository
                         </a>
                       ) : null}
                     </div>
-                  </article>
+                    </CardContent>
+                  </Card>
                 );
               })}
             </div>
 
             <div className="text-center mt-14">
-              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center bg-[#0047BB] text-white px-10 py-4 rounded-md text-body font-semibold hover:bg-[#003494] transition-colors duration-200"
-              >
+              <Button component={Link} to="/contact" variant="contained" color="primary" className="button-primary px-10 py-4 text-body">
                 Book a Consultation
-              </Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -200,3 +234,4 @@ export default function PortfolioPage() {
     </>
   );
 }
+
