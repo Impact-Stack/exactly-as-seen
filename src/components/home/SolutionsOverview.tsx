@@ -99,7 +99,10 @@ export default function SolutionsOverview() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-[#05050A] border-t border-white/5" ref={ref}>
+    <section
+      className="section-padding bg-[#05050A] border-t border-white/5"
+      ref={ref}
+    >
       <div className="container-narrow">
         <div className="mb-12">
           <motion.h2
@@ -115,8 +118,8 @@ export default function SolutionsOverview() {
             transition={{ delay: 0.1 }}
             className="text-lg text-[#B5B7C6]"
           >
-            Enterprise software, POPIA compliance, and government digital services delivered from Cape Town for clients
-            across South Africa.
+            Enterprise software, POPIA compliance, and government digital
+            services delivered from Cape Town for clients across South Africa.
           </motion.p>
         </div>
 
@@ -136,7 +139,12 @@ export default function SolutionsOverview() {
                 aria-label={`Explore ${solution.title} service details`}
                 sx={{ textDecoration: "none" }}
               >
-                <img src={abstractGrid} alt="" className="w-full h-20 object-cover opacity-20" aria-hidden="true" />
+                <img
+                  src={abstractGrid}
+                  alt=""
+                  className="w-full h-20 object-cover opacity-20"
+                  aria-hidden="true"
+                />
                 <CardContent className="p-6 flex flex-col flex-1">
                   <div className="flex items-start justify-between gap-4 mb-5">
                     <div className="icon-shell w-11 h-11 shrink-0">
@@ -144,9 +152,13 @@ export default function SolutionsOverview() {
                     </div>
                     <MdArrowOutward className="w-4 h-4 text-[#C4B5FD] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
-                  <h3 className="text-base font-semibold text-white mb-2">{solution.title}</h3>
+                  <h3 className="text-base font-semibold text-white mb-2">
+                    {solution.title}
+                  </h3>
                   <p className="text-sm text-[#B5B7C6] mb-5">{solution.desc}</p>
-                  <span className="mt-auto text-sm font-semibold text-[#C4B5FD]">Explore service</span>
+                  <span className="mt-auto text-sm font-semibold text-[#C4B5FD]">
+                    Explore service
+                  </span>
                 </CardContent>
               </Card>
             </motion.article>
@@ -160,10 +172,17 @@ export default function SolutionsOverview() {
           className="mt-8 p-5 rounded-2xl bg-[#0B0B12]/90 border border-white/[0.08] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
         >
           <p className="text-sm text-[#B5B7C6]">
-            Need clear budget guidance? See starting prices for our four flagship services, with final commercial terms
-            scoped to your requirements.
+            Need clear budget guidance? See starting prices for our four
+            flagship services, with final commercial terms scoped to your
+            requirements.
           </p>
-          <Button component={Link} to="/pricing" variant="contained" color="primary" className="button-primary px-4 py-2.5 text-sm">
+          <Button
+            component={Link}
+            to="/pricing"
+            variant="contained"
+            color="primary"
+            className="button-primary px-4 py-2.5 text-sm"
+          >
             View Pricing
           </Button>
         </motion.div>
@@ -171,4 +190,3 @@ export default function SolutionsOverview() {
     </section>
   );
 }
-

@@ -3,7 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import { MdMenu, MdClose, MdExpandMore } from "react-icons/md";
 import { Button, IconButton } from "@mui/material";
 
-const megaMenus: Record<string, { columns: { title: string; links: { label: string; href: string }[] }[] }> = {
+const megaMenus: Record<
+  string,
+  { columns: { title: string; links: { label: string; href: string }[] }[] }
+> = {
   Solutions: {
     columns: [
       {
@@ -70,7 +73,10 @@ const navLinks = [
 
 const isActive = (pathname: string, label: string, href?: string) => {
   if (!href) return false;
-  if (label === "Solutions") return pathname.startsWith("/services") || pathname.startsWith("/investswipe");
+  if (label === "Solutions")
+    return (
+      pathname.startsWith("/services") || pathname.startsWith("/investswipe")
+    );
   return pathname === href || pathname.startsWith(`${href}/`);
 };
 
@@ -87,7 +93,10 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06] bg-[#05050A]/80 backdrop-blur-xl">
       <div className="container-narrow flex items-center justify-between h-[76px]">
-        <Link to="/" className="flex items-center gap-1 text-xl font-bold font-display">
+        <Link
+          to="/"
+          className="flex items-center gap-1 text-xl font-bold font-display"
+        >
           <span className="text-[#8B5CF6]">ImpactStack</span>
           <span className="text-white">Africa</span>
         </Link>
@@ -111,11 +120,17 @@ export default function Header() {
               >
                 <Button
                   type="button"
-                  className={navLinkClass(isActive(pathname, link.label, link.href))}
+                  className={navLinkClass(
+                    isActive(pathname, link.label, link.href),
+                  )}
                   aria-haspopup="true"
                   aria-expanded={activeMenu === link.label}
                   aria-controls={menuId}
-                  onClick={() => setActiveMenu((prev) => (prev === link.label ? null : link.label))}
+                  onClick={() =>
+                    setActiveMenu((prev) =>
+                      prev === link.label ? null : link.label,
+                    )
+                  }
                   onKeyDown={(event) => {
                     if (event.key === "Escape") {
                       setActiveMenu(null);
@@ -130,20 +145,33 @@ export default function Header() {
                   {link.label}
                 </Button>
                 {activeMenu === link.label && (
-                  <div id={menuId} className="absolute top-full left-1/2 -translate-x-1/2 pt-3" role="menu">
-                    <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-xl shadow-2xl shadow-black/80 p-8 min-w-[620px]" onKeyDown={(event) => {
-                      if (event.key === "Escape") {
-                        setActiveMenu(null);
-                      }
-                    }}>
-                      <div className={`grid gap-8 ${megaMenus[link.label].columns.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+                  <div
+                    id={menuId}
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-3"
+                    role="menu"
+                  >
+                    <div
+                      className="bg-[#0A0A0A] border border-white/[0.08] rounded-xl shadow-2xl shadow-black/80 p-8 min-w-[620px]"
+                      onKeyDown={(event) => {
+                        if (event.key === "Escape") {
+                          setActiveMenu(null);
+                        }
+                      }}
+                    >
+                      <div
+                        className={`grid gap-8 ${megaMenus[link.label].columns.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}
+                      >
                         {megaMenus[link.label].columns.map((col) => (
                           <div key={col.title}>
                             <p className="tag-label mb-3">{col.title}</p>
                             <ul className="space-y-2">
                               {col.links.map((l) => (
                                 <li key={l.label}>
-                                  <Link to={l.href} className="text-sm text-[#9CA3AF] hover:text-white transition-colors block py-1" role="menuitem">
+                                  <Link
+                                    to={l.href}
+                                    className="text-sm text-[#9CA3AF] hover:text-white transition-colors block py-1"
+                                    role="menuitem"
+                                  >
                                     {l.label}
                                   </Link>
                                 </li>
@@ -157,7 +185,13 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <Link key={link.label} to={link.href!} className={navLinkClass(isActive(pathname, link.label, link.href))}>
+              <Link
+                key={link.label}
+                to={link.href!}
+                className={navLinkClass(
+                  isActive(pathname, link.label, link.href),
+                )}
+              >
                 {link.label}
               </Link>
             );
@@ -165,7 +199,13 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:flex items-center">
-          <Button component={Link} to="/contact" variant="contained" color="primary" className="button-primary px-6 py-2.5 text-sm">
+          <Button
+            component={Link}
+            to="/contact"
+            variant="contained"
+            color="primary"
+            className="button-primary px-6 py-2.5 text-sm"
+          >
             Book a Consultation
           </Button>
         </div>
@@ -178,12 +218,19 @@ export default function Header() {
           aria-controls="mobile-nav"
           sx={{ color: "#FFFFFF" }}
         >
-          {mobileOpen ? <MdClose className="w-6 h-6" /> : <MdMenu className="w-6 h-6" />}
+          {mobileOpen ? (
+            <MdClose className="w-6 h-6" />
+          ) : (
+            <MdMenu className="w-6 h-6" />
+          )}
         </IconButton>
       </div>
 
       {mobileOpen && (
-        <div id="mobile-nav" className="lg:hidden bg-[#0B0B12] border-t border-white/5 px-4 pb-6">
+        <div
+          id="mobile-nav"
+          className="lg:hidden bg-[#0B0B12] border-t border-white/5 px-4 pb-6"
+        >
           <nav className="flex flex-col gap-3 pt-4">
             {navLinks.map((link) => (
               <Link
@@ -211,4 +258,3 @@ export default function Header() {
     </header>
   );
 }
-

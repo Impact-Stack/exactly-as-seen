@@ -81,20 +81,29 @@ const serviceData: Record<string, ServiceData> = {
 const engagementSteps = [
   {
     title: "Discovery",
-    description: "We align stakeholders, scope priorities, and map technical realities before delivery starts.",
+    description:
+      "We align stakeholders, scope priorities, and map technical realities before delivery starts.",
   },
   {
     title: "Proposal",
-    description: "You receive a clear implementation plan, timeline expectations, and phased delivery approach.",
+    description:
+      "You receive a clear implementation plan, timeline expectations, and phased delivery approach.",
   },
   {
     title: "Delivery",
-    description: "Execution runs in focused increments with transparent reporting and measurable outcomes.",
+    description:
+      "Execution runs in focused increments with transparent reporting and measurable outcomes.",
   },
 ];
 
 const serviceProjectMap: Record<string, string[]> = {
-  web: ["findr-community-map", "moderntech-hr-platform", "biofuel-ecommerce-platform", "quick-chat-mvp", "mern-training-project"],
+  web: [
+    "findr-community-map",
+    "moderntech-hr-platform",
+    "biofuel-ecommerce-platform",
+    "quick-chat-mvp",
+    "mern-training-project",
+  ],
   mobile: ["shopwise-price-comparison"],
   security: ["bluewatch-soc-lab"],
   government: [],
@@ -104,20 +113,42 @@ export default function ServicePage() {
   const { slug } = useParams<{ slug: string }>();
   const safeSlug = slug && serviceData[slug] ? slug : "web";
   const data = serviceData[safeSlug];
-  const relatedProjects = allProjects.filter((project) => (serviceProjectMap[safeSlug] || []).includes(project.id));
+  const relatedProjects = allProjects.filter((project) =>
+    (serviceProjectMap[safeSlug] || []).includes(project.id),
+  );
 
   return (
     <>
-      <SEO title={`${data.title} | ImpactStack Africa`} description={data.tagline} url={absoluteUrl(`/services/${safeSlug}`)} />
+      <SEO
+        title={`${data.title} | ImpactStack Africa`}
+        description={data.tagline}
+        url={absoluteUrl(`/services/${safeSlug}`)}
+      />
       <PageShell>
-        <nav aria-label="Breadcrumb" className="bg-[#05050A] py-6 px-4 border-b border-white/5">
+        <nav
+          aria-label="Breadcrumb"
+          className="bg-[#05050A] py-6 px-4 border-b border-white/5"
+        >
           <div className="container-narrow">
             <ol className="flex gap-2 text-small text-[#B5B7C6]">
-              <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li>
+                <Link to="/" className="hover:text-white transition-colors">
+                  Home
+                </Link>
+              </li>
               <li>/</li>
-              <li><Link to="/services/web" className="hover:text-white transition-colors">Services</Link></li>
+              <li>
+                <Link
+                  to="/services/web"
+                  className="hover:text-white transition-colors"
+                >
+                  Services
+                </Link>
+              </li>
               <li>/</li>
-              <li aria-current="page" className="text-white">{data.title}</li>
+              <li aria-current="page" className="text-white">
+                {data.title}
+              </li>
             </ol>
           </div>
         </nav>
@@ -127,13 +158,26 @@ export default function ServicePage() {
               <div>
                 <p className="tag-label mb-4">Service</p>
                 <h1 className="text-hero text-white mb-4">{data.title}</h1>
-                <p className="text-card-title text-[#B5B7C6] font-light mb-8">{data.tagline}</p>
-                <Button component={Link} to="/contact" variant="contained" color="primary" className="button-primary px-10 py-4 text-base">
+                <p className="text-card-title text-[#B5B7C6] font-light mb-8">
+                  {data.tagline}
+                </p>
+                <Button
+                  component={Link}
+                  to="/contact"
+                  variant="contained"
+                  color="primary"
+                  className="button-primary px-10 py-4 text-base"
+                >
                   Book a Consultation
                 </Button>
               </div>
               <Card className="surface-card p-4 overflow-hidden">
-                <img src={data.image} alt={`${data.title} delivery preview`} className="w-full h-[320px] object-cover rounded-2xl" loading="lazy" />
+                <img
+                  src={data.image}
+                  alt={`${data.title} delivery preview`}
+                  className="w-full h-[320px] object-cover rounded-2xl"
+                  loading="lazy"
+                />
               </Card>
             </div>
           </div>
@@ -153,16 +197,24 @@ export default function ServicePage() {
                       label={benefit}
                       variant="outlined"
                       color="secondary"
-                      sx={{ borderColor: "rgba(139,92,246,0.35)", color: "#C4B5FD" }}
+                      sx={{
+                        borderColor: "rgba(139,92,246,0.35)",
+                        color: "#C4B5FD",
+                      }}
                     />
                   ))}
                 </Stack>
               </div>
               <Card className="surface-card p-6">
-                <h3 className="text-subtitle text-white mb-4">Delivery Outcomes</h3>
+                <h3 className="text-subtitle text-white mb-4">
+                  Delivery Outcomes
+                </h3>
                 <ul className="space-y-3">
                   {data.benefits.slice(0, 3).map((benefit) => (
-                    <li key={benefit} className="flex items-start gap-3 text-sm text-[#B5B7C6]">
+                    <li
+                      key={benefit}
+                      className="flex items-start gap-3 text-sm text-[#B5B7C6]"
+                    >
                       <span className="w-2 h-2 rounded-full bg-[#A78BFA] mt-2" />
                       <span>{benefit}</span>
                     </li>
@@ -172,7 +224,9 @@ export default function ServicePage() {
             </div>
             {relatedProjects.length > 0 ? (
               <div className="mt-10 surface-card p-6">
-                <h3 className="text-subtitle text-white mb-3">Related Delivery Proof</h3>
+                <h3 className="text-subtitle text-white mb-3">
+                  Related Delivery Proof
+                </h3>
                 <Stack direction="row" flexWrap="wrap" gap={1}>
                   {relatedProjects.map((project) => (
                     <Chip
@@ -181,7 +235,10 @@ export default function ServicePage() {
                       to={`/portfolio#${project.id}`}
                       clickable
                       label={project.title}
-                      sx={{ borderColor: "rgba(139,92,246,0.35)", color: "#C4B5FD" }}
+                      sx={{
+                        borderColor: "rgba(139,92,246,0.35)",
+                        color: "#C4B5FD",
+                      }}
                       variant="outlined"
                     />
                   ))}
@@ -195,15 +252,28 @@ export default function ServicePage() {
           <div className="container-narrow">
             <div className="text-center mb-12">
               <h2 className="text-section text-white mb-4">How We Engage</h2>
-              <p className="text-lg text-[#B5B7C6]">A focused delivery path from initial brief to production rollout.</p>
+              <p className="text-lg text-[#B5B7C6]">
+                A focused delivery path from initial brief to production
+                rollout.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {engagementSteps.map((step) => (
                 <Card key={step.title} className="surface-card p-7 card-hover">
-                  <h3 className="text-subtitle text-white mb-3">{step.title}</h3>
-                  <p className="text-body text-[#B5B7C6] mb-5">{step.description}</p>
-                  <Button component={Link} to="/contact" variant="text" color="secondary" sx={{ color: "#C4B5FD" }}>
+                  <h3 className="text-subtitle text-white mb-3">
+                    {step.title}
+                  </h3>
+                  <p className="text-body text-[#B5B7C6] mb-5">
+                    {step.description}
+                  </p>
+                  <Button
+                    component={Link}
+                    to="/contact"
+                    variant="text"
+                    color="secondary"
+                    sx={{ color: "#C4B5FD" }}
+                  >
                     Start here →
                   </Button>
                 </Card>
@@ -215,4 +285,3 @@ export default function ServicePage() {
     </>
   );
 }
-

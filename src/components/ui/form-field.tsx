@@ -9,7 +9,13 @@ interface FormFieldProps {
   className?: string;
 }
 
-export function FormField({ label, error, required, children, className }: FormFieldProps) {
+export function FormField({
+  label,
+  error,
+  required,
+  children,
+  className,
+}: FormFieldProps) {
   return (
     <div className={cn("space-y-2", className)}>
       {label && (

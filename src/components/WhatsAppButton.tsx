@@ -3,7 +3,9 @@ import { Fab } from "@mui/material";
 import { event as trackEvent } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = "27838947546";
-const WHATSAPP_TEXT = encodeURIComponent("Hi ImpactStack, I would like to discuss a project.");
+const WHATSAPP_TEXT = encodeURIComponent(
+  "Hi ImpactStack, I would like to discuss a project.",
+);
 
 export default function WhatsAppButton() {
   return (

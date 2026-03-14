@@ -18,19 +18,31 @@ export default function ProjectsSection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="section-padding bg-[#05050A] border-t border-white/5" ref={ref}>
+    <section
+      className="section-padding bg-[#05050A] border-t border-white/5"
+      ref={ref}
+    >
       <div className="container-narrow">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="text-center mb-12">
-          <h2 className="text-section font-display mb-4 text-white">Featured Delivery Proof</h2>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          className="text-center mb-12"
+        >
+          <h2 className="text-section font-display mb-4 text-white">
+            Featured Delivery Proof
+          </h2>
           <p className="text-lg text-[#B5B7C6] max-w-3xl mx-auto">
-            Evidence-led snapshots of recent security, platform, and enterprise delivery work with clear role ownership.
+            Evidence-led snapshots of recent security, platform, and enterprise
+            delivery work with clear role ownership.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
           {featuredProjects.map((project, index) => {
             const Icon = featuredProjectIcons[project.id] || MdShield;
-            const repoLink = project.links.find((link) => link.kind === "github");
+            const repoLink = project.links.find(
+              (link) => link.kind === "github",
+            );
 
             return (
               <motion.article
@@ -47,27 +59,69 @@ export default function ProjectsSection() {
                         <Icon className="w-5 h-5" />
                       </div>
                       <div className="flex flex-wrap justify-end gap-2">
-                        <Chip label={project.type} size="small" variant="outlined" sx={{ borderColor: "rgba(139,92,246,0.35)", color: "#C4B5FD" }} />
-                        <Chip label={project.role} size="small" variant="outlined" sx={{ borderColor: "rgba(255,255,255,0.2)", color: "#B5B7C6" }} />
+                        <Chip
+                          label={project.type}
+                          size="small"
+                          variant="outlined"
+                          sx={{
+                            borderColor: "rgba(139,92,246,0.35)",
+                            color: "#C4B5FD",
+                          }}
+                        />
+                        <Chip
+                          label={project.role}
+                          size="small"
+                          variant="outlined"
+                          sx={{
+                            borderColor: "rgba(255,255,255,0.2)",
+                            color: "#B5B7C6",
+                          }}
+                        />
                       </div>
                     </div>
 
-                    <h3 className="text-subtitle text-white mb-1">{project.title}</h3>
-                    <p className="text-small text-[#A1A1B5] mb-4">{project.subtitle}</p>
-                    <p className="text-sm text-[#B5B7C6] mb-4">{project.summary}</p>
+                    <h3 className="text-subtitle text-white mb-1">
+                      {project.title}
+                    </h3>
+                    <p className="text-small text-[#A1A1B5] mb-4">
+                      {project.subtitle}
+                    </p>
+                    <p className="text-sm text-[#B5B7C6] mb-4">
+                      {project.summary}
+                    </p>
 
-                    <Stack direction="row" flexWrap="wrap" gap={1} className="mb-4">
+                    <Stack
+                      direction="row"
+                      flexWrap="wrap"
+                      gap={1}
+                      className="mb-4"
+                    >
                       {project.technologies.slice(0, 4).map((tech) => (
-                        <Chip key={tech} label={tech} size="small" variant="outlined" sx={{ borderColor: "rgba(139,92,246,0.25)", color: "#C4B5FD" }} />
+                        <Chip
+                          key={tech}
+                          label={tech}
+                          size="small"
+                          variant="outlined"
+                          sx={{
+                            borderColor: "rgba(139,92,246,0.25)",
+                            color: "#C4B5FD",
+                          }}
+                        />
                       ))}
                     </Stack>
 
                     <ul className="space-y-2 mb-5">
                       {project.evidence.slice(0, 3).map((item) => (
-                        <li key={item.title} className="text-sm text-[#B5B7C6] flex items-start gap-2">
+                        <li
+                          key={item.title}
+                          className="text-sm text-[#B5B7C6] flex items-start gap-2"
+                        >
                           <span className="text-[#C4B5FD] mt-1">-</span>
                           <span>
-                            <span className="text-white/90 font-medium">{item.title}:</span> {item.detail}
+                            <span className="text-white/90 font-medium">
+                              {item.title}:
+                            </span>{" "}
+                            {item.detail}
                           </span>
                         </li>
                       ))}
@@ -76,7 +130,10 @@ export default function ProjectsSection() {
                     <div className="mt-auto space-y-3">
                       <Button
                         component={Link}
-                        to={buildProjectInquiryHref(project, "home_featured_project")}
+                        to={buildProjectInquiryHref(
+                          project,
+                          "home_featured_project",
+                        )}
                         onClick={() =>
                           trackEvent({
                             action: "project_card_cta_click",
@@ -92,7 +149,10 @@ export default function ProjectsSection() {
                       </Button>
                       <div className="flex items-center justify-between gap-3">
                         {project.serviceHref ? (
-                          <Link to={project.serviceHref} className="text-xs font-semibold text-[#C4B5FD] hover:text-[#E9D5FF] transition-colors">
+                          <Link
+                            to={project.serviceHref}
+                            className="text-xs font-semibold text-[#C4B5FD] hover:text-[#E9D5FF] transition-colors"
+                          >
                             Related service
                           </Link>
                         ) : (
@@ -119,7 +179,13 @@ export default function ProjectsSection() {
         </div>
 
         <div className="text-center">
-          <Button component={Link} to="/portfolio" variant="outlined" color="secondary" className="button-secondary px-8 py-3.5 text-sm">
+          <Button
+            component={Link}
+            to="/portfolio"
+            variant="outlined"
+            color="secondary"
+            className="button-secondary px-8 py-3.5 text-sm"
+          >
             Explore Full Portfolio
           </Button>
         </div>
@@ -127,4 +193,3 @@ export default function ProjectsSection() {
     </section>
   );
 }
-
