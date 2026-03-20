@@ -1,0 +1,201 @@
+#Label definitions (reference)
+# GitHub Labels for ImpactStack Africa
+# Apply with: gh label create "name" --color "COLOR" --description "desc"
+# Or use the GitHub CLI script at the bottom of this file
+
+labels:
+  # ── Type ──────────────────────────────────────────
+  - name: "type: bug"
+    color: "d73a4a"
+    description: "Something is not working correctly"
+
+  - name: "type: feature"
+    color: "a2eeef"
+    description: "New feature or enhancement request"
+
+  - name: "type: performance"
+    color: "e4e669"
+    description: "Performance or Core Web Vitals issue"
+
+  - name: "type: security"
+    color: "ee0701"
+    description: "Security vulnerability or concern"
+
+  - name: "type: content"
+    color: "0075ca"
+    description: "Copy, text, or content change"
+
+  - name: "type: ui"
+    color: "7057ff"
+    description: "Visual or UX improvement"
+
+  - name: "type: seo"
+    color: "0052cc"
+    description: "SEO, metadata, or structured data"
+
+  - name: "type: refactor"
+    color: "e4e669"
+    description: "Code refactor without functional change"
+
+  - name: "type: deployment"
+    color: "c2e0c6"
+    description: "Build, CI/CD, or deployment related"
+
+  - name: "type: dependency"
+    color: "0075ca"
+    description: "Dependency update or security patch"
+
+  - name: "type: documentation"
+    color: "0075ca"
+    description: "README, inline docs, or comments"
+
+  - name: "type: accessibility"
+    color: "e4e669"
+    description: "Accessibility (a11y) improvement"
+
+  # ── Priority ──────────────────────────────────────
+  - name: "priority: critical"
+    color: "b60205"
+    description: "Must fix immediately — production down or data loss"
+
+  - name: "priority: high"
+    color: "d93f0b"
+    description: "Important — fix in current sprint"
+
+  - name: "priority: medium"
+    color: "e4e669"
+    description: "Normal — fix in next sprint"
+
+  - name: "priority: low"
+    color: "0e8a16"
+    description: "Nice to have — add to backlog"
+
+  # ── Status ────────────────────────────────────────
+  - name: "status: needs-triage"
+    color: "ededed"
+    description: "New, awaiting review and prioritisation"
+
+  - name: "status: confirmed"
+    color: "d4c5f9"
+    description: "Issue confirmed and ready to be worked on"
+
+  - name: "status: in-progress"
+    color: "0052cc"
+    description: "Currently being worked on"
+
+  - name: "status: needs-review"
+    color: "fbca04"
+    description: "PR ready for code review"
+
+  - name: "status: blocked"
+    color: "b60205"
+    description: "Blocked by another issue or external dependency"
+
+  - name: "status: wont-fix"
+    color: "ffffff"
+    description: "This will not be fixed (by design or out of scope)"
+
+  - name: "status: duplicate"
+    color: "cfd3d7"
+    description: "This issue already exists"
+
+  - name: "status: stale"
+    color: "ededed"
+    description: "No activity for 30+ days — will be auto-closed"
+
+  - name: "status: keep-open"
+    color: "0e8a16"
+    description: "Exempt from stale auto-close"
+
+  # ── Page / Area ────────────────────────────────────
+  - name: "area: homepage"
+    color: "bfd4f2"
+    description: "impactstack.africa home page"
+
+  - name: "area: portfolio"
+    color: "bfd4f2"
+    description: "Portfolio / case studies page"
+
+  - name: "area: contact"
+    color: "bfd4f2"
+    description: "Contact form or page"
+
+  - name: "area: investswipe"
+    color: "bfd4f2"
+    description: "InvestSwipe product page"
+
+  - name: "area: pricing"
+    color: "bfd4f2"
+    description: "Pricing page"
+
+  - name: "area: navigation"
+    color: "bfd4f2"
+    description: "Header or footer navigation"
+
+  - name: "area: mobile"
+    color: "bfd4f2"
+    description: "Mobile / responsive experience"
+
+  # ── Misc ──────────────────────────────────────────
+  - name: "good first issue"
+    color: "7057ff"
+    description: "Good for newcomers — small and well-scoped"
+
+  - name: "help wanted"
+    color: "008672"
+    description: "Extra attention or outside contribution needed"
+
+  - name: "work-in-progress"
+    color: "fbca04"
+    description: "PR is not yet ready for review"
+
+---
+# ── Shell script to create all labels via GitHub CLI ──
+# Save as scripts/create-labels.sh and run: bash scripts/create-labels.sh
+
+# #!/usr/bin/env bash
+# REPO="Liso2004/impactstack-africa"  # ← change to your repo
+#
+# labels=(
+#   "type: bug|d73a4a|Something is not working correctly"
+#   "type: feature|a2eeef|New feature or enhancement request"
+#   "type: performance|e4e669|Performance or Core Web Vitals issue"
+#   "type: security|ee0701|Security vulnerability or concern"
+#   "type: content|0075ca|Copy, text, or content change"
+#   "type: ui|7057ff|Visual or UX improvement"
+#   "type: seo|0052cc|SEO, metadata, or structured data"
+#   "type: refactor|e4e669|Code refactor without functional change"
+#   "type: deployment|c2e0c6|Build, CI/CD, or deployment related"
+#   "type: dependency|0075ca|Dependency update or security patch"
+#   "type: accessibility|e4e669|Accessibility improvement"
+#   "priority: critical|b60205|Must fix immediately"
+#   "priority: high|d93f0b|Fix in current sprint"
+#   "priority: medium|e4e669|Fix in next sprint"
+#   "priority: low|0e8a16|Nice to have"
+#   "status: needs-triage|ededed|New, awaiting review"
+#   "status: confirmed|d4c5f9|Ready to be worked on"
+#   "status: in-progress|0052cc|Currently being worked on"
+#   "status: needs-review|fbca04|PR ready for code review"
+#   "status: blocked|b60205|Blocked by dependency"
+#   "status: wont-fix|ffffff|Will not be fixed"
+#   "status: duplicate|cfd3d7|Already reported"
+#   "status: stale|ededed|No activity for 30+ days"
+#   "status: keep-open|0e8a16|Exempt from stale auto-close"
+#   "area: homepage|bfd4f2|Home page"
+#   "area: portfolio|bfd4f2|Portfolio page"
+#   "area: contact|bfd4f2|Contact form"
+#   "area: investswipe|bfd4f2|InvestSwipe page"
+#   "area: pricing|bfd4f2|Pricing page"
+#   "area: navigation|bfd4f2|Header or footer"
+#   "area: mobile|bfd4f2|Mobile experience"
+#   "good first issue|7057ff|Good for newcomers"
+#   "help wanted|008672|Extra attention needed"
+#   "work-in-progress|fbca04|Not yet ready for review"
+# )
+#
+# for entry in "${labels[@]}"; do
+#   IFS='|' read -r name color description <<< "$entry"
+#   gh label create "$name" --color "$color" --description "$description" --repo "$REPO" 2>/dev/null || \
+#   gh label edit "$name" --color "$color" --description "$description" --repo "$REPO"
+#   echo "✅ $name"
+# done

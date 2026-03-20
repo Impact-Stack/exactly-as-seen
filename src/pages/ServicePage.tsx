@@ -90,7 +90,7 @@ const engagementSteps = [
       "You receive a clear implementation plan, timeline expectations, and phased delivery approach.",
   },
   {
-    title: "Delivery",
+    title: "Delivery",  
     description:
       "Execution runs in focused increments with transparent reporting and measurable outcomes.",
   },

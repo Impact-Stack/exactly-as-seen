@@ -1,0 +1,72 @@
+# Performance issue form
+name: ⚡ Performance Issue
+description: Report a performance, loading speed, or Core Web Vitals issue
+title: "[Performance]: "
+labels: ["type: performance", "status: needs-triage"]
+assignees: ["Liso2004"]
+
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Performance Issue Type
+      options:
+        - "Slow page load (LCP)"
+        - "Layout shift (CLS)"
+        - "Interaction delay (INP/FID)"
+        - "Large bundle size"
+        - "Unoptimized images"
+        - "Animation jank"
+        - "Memory leak"
+        - "Other"
+    validations:
+      required: true
+
+  - type: input
+    id: page
+    attributes:
+      label: Affected URL
+      placeholder: "https://impactstack.africa/portfolio"
+    validations:
+      required: true
+
+  - type: textarea
+    id: metrics
+    attributes:
+      label: Measured Metrics
+      description: Paste Lighthouse scores, PageSpeed Insights results, or DevTools performance data if available.
+      render: shell
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the performance issue you've observed.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: connection
+    attributes:
+      label: Connection Type When Observed
+      options:
+        - Fast 4G / WiFi
+        - Slow 4G
+        - 3G
+        - Slow 3G
+        - Unknown
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      options:
+        - Desktop (high-end)
+        - Desktop (low-end)
+        - Mobile (flagship)
+        - Mobile (mid-range)
+        - Mobile (budget)
+    validations:
+      required: true

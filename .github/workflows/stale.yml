@@ -1,0 +1,105 @@
+#Auto-close stale issues
+name: Stale Issue Management
+
+on:
+  schedule:
+    # Run every day at 08:00 SAST (06:00 UTC)
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  stale:
+    name: Mark and close stale items
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Stale issues and PRs
+        uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # ── Issues ──────────────────────────────
+          days-before-issue-stale: 30
+          days-before-issue-close: 14
+          stale-issue-label: "status: stale"
+          stale-issue-message: |
+            👋 This issue has had no activity for **30 days**.
+
+            It will be **automatically closed in 14 days** unless there is new activity or a maintainer removes the stale label.
+
+            If this is still relevant, please:
+            - Add a comment with any new context
+            - Add the label `status: keep-open` to prevent auto-close
+
+            *ImpactStack Africa team — hello@impactstack.africa*
+          close-issue-message: |
+            🔒 This issue was automatically closed after 44 days of inactivity.
+
+            If this problem persists, feel free to open a new issue with fresh context. We review all incoming issues promptly.
+
+          # ── Pull Requests ────────────────────────
+          days-before-pr-stale: 21
+          days-before-pr-close: 7
+          stale-pr-label: "status: stale"
+          stale-pr-message: |
+            👋 This pull request has had no activity for **21 days**.
+
+            It will be **automatically closed in 7 days** unless there is new activity.
+
+            If you're still working on this, please add a comment or push a commit to keep it open.
+          close-pr-message: |
+            🔒 This pull request was automatically closed after 28 days of inactivity.
+
+            The branch has been preserved. Feel free to reopen when ready to continue.
+
+          # ── Exempt labels ────────────────────────
+          exempt-issue-labels: "status: keep-open,priority: critical,priority: high,type: security"
+          exempt-pr-labels: "status: keep-open,priority: critical,work-in-progress"
+
+          # ── Don't stale milestoned items ─────────
+          exempt-all-milestones: true
+
+          # ── Operations per run (GitHub rate limits) ─
+          operations-per-run: 50
+
+  # ──────────────────────────────────────────────
+  # Weekly digest of open issues
+  # ──────────────────────────────────────────────
+  weekly-digest:
+    name: Weekly issue digest
+    runs-on: ubuntu-latest
+    # Only runs on Monday mornings
+    if: github.event_name == 'schedule'
+
+    steps:
+      - name: Generate digest
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              sort: 'created',
+              direction: 'desc',
+              per_page: 50
+            });
+
+            const bugs = issues.filter(i => i.labels.some(l => l.name === 'type: bug'));
+            const features = issues.filter(i => i.labels.some(l => l.name === 'type: feature'));
+            const critical = issues.filter(i => i.labels.some(l => l.name === 'priority: critical'));
+
+            console.log(`📊 Weekly Issue Digest — ${new Date().toDateString()}`);
+            console.log(`Total open: ${issues.length}`);
+            console.log(`🐛 Bugs: ${bugs.length}`);
+            console.log(`✨ Features: ${features.length}`);
+            console.log(`🚨 Critical: ${critical.length}`);
+
+            if (critical.length > 0) {
+              console.log('\n🚨 CRITICAL ISSUES:');
+              critical.forEach(i => console.log(`  #${i.number}: ${i.title}`));
+            }
