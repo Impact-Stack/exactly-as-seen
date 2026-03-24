@@ -232,3 +232,5 @@
     animation: none;
   }
 }
+
+body::-webkit-scrollbar { display: none; }

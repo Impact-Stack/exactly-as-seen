@@ -1,105 +1,190 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Button, Card, CardContent } from "@mui/material";
+import { motion, Variants } from "framer-motion";
+import { Button } from "@mui/material";
+import { ArrowOutward } from "@mui/icons-material";
 
-const focusAreas = ["Enterprise Software Delivery", "Cloud and Security", "Digital Service Modernization"];
+const solutionPopups = [
+  {
+    id: "01",
+    label: "[CORE_ENTITY]",
+    title: "Enterprise Software Delivery",
+    text: "Neural nodes processing real-time data streams.",
+    // Changed top-[20%] to top-[12%] to move it higher
+    pos: "top-[12%] right-[15%]",
+    linePath: "M 0 0 L -50 50 L -110 50",
+    delay: 1.5
+  },
+  {
+    id: "02",
+    label: "[CONNECTIVITY]",
+    title: "Cloud and Security",
+    text: "Low-latency regional transmission across clusters.",
+    // Changed bottom-[25%] to bottom-[35%] to move it higher
+    pos: "bottom-[55%] right-[10%]",
+    linePath: "M 0 0 L -40 -40 L -90 -40",
+    delay: 2.2
+  }
+];
+
+const reveal: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.8,
+      ease: [0.2, 0.65, 0.3, 0.9],
+    },
+  }),
+};
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden pt-24 pb-20 md:pt-36 md:pb-28 bg-[#05050A] border-b border-white/5">
-      <div className="pointer-events-none absolute -top-20 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full glow-orb blur-[140px]" />
-      <div className="pointer-events-none absolute -right-40 top-1/4 h-[420px] w-[420px] rounded-full glow-orb blur-[140px] opacity-70" />
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-[#020204] text-white">
 
-      <div className="container-narrow relative z-10">
-        <div className="grid lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-7">
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-[#C4B5FD] bg-[#8B5CF6]/15 border border-[#8B5CF6]/30 rounded-full px-4 py-1.5 text-xs uppercase tracking-widest font-semibold inline-flex items-center gap-2 mb-4"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#A78BFA] animate-pulse" />
-              South African Digital Delivery Partner
-            </motion.p>
+      {/* 1. BACKGROUND & ORB */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-[2] bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none" />
 
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-hero font-display mb-6 text-white"
-            >
-              Powering Enterprise-Grade Delivery Across South Africa
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg text-[#B5B7C6] mb-8 max-w-2xl"
-            >
-              ImpactStack Africa delivers secure software, mobile platforms, and public-sector systems with a practical, accountable delivery model. Built for real-world operations, not slide decks.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 mb-4"
-            >
-              <Button component={Link} to="/contact" variant="contained" color="primary" className="button-primary px-10 py-4 text-base">
-                Book a Consultation
-              </Button>
-              <Button component={Link} to="/portfolio" variant="outlined" color="secondary" className="button-secondary px-10 py-4 text-base">
-                View Our Work
-              </Button>
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="text-[#9CA3AF] text-sm"
-            >
-              No obligation <span className="px-2">&middot;</span> Reply within 24hrs <span className="px-2">&middot;</span> SA owned and operated
-            </motion.p>
-          </div>
-
-          <motion.aside
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-5"
-          >
-            <Card className="surface-card">
-              <CardContent className="p-6 md:p-8">
-                <h2 className="text-subtitle text-white mb-4">Priority Solution Areas</h2>
-                <ul className="space-y-3 mb-6">
-                  {focusAreas.map((area) => (
-                    <li key={area} className="text-[#B5B7C6] flex items-center gap-3">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#A78BFA]" />
-                      {area}
-                    </li>
-                  ))}
-                </ul>
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { label: "Projects Delivered", value: "20+" },
-                    { label: "Avg Delivery Cycle", value: "8-12w" },
-                    { label: "Sectors Served", value: "6" },
-                  ].map((metric) => (
-                    <div key={metric.label} className="rounded-xl bg-[#11111A] border border-white/10 p-3 text-center">
-                      <p className="text-xl font-bold text-[#C4B5FD]">{metric.value}</p>
-                      <p className="text-xs text-[#A1A1B5]">{metric.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.aside>
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[850px] aspect-square z-[1]"
+          style={{
+            maskImage: 'radial-gradient(circle, black 30%, transparent 70%)',
+            WebkitMaskImage: 'radial-gradient(circle, black 30%, transparent 70%)',
+          }}
+        >
+          <video autoPlay loop muted playsInline className="w-full h-full object-contain mix-blend-screen opacity-90 scale-110">
+            <source src="/orb.mp4" type="video/mp4" />
+          </video>
         </div>
+
+        {/* 2. EXTRACTION ANIMATION */}
+        {solutionPopups.map((item) => (
+          <div key={item.id} className={`absolute z-[10] ${item.pos} hidden lg:block`}>
+            <div className="relative">
+
+              {/* Connector Line - Draws out, then retracts back to 0 */}
+              <svg className="absolute top-0 left-0 overflow-visible pointer-events-none">
+                <motion.path
+                  d={item.linePath}
+                  fill="transparent"
+                  stroke="rgba(99, 102, 241, 0.5)"
+                  strokeWidth="1"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{
+                    pathLength: [0, 1, 1, 0], // Draw out, Hold, Retract
+                    opacity: [0, 1, 1, 0]
+                  }}
+                  transition={{
+                    delay: item.delay,
+                    duration: 3,
+                    times: [0, 0.2, 0.8, 1], // Timing of the sequence
+                    ease: "easeInOut"
+                  }}
+                />
+              </svg>
+
+              {/* Data Box - Slides in and STAYS */}
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  x: 40,
+                  clipPath: "inset(0 0 0 100%)"
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  clipPath: "inset(0 0 0 0%)"
+                }}
+                transition={{
+                  delay: item.delay + 0.5, // Appears while line is fully extended
+                  duration: 0.9,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+                className="relative bg-black/40 backdrop-blur-md p-4 border-l border-indigo-500/50 min-w-[240px]"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-1 h-1 bg-indigo-500 shadow-[0_0_8px_#6366f1]" />
+                  <p className="text-[10px] font-mono text-indigo-400 uppercase">{item.label}</p>
+                </div>
+                <h4 className="text-xs font-bold text-white mb-1 uppercase">{item.title}</h4>
+                <p className="text-[10px] text-gray-500 leading-tight font-light">{item.text}</p>
+              </motion.div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 3. CORE BRANDING & CTA */}
+      {/* Removed 'container' and 'mx-auto' to allow left-alignment */}
+      <div className="relative z-20 w-full pl-6 md:pl-5">
+        <div className="max-w-4xl">
+          {/* <motion.div initial="hidden" animate="visible" variants={reveal} custom={0} className="flex items-center gap-4 mb-10">
+            <span className="text-[10px] uppercase tracking-[0.5em] text-indigo-400 font-bold">ZA Sovereign Studio</span>
+            <div className="h-[1px] bg-indigo-500/20 w-16" />
+          </motion.div> */}
+
+          {/* Added -mt-20 to pull the heading significantly higher */}
+          <h1 className="text-7xl md:text-[4.5rem] font-medium tracking-tighter leading-[1.08] mb-12 -mt-[35vh]">
+            {/* Row 1: Empowering SA. */}
+            <div className="overflow-hidden">
+              <motion.span
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9], delay: 0.2 }}
+                className="block italic"
+              >
+                Empowering SA.
+              </motion.span>
+            </div>
+
+            {/* Row 2: Tech Enterprises. */}
+            <div className="overflow-hidden">
+              <motion.span
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9], delay: 0.4 }}
+                className="block text-gray-700 italic"
+              >
+                Powering Tech.
+              </motion.span>
+            </div>
+          </h1>
+
+          {/* <div className="flex flex-col sm:flex-row items-start sm:items-center gap-12">
+            <Link to="/portfolio" className="group flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.3em] text-gray-500 hover:text-white transition-all">
+              Our Work <ArrowOutward sx={{ fontSize: 18 }} />
+            </Link>
+          </div> */}
+        </div>
+
+        {/* 4. METRICS SECTION */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3.5 }}
+          /* 1. Removed pt-10 (padding-top) so the text sits closer to the border.
+             2. bottom-0 puts it at the very edge. 
+             3. Added pb-4 (padding-bottom) if you want a tiny safety gap, 
+                otherwise use pb-0 for a hard edge.
+          */
+          className="absolute -bottom-24 right-10 grid grid-cols-3 gap-12 border-t border-white/5 pt-4 pb-2 w-full lg:max-w-[400px]"
+        >
+          <div className="text-right">
+            <p className="text-3xl font-light tracking-tighter text-white">20+</p>
+            <p className="text-[9px] uppercase tracking-widest text-gray-500 leading-tight">Projects <span className="block">Delivered</span></p>
+          </div>
+          <div className="text-right">
+            <p className="text-3xl font-light tracking-tighter text-white">8-12w</p>
+            <p className="text-[9px] uppercase tracking-widest text-gray-500 leading-tight">Avg Delivery <span className="block">Cycle</span></p>
+          </div>
+          <div className="text-right">
+            <p className="text-3xl font-light tracking-tighter text-white">6</p>
+            <p className="text-[9px] uppercase tracking-widest text-gray-500 leading-tight">Sectors <span className="block">Served</span></p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 }
-
