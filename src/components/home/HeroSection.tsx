@@ -1,4 +1,5 @@
 import { motion, Variants } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const solutionPopups = [
   {
@@ -22,7 +23,7 @@ const solutionPopups = [
   {
     id: "03",
     label: "[ANALYTICS]",
-    title: "AI-Driven Insights",
+    title: "Digital Driven Modernization",
     text: "Predictive modeling for sovereign growth scales.",
     pos: "bottom-[35%] left-[12%] xl:left-[18%]",
     linePath: "M 240 24 L 290 24 L 340 70",
@@ -42,6 +43,8 @@ const reveal: Variants = {
     },
   }),
 };
+
+const MotionLink = motion(Link);
 
 export default function HeroSection() {
   return (
@@ -143,8 +146,8 @@ export default function HeroSection() {
       <div className="relative z-20 w-full pl-6 md:pl-10 xl:pl-16">
         <div className="max-w-4xl">
           <h1
-            className="text-7xl md:text-[4.5rem] xl:text-[5.5rem] font-medium tracking-tighter leading-[1.08]"
-            style={{ marginTop: "clamp(-500px, -50vh, -100px)" }}
+            className="text-7xl md:text-[4.5rem] xl:text-[4.5rem] font-medium tracking-tighter leading-[1.08]"
+            style={{ marginTop: "clamp(-400px, -42vh, -100px)" }}
           >
             <div className="overflow-hidden">
               <motion.span
@@ -167,6 +170,21 @@ export default function HeroSection() {
               </motion.span>
             </div>
           </h1>
+          <div style={{ overflow: 'hidden' }}>
+            <MotionLink
+              to="/portfolio"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{
+                duration: 0.8,
+                ease: [0.2, 0.65, 0.3, 0.9],
+                delay: 0.6 // Slightly staggered after the text
+              }}
+              className="button-secondary px-10 py-4 text-base inline-block border border-gray-500 rounded hover:border-white transition-colors mt-2"
+            >
+              View Our Work
+            </MotionLink>
+          </div>
         </div>
       </div>
 
