@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import { event as trackEvent } from "@/lib/analytics";
 import { buildProjectInquiryHref } from "@/lib/lead-routing";
 import { featuredProjects } from "@/lib/projects";
-import { MdShield, MdLocationOn, MdPeople, MdOpenInNew } from "react-icons/md";
+import { MdShield, MdLocationOn, MdPeople, MdOpenInNew, MdArrowForward, MdSettings } from "react-icons/md";
 import type { IconType } from "react-icons";
-import { Button, Card, CardContent, Chip, Stack } from "@mui/material";
+import { Button, Chip, Stack } from "@mui/material";
+
+// ─── Icon map ────────────────────────────────────────────────────────────────
 
 const featuredProjectIcons: Record<string, IconType> = {
   "bluewatch-soc-lab": MdShield,
@@ -14,182 +16,693 @@ const featuredProjectIcons: Record<string, IconType> = {
   "moderntech-hr-platform": MdPeople,
 };
 
+// ─── Per-project gradient backgrounds (purple palette) ───────────────────────
+
+const projectGradients = [
+  "linear-gradient(135deg, #1a0533 0%, #3b1278 50%, #6d28d9 100%)",
+  "linear-gradient(135deg, #0f0724 0%, #4c1d95 45%, #7c3aed 100%)",
+  "linear-gradient(135deg, #160b2e 0%, #5b21b6 55%, #8b5cf6 100%)",
+];
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
 export default function ProjectsSection() {
   const { ref, isInView } = useInView();
 
+  const [first, second, third] = featuredProjects;
+
   return (
-    <section
-      className="section-padding bg-[#05050A] border-t border-white/5"
-      ref={ref}
-    >
-      <div className="container-narrow">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="text-center mb-12"
-        >
-          <h2 className="text-section font-display mb-4 text-white">
-            Featured Delivery Proof
-          </h2>
-          <p className="text-lg text-[#B5B7C6] max-w-3xl mx-auto">
-            Evidence-led snapshots of recent security, platform, and enterprise
-            delivery work with clear role ownership.
-          </p>
-        </motion.div>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-          {featuredProjects.map((project, index) => {
-            const Icon = featuredProjectIcons[project.id] || MdShield;
-            const repoLink = project.links.find(
-              (link) => link.kind === "github",
-            );
+        .proj-section {
+          background: #05050A;
+          border-top: 1px solid rgba(255,255,255,0.05);
+          padding: 88px 0;
+        }
 
-            return (
-              <motion.article
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.45, delay: 0.1 + index * 0.06 }}
-                className="h-full"
-              >
-                <Card className="surface-card card-hover h-full">
-                  <CardContent className="p-6 flex flex-col h-full">
-                    <div className="flex items-start justify-between gap-3 mb-4">
-                      <div className="icon-shell w-11 h-11 shrink-0">
-                        <Icon className="w-5 h-5" />
+        /* ── Hero orb panel ── */
+        .orb-panel {
+          position: relative;
+          overflow: hidden;
+          border-radius: 20px;
+          background: #0a0014;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 32px;
+          min-height: 520px;
+        }
+
+        /* The glowing purple orb */
+        .orb {
+          position: absolute;
+          top: 5%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 340px;
+          height: 340px;
+          border-radius: 50%;
+          background: radial-gradient(circle at 40% 40%,
+            rgba(167,139,250,0.55) 0%,
+            rgba(109,40,217,0.7) 30%,
+            rgba(76,29,149,0.5) 60%,
+            transparent 80%
+          );
+          filter: blur(28px);
+          pointer-events: none;
+        }
+
+        /* Crosshair grid lines — exact match to reference */
+        .crosshair {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+        .crosshair::before {
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 1px;
+          background: rgba(255,255,255,0.07);
+        }
+        .crosshair::after {
+          content: '';
+          position: absolute;
+          top: 42%;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: rgba(255,255,255,0.07);
+        }
+
+        /* Rotated vertical text — left side */
+        .orb-sidebar-text {
+          position: absolute;
+          left: 18px;
+          top: 50%;
+          transform: translateY(-50%) rotate(-90deg);
+          transform-origin: center center;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.6rem;
+          font-weight: 400;
+          letter-spacing: 0.18em;
+          color: rgba(255,255,255,0.22);
+          text-transform: uppercase;
+          white-space: nowrap;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .orb-welcome {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.75rem;
+          font-weight: 400;
+          color: rgba(255,255,255,0.45);
+          letter-spacing: 0.04em;
+          margin-bottom: 10px;
+        }
+
+        .orb-headline {
+          font-family: 'Syne', sans-serif;
+          font-size: 2rem;
+          font-weight: 700;
+          color: #ffffff;
+          line-height: 1.15;
+          letter-spacing: -0.025em;
+          margin-bottom: 28px;
+        }
+        .orb-headline em {
+          font-style: normal;
+          color: rgba(196,181,253,0.85);
+          font-weight: 600;
+        }
+
+        .orb-controls {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .orb-btn {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s;
+          flex-shrink: 0;
+        }
+        .orb-btn-settings {
+          border: 1px solid rgba(255,255,255,0.14);
+          background: rgba(255,255,255,0.05);
+          color: rgba(255,255,255,0.45);
+        }
+        .orb-btn-settings:hover {
+          background: rgba(255,255,255,0.1);
+          color: rgba(255,255,255,0.8);
+        }
+        .orb-btn-next {
+          border: none;
+          background: #ffffff;
+          color: #0a0014;
+        }
+        .orb-btn-next:hover {
+          background: rgba(255,255,255,0.9);
+          transform: translateX(2px);
+        }
+
+        /* ── Project cards ── */
+        .proj-card {
+          position: relative;
+          overflow: hidden;
+          border-radius: 16px;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+        }
+        .proj-card-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
+        .proj-card-bg img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+        .proj-card:hover .proj-card-bg img {
+          transform: scale(1.04);
+        }
+        .proj-card-scrim {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: linear-gradient(
+            to bottom,
+            rgba(10,0,20,0.1) 0%,
+            rgba(10,0,20,0.3) 40%,
+            rgba(10,0,20,0.88) 100%
+          );
+        }
+        /* Gradient fallback when no image */
+        .proj-card-gradient {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
+        .proj-card-content {
+          position: relative;
+          z-index: 2;
+          padding: 24px;
+        }
+        .proj-card-tag {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          z-index: 3;
+        }
+        .proj-card-icon {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border: 1px solid rgba(255,255,255,0.15);
+          background: rgba(255,255,255,0.07);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 14px;
+          flex-shrink: 0;
+        }
+        .proj-card-title {
+          font-family: 'Syne', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: -0.02em;
+          line-height: 1.2;
+          margin-bottom: 4px;
+        }
+        .proj-card-subtitle {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.72rem;
+          color: rgba(196,181,253,0.7);
+          margin-bottom: 10px;
+        }
+        .proj-card-summary {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.75rem;
+          color: rgba(255,255,255,0.5);
+          line-height: 1.6;
+          margin-bottom: 14px;
+        }
+        .proj-card-evidence {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          margin-bottom: 16px;
+        }
+        .proj-card-evidence-item {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.7rem;
+          color: rgba(255,255,255,0.45);
+          display: flex;
+          gap: 6px;
+          align-items: flex-start;
+        }
+        .proj-card-evidence-item strong {
+          color: rgba(255,255,255,0.75);
+          font-weight: 500;
+        }
+
+        /* Hover expand for cards */
+        .proj-card:hover .proj-card-scrim {
+          background: linear-gradient(
+            to bottom,
+            rgba(10,0,20,0.15) 0%,
+            rgba(10,0,20,0.4) 40%,
+            rgba(10,0,20,0.93) 100%
+          );
+        }
+      `}</style>
+
+      <section className="proj-section" ref={ref}>
+        <div className="container-narrow">
+
+          {/* Section label */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.45 }}
+            className="mb-10"
+          >
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.65rem",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "rgba(196,181,253,0.55)",
+                marginBottom: 10,
+                fontWeight: 500,
+              }}
+            >
+              Featured Delivery Proof
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Syne', sans-serif",
+                fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
+                fontWeight: 800,
+                color: "#ffffff",
+                letterSpacing: "-0.03em",
+                lineHeight: 1.1,
+              }}
+            >
+              Evidence-led snapshots
+            </h2>
+          </motion.div>
+
+          {/* ── Bento grid ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.55, delay: 0.1 }}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gridTemplateRows: "1fr 1fr",
+              gap: 12,
+              height: 560,
+            }}
+          >
+            {/* ── LEFT: Hero orb panel spanning 2 rows ── */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.55, delay: 0.15 }}
+              style={{ gridColumn: "1", gridRow: "1 / 3" }}
+              className="orb-panel"
+            >
+              {/* Orb */}
+              <div className="orb" />
+
+              {/* Crosshair */}
+              <div className="crosshair" />
+
+              {/* Vertical text labels */}
+              <div style={{
+                position: "absolute",
+                left: 18,
+                top: "30%",
+                display: "flex",
+                flexDirection: "column",
+                gap: 36,
+              }}>
+                <span style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.2em",
+                  color: "rgba(255,255,255,0.2)",
+                  textTransform: "uppercase",
+                  writingMode: "vertical-rl",
+                  transform: "rotate(180deg)",
+                }}>
+                  FEATURED
+                </span>
+                <span style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.2em",
+                  color: "rgba(255,255,255,0.12)",
+                  textTransform: "uppercase",
+                  writingMode: "vertical-rl",
+                  transform: "rotate(180deg)",
+                }}>
+                  0 1 × 3
+                </span>
+              </div>
+
+              {/* Bottom content */}
+              <div style={{ position: "relative", zIndex: 2 }}>
+                <p className="orb-welcome">Featured Delivery</p>
+                <h3 className="orb-headline">
+                  Recent security,{" "}
+                  <em>platform</em>{" "}
+                  and enterprise work
+                </h3>
+                <div className="orb-controls">
+                  <Button
+                    component={Link}
+                    to="/portfolio"
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      borderColor: "rgba(255,255,255,0.15)",
+                      color: "rgba(255,255,255,0.55)",
+                      fontSize: "0.65rem",
+                      letterSpacing: "0.08em",
+                      fontFamily: "'DM Sans', sans-serif",
+                      textTransform: "none",
+                      borderRadius: "100px",
+                      px: 2,
+                      "&:hover": {
+                        borderColor: "rgba(255,255,255,0.35)",
+                        color: "#fff",
+                        background: "rgba(255,255,255,0.04)",
+                      },
+                    }}
+                  >
+                    Full portfolio
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* ── TOP-MIDDLE: Project 1 ── */}
+            {first && (() => {
+              const Icon = featuredProjectIcons[first.id] || MdShield;
+              const repoLink = first.links.find((l) => l.kind === "github");
+              return (
+                <motion.article
+                  key={first.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.45, delay: 0.2 }}
+                  style={{ gridColumn: "2", gridRow: "1" }}
+                  className="proj-card"
+                >
+                  {/* Gradient bg */}
+                  <div
+                    className="proj-card-gradient"
+                    style={{ background: projectGradients[0] }}
+                  />
+                  <div className="proj-card-scrim" />
+
+                  {/* Top-right chip */}
+                  <div className="proj-card-tag">
+                    <Chip
+                      label={first.type}
+                      size="small"
+                      sx={{
+                        background: "rgba(139,92,246,0.25)",
+                        border: "1px solid rgba(139,92,246,0.4)",
+                        color: "#c4b5fd",
+                        fontSize: "0.6rem",
+                        height: 22,
+                        backdropFilter: "blur(8px)",
+                      }}
+                    />
+                  </div>
+
+                  <div className="proj-card-content">
+                    <div className="proj-card-icon">
+                      <Icon style={{ width: 16, height: 16, color: "#c4b5fd" }} />
+                    </div>
+                    <p className="proj-card-title">{first.title}</p>
+                    <p className="proj-card-subtitle">{first.subtitle}</p>
+                    <div className="flex gap-1.5 flex-wrap">
+                      {first.technologies.slice(0, 3).map((t) => (
+                        <Chip key={t} label={t} size="small" sx={{
+                          background: "rgba(255,255,255,0.06)",
+                          color: "rgba(255,255,255,0.5)",
+                          fontSize: "0.58rem",
+                          height: 20,
+                          border: "1px solid rgba(255,255,255,0.08)",
+                        }} />
+                      ))}
+                    </div>
+                  </div>
+                </motion.article>
+              );
+            })()}
+
+            {/* ── TOP-RIGHT: Project 2 ── */}
+            {second && (() => {
+              const Icon = featuredProjectIcons[second.id] || MdShield;
+              return (
+                <motion.article
+                  key={second.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.45, delay: 0.26 }}
+                  style={{ gridColumn: "3", gridRow: "1" }}
+                  className="proj-card"
+                >
+                  <div
+                    className="proj-card-gradient"
+                    style={{ background: projectGradients[1] }}
+                  />
+                  <div className="proj-card-scrim" />
+
+                  <div className="proj-card-tag">
+                    <Chip
+                      label={second.role}
+                      size="small"
+                      sx={{
+                        background: "rgba(109,40,217,0.25)",
+                        border: "1px solid rgba(109,40,217,0.4)",
+                        color: "#ddd6fe",
+                        fontSize: "0.6rem",
+                        height: 22,
+                        backdropFilter: "blur(8px)",
+                      }}
+                    />
+                  </div>
+
+                  <div className="proj-card-content">
+                    <div className="proj-card-icon">
+                      <Icon style={{ width: 16, height: 16, color: "#a78bfa" }} />
+                    </div>
+                    <p className="proj-card-title">{second.title}</p>
+                    <p className="proj-card-subtitle">{second.subtitle}</p>
+                    <div className="flex gap-1.5 flex-wrap">
+                      {second.technologies.slice(0, 3).map((t) => (
+                        <Chip key={t} label={t} size="small" sx={{
+                          background: "rgba(255,255,255,0.06)",
+                          color: "rgba(255,255,255,0.5)",
+                          fontSize: "0.58rem",
+                          height: 20,
+                          border: "1px solid rgba(255,255,255,0.08)",
+                        }} />
+                      ))}
+                    </div>
+                  </div>
+                </motion.article>
+              );
+            })()}
+
+            {/* ── BOTTOM: Project 3 — spans cols 2+3, full detail card ── */}
+            {third && (() => {
+              const Icon = featuredProjectIcons[third.id] || MdShield;
+              const repoLink = third.links.find((l) => l.kind === "github");
+              return (
+                <motion.article
+                  key={third.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.45, delay: 0.32 }}
+                  style={{ gridColumn: "2 / 4", gridRow: "2" }}
+                  className="proj-card"
+                >
+                  <div
+                    className="proj-card-gradient"
+                    style={{ background: projectGradients[2] }}
+                  />
+                  <div className="proj-card-scrim" style={{
+                    background: "linear-gradient(to right, rgba(10,0,20,0.92) 0%, rgba(10,0,20,0.55) 50%, rgba(10,0,20,0.2) 100%)"
+                  }} />
+
+                  <div className="proj-card-tag" style={{ top: 16, right: 16 }}>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <Chip label={third.type} size="small" sx={{
+                        background: "rgba(139,92,246,0.2)",
+                        border: "1px solid rgba(139,92,246,0.35)",
+                        color: "#c4b5fd",
+                        fontSize: "0.6rem",
+                        height: 22,
+                      }} />
+                      <Chip label={third.role} size="small" sx={{
+                        background: "rgba(255,255,255,0.07)",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        color: "rgba(255,255,255,0.55)",
+                        fontSize: "0.6rem",
+                        height: 22,
+                      }} />
+                    </div>
+                  </div>
+
+                  <div className="proj-card-content" style={{ maxWidth: 480 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                      <div className="proj-card-icon" style={{ marginBottom: 0 }}>
+                        <Icon style={{ width: 16, height: 16, color: "#a78bfa" }} />
                       </div>
-                      <div className="flex flex-wrap justify-end gap-2">
-                        <Chip
-                          label={project.type}
-                          size="small"
-                          variant="outlined"
-                          sx={{
-                            borderColor: "rgba(139,92,246,0.35)",
-                            color: "#C4B5FD",
-                          }}
-                        />
-                        <Chip
-                          label={project.role}
-                          size="small"
-                          variant="outlined"
-                          sx={{
-                            borderColor: "rgba(255,255,255,0.2)",
-                            color: "#B5B7C6",
-                          }}
-                        />
+                      <div>
+                        <p className="proj-card-title" style={{ marginBottom: 2 }}>{third.title}</p>
+                        <p className="proj-card-subtitle" style={{ marginBottom: 0 }}>{third.subtitle}</p>
                       </div>
                     </div>
 
-                    <h3 className="text-subtitle text-white mb-1">
-                      {project.title}
-                    </h3>
-                    <p className="text-small text-[#A1A1B5] mb-4">
-                      {project.subtitle}
-                    </p>
-                    <p className="text-sm text-[#B5B7C6] mb-4">
-                      {project.summary}
-                    </p>
+                    <p className="proj-card-summary">{third.summary}</p>
 
-                    <Stack
-                      direction="row"
-                      flexWrap="wrap"
-                      gap={1}
-                      className="mb-4"
-                    >
-                      {project.technologies.slice(0, 4).map((tech) => (
-                        <Chip
-                          key={tech}
-                          label={tech}
-                          size="small"
-                          variant="outlined"
-                          sx={{
-                            borderColor: "rgba(139,92,246,0.25)",
-                            color: "#C4B5FD",
-                          }}
-                        />
+                    <div className="proj-card-evidence">
+                      {third.evidence.slice(0, 2).map((item) => (
+                        <div key={item.title} className="proj-card-evidence-item">
+                          <span style={{ color: "#8b5cf6", fontSize: "0.55rem", marginTop: 2 }}>▸</span>
+                          <span><strong>{item.title}:</strong> {item.detail}</span>
+                        </div>
                       ))}
-                    </Stack>
+                    </div>
 
-                    <ul className="space-y-2 mb-5">
-                      {project.evidence.slice(0, 3).map((item) => (
-                        <li
-                          key={item.title}
-                          className="text-sm text-[#B5B7C6] flex items-start gap-2"
-                        >
-                          <span className="text-[#C4B5FD] mt-1">-</span>
-                          <span>
-                            <span className="text-white/90 font-medium">
-                              {item.title}:
-                            </span>{" "}
-                            {item.detail}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="mt-auto space-y-3">
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                       <Button
                         component={Link}
-                        to={buildProjectInquiryHref(
-                          project,
-                          "home_featured_project",
-                        )}
-                        onClick={() =>
-                          trackEvent({
-                            action: "project_card_cta_click",
-                            category: "Projects",
-                            label: `home_featured:${project.id}`,
-                          })
-                        }
+                        to={buildProjectInquiryHref(third, "home_featured_project")}
+                        onClick={() => trackEvent({
+                          action: "project_card_cta_click",
+                          category: "Projects",
+                          label: `home_featured:${third.id}`,
+                        })}
                         variant="contained"
-                        color="primary"
-                        className="button-primary w-full px-4 py-2.5 text-sm"
+                        size="small"
+                        sx={{
+                          background: "#7c3aed",
+                          color: "#fff",
+                          fontSize: "0.7rem",
+                          fontFamily: "'DM Sans', sans-serif",
+                          textTransform: "none",
+                          fontWeight: 600,
+                          letterSpacing: "0.02em",
+                          borderRadius: "6px",
+                          px: 2.5,
+                          py: 1,
+                          "&:hover": { background: "#6d28d9" },
+                        }}
                       >
                         Discuss this project
                       </Button>
-                      <div className="flex items-center justify-between gap-3">
-                        {project.serviceHref ? (
-                          <Link
-                            to={project.serviceHref}
-                            className="text-xs font-semibold text-[#C4B5FD] hover:text-[#E9D5FF] transition-colors"
-                          >
-                            Related service
-                          </Link>
-                        ) : (
-                          <span />
-                        )}
-                        {repoLink ? (
-                          <a
-                            href={repoLink.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-xs font-semibold text-[#A1A1B5] hover:text-white transition-colors"
-                          >
-                            <MdOpenInNew className="w-3.5 h-3.5 mr-1" />
-                            Source repo
-                          </a>
-                        ) : null}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.article>
-            );
-          })}
-        </div>
 
-        <div className="text-center">
-          <Button
-            component={Link}
-            to="/portfolio"
-            variant="outlined"
-            color="secondary"
-            className="button-secondary px-8 py-3.5 text-sm"
+                      {third.serviceHref && (
+                        <Link
+                          to={third.serviceHref}
+                          style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            fontSize: "0.72rem",
+                            fontWeight: 600,
+                            color: "#c4b5fd",
+                            textDecoration: "none",
+                          }}
+                        >
+                          Related service
+                        </Link>
+                      )}
+
+                      {repoLink && (
+                        <a
+                          href={repoLink.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            fontSize: "0.72rem",
+                            color: "rgba(255,255,255,0.4)",
+                            textDecoration: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 4,
+                          }}
+                        >
+                          <MdOpenInNew style={{ width: 13, height: 13 }} />
+                          Source repo
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </motion.article>
+              );
+            })()}
+          </motion.div>
+
+          {/* ── Footer CTA ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, delay: 0.45 }}
+            className="mt-8 text-center"
           >
-            Explore Full Portfolio
-          </Button>
+            <Button
+              component={Link}
+              to="/portfolio"
+              variant="outlined"
+              sx={{
+                borderColor: "rgba(139,92,246,0.4)",
+                color: "#c4b5fd",
+                fontFamily: "'DM Sans', sans-serif",
+                textTransform: "none",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                borderRadius: "8px",
+                px: 4,
+                py: 1.5,
+                "&:hover": {
+                  borderColor: "#8b5cf6",
+                  background: "rgba(139,92,246,0.07)",
+                  color: "#ddd6fe",
+                },
+              }}
+            >
+              Explore Full Portfolio
+            </Button>
+          </motion.div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
