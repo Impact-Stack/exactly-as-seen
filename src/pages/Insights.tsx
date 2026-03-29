@@ -1,18 +1,13 @@
+import { motion } from "framer-motion";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
-import blogFlutter from "@/assets/blog-flutter.jpg";
-import blogPopia from "@/assets/blog-popia.jpg";
-import blogGovt from "@/assets/blog-govt.jpg";
 import { Link } from "react-router-dom";
 import { event as trackEvent } from "@/lib/analytics";
 import { buildProjectInquiryHref } from "@/lib/lead-routing";
 import { getProjectById, projectInsightsSeed } from "@/lib/projects";
 import { buildProjectItemListSchema } from "@/lib/schema-projects";
-import { Button, Card, CardContent, Chip } from "@mui/material";
-import heroBg from "@/assets/hero-bg.jpg";
-
-const insightImages = [blogPopia, blogGovt, blogFlutter];
+import { Button } from "@mui/material";
 
 const insights = projectInsightsSeed.reduce<Array<{
   id: string;
@@ -21,17 +16,13 @@ const insights = projectInsightsSeed.reduce<Array<{
   date: string;
   summary: string;
   projectId: string;
-  image: string;
   relatedProject: NonNullable<ReturnType<typeof getProjectById>>;
-}>>((acc, insight, index) => {
+}>>((acc, insight) => {
     const relatedProject = getProjectById(insight.projectId);
-    if (!relatedProject) {
-      return acc;
-    }
+    if (!relatedProject) return acc;
 
     acc.push({
       ...insight,
-      image: insightImages[index % insightImages.length],
       relatedProject,
     });
 
@@ -53,65 +44,101 @@ export default function InsightsPage() {
         structuredData={insightsStructuredData}
       />
       <PageShell>
-        <section className="section-padding bg-[#05050A] border-t border-white/5 relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 opacity-20">
-            <img src={heroBg} alt="" className="w-full h-full object-cover" aria-hidden="true" />
-          </div>
-          <div className="container-narrow relative">
-            <div className="max-w-3xl mb-12">
-              <p className="tag-label mb-3">INSIGHTS</p>
-              <h1 className="text-hero text-white mb-4">Project-Derived Technical Briefs</h1>
-              <p className="text-lg text-[#B5B7C6]">
-                Implementation notes derived from real delivery work across security operations, platform governance, and
-                mobile product execution.
-              </p>
-            </div>
+        <section className="relative min-h-screen py-32 overflow-hidden bg-black">
+          {/* Fixed Background Layer */}
+          <div 
+            className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url('/gradient.jpg')` }}
+          />
+          
+          {/* Frosted Glass Overlay */}
+          <div className="absolute inset-0 z-10 bg-black/60 backdrop-blur-3xl" />
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {insights.map((item) => (
-                <Card key={item.id} id={item.id} className="surface-card overflow-hidden card-hover">
-                  <img src={item.image} alt={item.title} className="w-full h-52 object-cover" loading="lazy" />
-                  <CardContent>
-                    <Chip label={item.category} size="small" sx={{ bgcolor: "rgba(139,92,246,0.2)", color: "#C4B5FD", mb: 1 }} />
-                    <h2 className="text-subtitle text-white mb-2">{item.title}</h2>
-                    <p className="text-sm text-[#A1A1B5] mb-3">{item.date}</p>
-                    <p className="text-body text-[#B5B7C6] mb-4">{item.summary}</p>
-                    <div className="flex flex-col gap-2">
-                      <Button
-                        component={Link}
-                        to={`/portfolio#${item.relatedProject.id}`}
-                        variant="text"
-                        color="secondary"
-                        onClick={() =>
-                          trackEvent({
-                            action: "insight_project_click",
-                            category: "Insights",
-                            label: `portfolio_link:${item.relatedProject.id}`,
-                          })
-                        }
-                        sx={{ justifyContent: "flex-start", color: "#C4B5FD", paddingLeft: 0 }}
-                      >
-                        View related project →
-                      </Button>
-                      <Button
-                        component={Link}
-                        to={buildProjectInquiryHref(item.relatedProject, "insights_article")}
-                        variant="text"
-                        color="secondary"
-                        onClick={() =>
-                          trackEvent({
-                            action: "insight_project_click",
-                            category: "Insights",
-                            label: `contact_link:${item.relatedProject.id}`,
-                          })
-                        }
-                        sx={{ justifyContent: "flex-start", color: "#B5B7C6", paddingLeft: 0 }}
-                      >
-                        Discuss implementation →
-                      </Button>
+          <div className="container-narrow relative z-20">
+            <header className="max-w-3xl mb-24 px-4">
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-[10px] uppercase tracking-[0.5em] font-black text-[#C4B5FD] mb-6"
+              >
+                Implementation Notes
+              </motion.p>
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-6xl md:text-7xl font-black tracking-tighter text-white mb-8"
+              >
+                Project-Derived Briefs
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-xl text-white/60 font-medium leading-relaxed"
+              >
+                Technical documentation born from real delivery work across security operations, 
+                platform governance, and mobile product execution.
+              </motion.p>
+            </header>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
+              {insights.map((item, i) => (
+                <motion.article
+                  key={item.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="group"
+                >
+                  {/* Glassmorphism Card */}
+                  <div className="h-full min-h-[480px] p-10 rounded-[40px] border border-white/10 bg-white/[0.03] backdrop-blur-md flex flex-col transition-all duration-500 hover:bg-white/[0.08] hover:border-white/20">
+                    
+                    <div className="flex justify-between items-start mb-12">
+                      <span className="text-[10px] font-mono font-bold text-white/30 tracking-widest">
+                        0{i + 1} // 0{insights.length}
+                      </span>
+                      <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/20 group-hover:text-white group-hover:border-white transition-all">
+                        <span className="text-xl">↗</span>
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
+
+                    <div className="mb-6">
+                      <p className="text-[10px] uppercase tracking-[0.3em] font-black text-[#C4B5FD] mb-4">
+                        {item.category}
+                      </p>
+                      <h2 className="text-3xl font-black text-white tracking-tighter leading-tight mb-4">
+                        {item.title}
+                      </h2>
+                      <p className="text-sm text-white/50 font-medium leading-relaxed">
+                        {item.summary}
+                      </p>
+                    </div>
+
+                    <div className="mt-auto space-y-6">
+                      <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">
+                        {item.date}
+                      </p>
+                      
+                      <div className="flex flex-col items-start gap-4">
+                        <Link
+                          to={`/portfolio#${item.relatedProject.id}`}
+                          className="text-[11px] font-black uppercase tracking-[0.2em] text-white hover:text-[#C4B5FD] transition-colors"
+                          onClick={() => trackEvent({ action: "insight_project_click", category: "Insights", label: item.relatedProject.id })}
+                        >
+                          View Related Project <span className="ml-1">→</span>
+                        </Link>
+                        
+                        <Link
+                          to={buildProjectInquiryHref(item.relatedProject, "insights_article")}
+                          className="text-[11px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors"
+                          onClick={() => trackEvent({ action: "insight_project_click", category: "Insights", label: item.relatedProject.id })}
+                        >
+                          Discuss Implementation <span className="ml-1">→</span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </motion.article>
               ))}
             </div>
           </div>
@@ -120,4 +147,3 @@ export default function InsightsPage() {
     </>
   );
 }
-
