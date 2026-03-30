@@ -24,7 +24,7 @@ const faqs = [
 
 export default function ConsultingProcessFaq() {
   const { ref, isInView } = useInView();
-  const [expandedIndex, setExpandedIndex] = useState(0);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   const getLabel = (index) => {
     const letters = ["A", "B", "C", "D"];
