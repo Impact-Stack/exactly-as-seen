@@ -299,7 +299,7 @@ export default function Header() {
       `}</style>
 
       <header
-        className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06] bg-[#05050A]/80 backdrop-blur-xl"
+        className="fixed top-0 left-0 right-0 z-50 bg-[#05050A]/80 backdrop-blur-xl"
       >
         <div className="container-narrow flex items-center justify-between h-[76px]">
 
@@ -442,13 +442,14 @@ export default function Header() {
             <Button
               component={Link}
               to="/contact"
-              variant="contained"
-              color="primary"
-              className="button-primary px-6 py-2.5 text-sm"
+              variant="outlined" // Switched to outlined to better match a bordered design
+              className="button-secondary w-full px-6 py-2.5 text-sm inline-block border border-gray-500 rounded hover:border-white transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ textTransform: 'none' }}
             >
               Book a Consultation
             </Button>
           </div>
+          {/* px-6 py-2.5 text-sm */}
 
           {/* Mobile toggle */}
           <IconButton
