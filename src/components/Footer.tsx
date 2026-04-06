@@ -40,10 +40,10 @@ export default function Footer() {
     <footer className="relative w-full overflow-hidden border-t border-white/[0.07]">
       {/* Background Image Layer */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/footer-bg.webp" 
-          alt="" 
-          className="w-full h-full object-cover opacity-60" 
+        <img
+          src="/footer-bg.webp"
+          alt=""
+          className="w-full h-full object-cover opacity-60"
         />
       </div>
 
@@ -54,25 +54,42 @@ export default function Footer() {
       <div className="relative z-20">
         <div className="container-narrow section-padding">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 text-[#A1A1B5]">
-            <div>
-              <Link to="/" className="text-xl font-bold font-display block mb-3">
-                <span className="text-[#8B5CF6]">ImpactStack</span>
-                <span className="text-white"> Africa</span>
+            <div className="flex flex-col items-start">
+              {/* 1. Logo & Brand Name Stacked */}
+              <Link to="/" className="flex items-center mb-4 group">
+                <img
+                  src="/gif-orb.gif"
+                  alt="ImpactStack Africa Logo"
+                  /* Increased size and used a slight negative margin to tuck the text closer */
+                  className="h-16 w-16 object-contain -ml-4 transition-transform duration-300"
+                />
+                <div className="flex flex-col -ml-1">
+                  <span className="text-[#8B5CF6] text-xl font-bold font-display leading-none">
+                    ImpactStack
+                  </span>
+                  <span className="text-white text-xl font-bold font-display leading-tight">
+                    Africa
+                  </span>
+                </div>
               </Link>
-              <p className="text-small text-[#A1A1B5] mb-4">
+
+              {/* 2. Description Text */}
+              <p className="text-sm text-[#A1A1B5] mb-6 max-w-[240px] leading-relaxed">
                 Enterprise technology delivery partner for South Africa.
               </p>
-              <div className="flex gap-4">
+
+              {/* 3. Social Icons */}
+              <div className="flex gap-5">
                 {socialLinks.map((social) => (
                   <a
                     key={social.label}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#A1A1B5] hover:text-white transition-colors"
+                    className="text-[#A1A1B5] hover:text-white transition-all duration-200 hover:-translate-y-1"
                     aria-label={social.label}
                   >
-                    <social.icon className="w-5 h-5" />
+                    <social.icon className="w-6 h-6" />
                   </a>
                 ))}
               </div>

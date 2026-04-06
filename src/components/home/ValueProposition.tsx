@@ -33,7 +33,7 @@ export default function ValueProposition() {
 
   return (
     <section
-      className="section-padding bg-[#0A0A0A] border-t border-white/5"
+      className="section-padding bg-black/50 backdrop-blur-2xl border border-white/10"
       ref={ref}
     >
       <div className="container-narrow">
