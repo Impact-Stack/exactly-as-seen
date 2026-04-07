@@ -9,7 +9,6 @@ import SolutionsOverview from "@/components/home/SolutionsOverview";
 import IndustriesSection from "@/components/home/IndustriesSection";
 import ProjectsSection from "@/components/home/ProjectsSection";
 import InvestSwipeSection from "@/components/home/InvestSwipeSection";
-import CertificationsSection from "@/components/home/CertificationsSection";
 import InsightsSection from "@/components/home/InsightsSection";
 import ProcurementBadgeStrip from "@/components/home/ProcurementBadgeStrip";
 import SpeakToExpertCTA from "@/components/home/SpeakToExpertCTA";
@@ -113,7 +112,6 @@ const Index = () => {
         <ProcurementBadgeStrip />
         <IndustriesSection />
         <ProjectsSection />
-        <CertificationsSection />
         <InsightsSection />
         <InvestSwipeSection />
         <FaqSection />
