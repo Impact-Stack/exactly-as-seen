@@ -7,7 +7,6 @@ import { event as trackEvent } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/site";
 import { Button, MenuItem, Select } from "@mui/material";
 
-const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID?.trim();
 const PROJECT_TYPE_OPTIONS = [
   { value: "Web Application", label: "Web Application" },
   { value: "Mobile App", label: "Mobile App" },
@@ -167,8 +166,7 @@ export default function ContactPage() {
     }
 
     try {
-      if (!FORMSPREE_ID) throw new Error("Formspree config missing");
-      const resp = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const resp = await fetch(`https://formspree.io/f/xykbvpby`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(payload),
@@ -178,7 +176,7 @@ export default function ContactPage() {
       toast.success("Message sent. We will respond within 24 hours.");
       form.reset();
     } catch {
-      toast.error("Error sending. Email hello@impactstack.africa directly.");
+      toast.error("Error sending. Email business@impactstack.africa directly.");
     } finally {
       setLoading(false);
     }
@@ -222,11 +220,11 @@ export default function ContactPage() {
                     <div className="flex flex-col py-6 px-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden gap-4">
                       {/* Email Section */}
                       <a
-                        href="mailto:hello@impactstack.africa"
+                        href="mailto:business@impactstack.africa"
                         className="flex flex-col items-center"
                       >
                         <p className="text-[#8B5CF6] text-[10px] font-bold uppercase mb-1 tracking-widest">Email</p>
-                        <p className="text-white text-sm">hello@impactstack.africa</p>
+                        <p className="text-white text-sm">business@impactstack.africa</p>
                       </a>
 
                       {/* WhatsApp Section - Highlighted style from your reference */}
