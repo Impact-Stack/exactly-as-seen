@@ -23,12 +23,12 @@ const footerLinks = {
 const socialLinks = [
   {
     label: "LinkedIn",
-    href: "https://linkedin.com/company/impactstack-africa",
+    href: "https://www.linkedin.com/company/impactstack-africa-pty-ltd/",
     icon: FaLinkedin,
   },
   {
     label: "GitHub",
-    href: "https://github.com/impactstack-africa",
+    href: "https://github.com/Impact-Stack",
     icon: FaGithub,
   },
 ];
@@ -138,11 +138,11 @@ export default function Footer() {
               <ul className="space-y-3 text-sm text-[#A1A1B5]">
                 <li>
                   <a
-                    href="mailto:hello@impactstack.africa"
+                    href="mailto:business@impactstack.africa"
                     className="hover:text-white transition-colors inline-flex items-center gap-2"
                   >
                     <MdEmail className="w-4 h-4" />
-                    hello@impactstack.africa
+                    business@impactstack.africa
                   </a>
                 </li>
                 <li>
