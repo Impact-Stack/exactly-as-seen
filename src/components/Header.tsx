@@ -309,15 +309,11 @@ export default function Header() {
             className="flex items-center text-xl font-bold font-display group"
           >
             <img
-              src="/gif-orb.gif"
+              src="/logo.png"
               alt="ImpactStack Africa Logo"
-              /* Increased to h-16 (64px) and added a small negative right margin to bring text closer */
-              className="h-16 w-16 object-contain -mr-1 transition-transform duration-300 group-hover:scale-105"
+              className="h-20 w-auto object-contain brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
             />
-            <div className="flex flex-row">
-              <span className="text-[#8B5CF6]">ImpactStack</span>
-              <span className="text-white ml-1">Africa</span>
-            </div>
+
           </Link>
 
           {/* Desktop Nav */}

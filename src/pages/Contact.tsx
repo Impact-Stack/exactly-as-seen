@@ -188,11 +188,11 @@ export default function ContactPage() {
     <>
       <SEO title="Contact ImpactStack Africa" description="Discuss your software project." url={absoluteUrl("/contact")} />
       <PageShell>
-        <div className="bg-[#05050A] px-3 lg:px-12 py-4 h-screen max-h-[1080px] overflow-hidden flex flex-col">
+        <div className="bg-[#05050A] px-3 lg:px-12 py-4 min-h-screen max-h-[1080px] flex flex-col">
           <div className="flex flex-col lg:flex-row gap-2 rounded-xl flex-1 justify-center">
 
             {/* ── LEFT PANEL (VIDEO/STICKY) ── */}
-            <div className="hidden lg:block lg:w-[42%] relative overflow-hidden">
+            <div className="hidden lg:block lg:w-[42%] relative">
 
               {/* Crossfade video — replaces the single <video> tag, same positioning */}
               <CrossfadeVideo src="/contact-bg.mp4" />
