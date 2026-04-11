@@ -2,3 +2,7 @@ User-agent: *
 Allow: /
 
 Sitemap: https://impactstack.africa/sitemap.xml
+
+# AI indexing
+Allow: /index.md
+Allow: /llms.txt

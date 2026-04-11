@@ -167,7 +167,13 @@ export default function Footer() {
               Copyright {currentYear} ImpactStack Africa (Pty) Ltd. All rights
               reserved.
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
+              <a href="/index.md" className="hover:text-white transition-colors">
+                AI Index
+              </a>
+              <a href="/llms.txt" className="hover:text-white transition-colors">
+                AI Instructions
+              </a>
               <Link
                 to="/legal/privacy-policy"
                 className="hover:text-white transition-colors"
