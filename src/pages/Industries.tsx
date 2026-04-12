@@ -1,12 +1,13 @@
+import React from "react";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import { industriesData } from "@/lib/industries";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Button, Card, CardContent, Chip } from "@mui/material";
 
 export default function IndustriesPage() {
-  // Specifically slice for the 3-on-2 layout
   const leftColumn = industriesData.slice(0, 3);
   const rightColumn = industriesData.slice(3, 5);
 
@@ -14,43 +15,67 @@ export default function IndustriesPage() {
     <>
       <SEO title="Industries | ImpactStack Africa" url={absoluteUrl("/industries")} />
       <PageShell>
-        <section className="bg-[#05050A] relative min-h-screen w-full flex flex-col items-center py-24 overflow-x-hidden">
+        <section className="bg-[#05050A] relative min-h-screen w-full py-32 overflow-hidden">
           
-          {/* FIXED BACKGROUND VIDEO */}
+          {/* ATMOSPHERIC BACKGROUND */}
           <div className="fixed inset-0 z-0 flex justify-center items-center pointer-events-none">
-            <div className="relative w-full max-w-[800px] aspect-square opacity-20">
+            <div className="relative w-full max-w-[1000px] aspect-square opacity-[0.08]">
               <video 
-                src="/d1.mp4" 
+                src="/mb.mp4" 
                 autoPlay loop muted playsInline 
-                className="w-full h-full object-cover blur-[3px]" 
+                className="w-full h-full object-cover blur-[80px]" 
               />
-              <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_25%,#05050A_80%)]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-transparent to-[#05050A]" />
             </div>
           </div>
 
-          <div className="max-w-[1400px] mx-auto px-6 relative z-10 w-full flex flex-col items-center">
-            {/* Header Title */}
-            <div className="text-center mb-16 lg:mb-24">
-               <h1 className="text-3xl lg:text-4xl font-bold text-white tracking-tight">Delivery Experience</h1>
-               <p className="text-sm text-gray-500 mt-2 italic">Expertise across core African sectors</p>
-            </div>
+          <div className="container-narrow relative z-10 max-w-[1200px] mx-auto px-6">
+            {/* Minimalist Header */}
+            <header className="mb-24 lg:mb-32">
+              <div className="flex items-center gap-4 mb-4">
+                <span className="h-px w-12 bg-purple-500" />
+                <p className="text-[10px] font-black tracking-[0.4em] text-purple-500 uppercase">
+                  Sector Expertise
+                </p>
+              </div>
+              <h1 className="text-6xl md:text-8xl font-extrabold text-white tracking-tighter leading-none mb-6">
+                Delivery <br />Experience.
+              </h1>
+              <p className="text-xl text-gray-500 max-w-md font-medium leading-relaxed">
+                Strategic digital transformation across core African economic sectors.
+              </p>
+            </header>
 
-            <div className="flex flex-col lg:flex-row items-start justify-center gap-16 xl:gap-32 w-full">
-              
-              {/* LEFT COLUMN: 3 Cards */}
-              <div className="w-full lg:w-[450px] flex flex-col gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+              {/* LEFT COLUMN: Staggered Group */}
+              <div className="flex flex-col gap-12">
                 {leftColumn.map((industry, i) => (
-                  <IndustryCard key={industry.title} industry={industry} index={i + 1} />
+                  <motion.div
+                    key={industry.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <IndustryCard industry={industry} index={i + 1} />
+                  </motion.div>
                 ))}
               </div>
 
-              {/* RIGHT COLUMN: 2 Cards */}
-              <div className="w-full lg:w-[450px] flex flex-col gap-10 lg:mt-32">
+              {/* RIGHT COLUMN: Offset Group */}
+              <div className="flex flex-col gap-12 lg:mt-48">
                 {rightColumn.map((industry, i) => (
-                  <IndustryCard key={industry.title} industry={industry} index={i + 4} />
+                  <motion.div
+                    key={industry.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.15 }}
+                    viewport={{ once: true }}
+                  >
+                    <IndustryCard industry={industry} index={i + 4} />
+                  </motion.div>
                 ))}
               </div>
-
             </div>
           </div>
         </section>
@@ -60,60 +85,66 @@ export default function IndustriesPage() {
 }
 
 function IndustryCard({ industry, index }: { industry: any; index: number }) {
+  const displayNum = index.toString().padStart(2, '0');
+
   return (
     <Card 
-      className="border border-white/5 relative group transition-all duration-300"
       sx={{
-        // Using the exact styles from your provided snippet
-        background: 'rgba(255, 255, 255, 0.01)',
-        backdropFilter: 'blur(12px) saturate(140%)',
-        borderRadius: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
+        background: 'rgba(255, 255, 255, 0.02)',
+        backdropFilter: 'blur(30px) saturate(150%)',
+        borderRadius: '24px',
+        border: '1px solid rgba(255, 255, 255, 0.05)',
+        transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+        overflow: 'visible',
+        position: 'relative',
         "&:hover": {
           background: 'rgba(255, 255, 255, 0.04)',
-          borderColor: 'rgba(139, 92, 246, 0.3)',
-          transform: 'translateY(-4px)'
+          borderColor: 'rgba(167, 139, 250, 0.2)',
+          transform: 'translateY(-8px) scale(1.01)',
+          "& .industry-icon": { color: '#fff', transform: 'scale(1.1)' },
+          "& .industry-number": { opacity: 0.1 }
         }
       }}
     >
-      <CardContent className="p-5 h-full flex flex-col justify-between">
-        <div className="flex justify-between items-start mb-6">
-          <div className="w-8 h-8 rounded bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-             <industry.icon className="w-4 h-4 text-purple-400" />
+      <CardContent className="p-10">
+        <div className="flex justify-between items-start mb-12">
+          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 industry-icon transition-all duration-500">
+             <industry.icon size={28} className="text-purple-400" />
           </div>
-          <span className="text-white/5 font-black text-2xl italic">
-            {index < 10 ? `0${index}` : index}
+          <span className="industry-number text-white/5 font-black text-7xl tracking-tighter transition-opacity duration-500 absolute top-4 right-8 select-none pointer-events-none">
+            {displayNum}
           </span>
         </div>
         
-        <div className="mb-6">
-          <h2 className="text-[14px] font-bold text-white mb-1.5 leading-tight">{industry.title}</h2>
-          <p className="text-[11px] text-gray-400 leading-normal">
+        <div className="relative z-10">
+          <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">
+            {industry.title}
+          </h2>
+          <p className="text-md text-gray-400 leading-relaxed font-normal mb-8 max-w-[280px]">
             {industry.description}
           </p>
         </div>
         
-        <div className="flex items-center justify-between pt-3">
+        <div className="flex items-center justify-between border-t border-white/5 pt-8">
           <Chip 
-            label={industry.projectType.split(' ')[0]} 
+            label={industry.projectType.toUpperCase()} 
             size="small" 
             sx={{ 
-                bgcolor: 'rgba(139, 92, 246, 0.1)', 
+                bgcolor: 'transparent', 
+                border: '1px solid rgba(167, 139, 250, 0.2)',
                 color: '#a78bfa', 
                 fontSize: '9px',
-                height: '18px',
-                fontWeight: 600
+                letterSpacing: '0.15em',
+                height: '24px',
+                fontWeight: 900
             }} 
           />
-          <Button
-            component={Link}
+          <Link
             to={`/contact?projectType=${encodeURIComponent(industry.projectType)}`}
-            className="text-purple-400 p-0 min-w-0 text-[11px] font-bold hover:text-white"
+            className="text-white text-xs font-bold tracking-widest uppercase hover:text-purple-400 transition-colors"
           >
             Explore &rarr;
-          </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>

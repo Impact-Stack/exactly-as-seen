@@ -309,9 +309,9 @@ export default function Header() {
             className="flex items-center text-xl font-bold font-display group"
           >
             <img
-              src="/logo.png"
+              src="/isa (2).png"
               alt="ImpactStack Africa Logo"
-              className="h-20 w-auto object-contain brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
+              className="h-12 w-auto object-contain brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
             />
 
           </Link>

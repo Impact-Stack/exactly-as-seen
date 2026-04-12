@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { MdEmail, MdPhone } from "react-icons/md";
 
 const footerLinks = {
@@ -23,13 +23,18 @@ const footerLinks = {
 const socialLinks = [
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/company/impactstack-africa-pty-ltd/",
+    href: "https://www.linkedin.com/company/impactstack-africa-pty-ltd/posts/?feedView=all",
     icon: FaLinkedin,
   },
   {
     label: "GitHub",
     href: "https://github.com/Impact-Stack",
     icon: FaGithub,
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/impactstack_africa/",
+    icon: FaInstagram,
   },
 ];
 
@@ -58,9 +63,9 @@ export default function Footer() {
               {/* 1. Logo & Brand Name Stacked */}
               <Link to="/" className="flex items-center mb-4 group">
                 <img
-              src="/logo.png"
+              src="/isa (4).png"
               alt="ImpactStack Africa Logo"
-              className="h-20 w-auto object-contain -ml-4 brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
+              className="h-12 w-auto object-contain -ml-1 brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
             />
               </Link>
 
