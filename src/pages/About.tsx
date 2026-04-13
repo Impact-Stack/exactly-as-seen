@@ -1,13 +1,11 @@
+import React from "react";
+import { Card, CardContent, Chip, Link, Stack } from "@mui/material";
+import { ArrowForward, FiberManualRecord, Verified } from "@mui/icons-material";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import { allProjects } from "@/lib/projects";
 import { procurementProfile } from "@/lib/procurement";
-import { Card, CardContent, Chip, Stack } from "@mui/material";
-import heroBg from "@/assets/hero-bg.jpg";
-import caseHr from "@/assets/case-hr.jpg";
-import caseEcommerce from "@/assets/case-ecommerce.jpg";
-import caseNfc from "@/assets/case-nfc.jpg";
 
 const values = [
   {
@@ -43,16 +41,16 @@ const roleBreakdown = allProjects.reduce<Record<string, number>>(
 const deliveryHighlights = [
   { label: "Documented Projects", value: `${allProjects.length}` },
   {
-    label: "Security-Focused Projects",
-    value: `${allProjects.filter((project) => project.filterTags.includes("Security")).length}+`,
+    label: "Security-Focused",
+    value: `${allProjects.filter((p) => p.filterTags.includes("Security")).length}+`,
   },
   {
-    label: "Mobile Delivery Projects",
-    value: `${allProjects.filter((project) => project.filterTags.includes("Mobile")).length}+`,
+    label: "Mobile Delivery",
+    value: `${allProjects.filter((p) => p.filterTags.includes("Mobile")).length}+`,
   },
   {
-    label: "Web Delivery Projects",
-    value: `${allProjects.filter((project) => project.filterTags.includes("Web")).length}+`,
+    label: "Web Delivery",
+    value: `${allProjects.filter((p) => p.filterTags.includes("Web")).length}+`,
   },
 ];
 
@@ -61,243 +59,262 @@ export default function AboutPage() {
     <>
       <SEO
         title="About ImpactStack Africa | Youth-Led Software Team"
-        description="Learn how ImpactStack Africa delivers enterprise software with CIPC/CSD procurement readiness while creating technology opportunities for young South African developers."
+        description="Learn how ImpactStack Africa delivers enterprise software with CIPC/CSD procurement readiness."
         url={absoluteUrl("/about")}
       />
+
       <PageShell>
-        <section className="bg-[#05050A] py-24 px-4 border-b border-white/5 relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 opacity-15">
+        {/* --- HERO SECTION --- */}
+        <section className="bg-[#050505] pt-32 pb-24 px-4 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
             <img
-              src={heroBg}
+              src="gradient.jpg"
               alt=""
               className="w-full h-full object-cover"
               aria-hidden="true"
             />
           </div>
-          <div className="container-narrow text-center relative">
-            <h1 className="text-hero text-white mb-4">
-              Empowering South Africa&apos;s Next Generation
+          <div className="container-narrow text-center relative z-10">
+            <div className="flex justify-center mb-6">
+              <span className="text-[#C4B5FD] text-3xl">✦</span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-medium text-white mb-6 tracking-tight leading-tight">
+              Empowering South Africa&apos;s <br /> Next Generation
             </h1>
-            <p className="text-card-title text-[#B5B7C6] font-light">
+            <p className="max-w-2xl mx-auto text-xl text-zinc-400 font-light leading-relaxed mb-10">
               Youth-led technology company creating opportunities through
-              innovation
+              accountable software delivery and practical innovation.
             </p>
+            <Link href="/portfolio">
+              <button className="bg-white text-black px-10 py-3.5 rounded-full font-medium hover:bg-zinc-200 transition-all hover:scale-105 active:scale-95">
+                Explore our work
+              </button>
+            </Link>
           </div>
         </section>
 
-        <section className="py-12 bg-[#05050A] border-t border-white/5">
-          <div className="container-narrow">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[
-                {
-                  image: caseHr,
-                  label: "Enterprise Delivery",
-                  caption: "Secure HR platform execution",
-                },
-                {
-                  image: caseEcommerce,
-                  label: "Commerce Systems",
-                  caption: "Pricing and marketplace workflows",
-                },
-                {
-                  image: caseNfc,
-                  label: "Field Operations",
-                  caption: "Attendance + device integrations",
-                },
-              ].map((item) => (
-                <Card key={item.label} className="surface-card overflow-hidden">
+        {/* --- STORY & BENTO VALUES --- */}
+        <section className="py-24 bg-[#050505]">
+          <div className="container mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start mb-24">
+              <div>
+                <p className="text-[#C4B5FD] text-xs font-bold tracking-[0.2em] mb-4">
+                  OUR STORY
+                </p>
+                <h2 className="text-4xl text-white font-medium">
+                  From Frustration to Innovation
+                </h2>
+              </div>
+              <div className="space-y-6 text-zinc-400 text-lg leading-relaxed font-light">
+                <p>
+                  Cape Town has strong young technical talent, yet many teams
+                  are still filtered out by experience-led hiring gates before
+                  they can prove delivery value.
+                </p>
+                <p>
+                  ImpactStack Africa was built to close that gap. We combine
+                  founder-led engineering discipline with practical project
+                  execution for South African organizations.
+                </p>
+              </div>
+            </div>
+
+            {/* Bento Grid: Values */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+              {/* Feature 1: Production Quality (Updated to match second image layout) */}
+              <div className="md:col-span-7 bg-[#121214] border border-white/10 rounded-[2.5rem] p-12 flex flex-col justify-between min-h-[420px] relative overflow-hidden group">
+                {/* Layer 1: The Background Pattern */}
+                <div className="absolute inset-0 z-0 opacity-40">
                   <img
-                    src={item.image}
-                    alt={item.caption}
-                    className="h-40 w-full object-cover"
-                    loading="lazy"
+                    src="/pattern.png"
+                    alt=""
+                    className="w-full h-full object-cover object-center"
                   />
-                  <CardContent>
-                    <p className="text-xs uppercase tracking-wide text-[#A1A1B5]">
-                      {item.label}
-                    </p>
-                    <p className="text-sm text-white mt-1">{item.caption}</p>
-                  </CardContent>
-                </Card>
-              ))}
+                </div>
+
+                {/* Layer 2: The Chrome Robot (Separate from opacity-40 div) */}
+                <div className="absolute top-0 right-0 w-1/2 h-full z-10 pointer-events-none">
+                  <img
+                    src="/robot.png"
+                    alt="Chrome character"
+                    className="w-full h-full object-contain object-right-bottom translate-y-6 group-hover:translate-y-2 transition-transform duration-700 ease-out"
+                  />
+                </div>
+
+                {/* Layer 3: Content (Text is relative z-20 to stay on top) */}
+                <div className="relative z-20">
+                  <h3 className="text-3xl text-white font-medium mb-6 tracking-tight">
+                    {values[0].title}
+                  </h3>
+                  <p className="text-zinc-500 max-w-[320px] text-lg leading-relaxed font-light">
+                    {values[0].desc}
+                  </p>
+                </div>
+
+                {/* Layer 4: Footer */}
+                <div className="relative z-20 flex items-center justify-start mt-10 gap-2 group-hover:gap-4 transition-all duration-300">
+                  <span className="text-zinc-700 font-mono text-[14px] uppercase tracking-[0.3em]">
+                    Efficiency 01
+                  </span>
+                </div>
+              </div>
+
+              {/* Stacked Vertical Features */}
+              <div className="md:col-span-5 flex flex-col gap-6">
+                <div className="bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-[3rem] p-10 flex-1">
+                  <h4 className="text-white text-xl font-medium mb-3">
+                    {values[1].title}
+                  </h4>
+                  <p className="text-zinc-500 text-sm leading-relaxed">
+                    {values[1].desc}
+                  </p>
+                </div>
+                <div className="bg-[#12121A] border border-white/5 rounded-[3rem] p-10 flex-1">
+                  <h4 className="text-white text-xl font-medium mb-3">
+                    {values[3].title}
+                  </h4>
+                  <p className="text-zinc-500 text-sm leading-relaxed">
+                    {values[3].desc}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
-          <div className="container-narrow max-w-[800px] mx-auto">
-            <p className="tag-label mb-3">OUR STORY</p>
-            <h2 className="text-section text-white mb-6">
-              From Frustration to Innovation
-            </h2>
-            <div className="space-y-4 text-body text-[#B5B7C6] leading-relaxed">
-              <p>
-                Cape Town has strong young technical talent, yet many teams are
-                still filtered out by experience-led hiring gates before they
-                can prove delivery value.
-              </p>
-              <p>
-                ImpactStack Africa was built to close that gap through
-                accountable software delivery. We combine founder-led
-                engineering discipline with practical project execution for
-                South African organizations.
-              </p>
-              <p>
-                Our model is simple: deliver production-quality systems,
-                document outcomes clearly, and build career pathways while
-                solving real business and public-sector problems.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="section-padding bg-[#05050A] border-t border-white/5">
-          <div className="container-narrow">
-            <h2 className="text-section text-white mb-10">Leadership</h2>
-            <Card className="surface-card">
-              <CardContent className="p-10">
-                <h3 className="text-card-title text-white mb-1">
+        {/* --- LEADERSHIP (GLASS CARD) --- */}
+        <section className="py-24 bg-[#050505]">
+          <div className="container mx-auto px-6">
+            <div className="bg-zinc-900/30 backdrop-blur-md border border-white/10 rounded-[3.5rem] p-8 md:p-16">
+              <div className="max-w-4xl">
+                <p className="text-purple-400 text-sm font-bold mb-4">
+                  LEADERSHIP
+                </p>
+                <h3 className="text-4xl text-white font-medium mb-2">
                   Liso Wycliff Seth Hlatshwayo
                 </h3>
-                <p className="text-lg text-[#B5B7C6] mb-4">
+                <p className="text-xl text-zinc-400 mb-8">
                   Founder and Lead Developer
                 </p>
-                <p className="text-body text-[#B5B7C6] mb-6 max-w-[700px]">
+
+                <p className="text-zinc-400 text-lg mb-10 leading-relaxed font-light">
                   Google Cybersecurity certified Full-Stack Developer with
                   production systems serving 50+ daily users. Graduate of Life
-                  Choices Academy Software Development programme. Currently
-                  Developer Intern at LC Studio. Passionate about creating
-                  opportunities for talented youth developers.
+                  Choices Academy. Passionate about creating opportunities for
+                  talented youth developers.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/5 pt-10">
                   <div>
-                    <h4 className="font-semibold text-white mb-2">
-                      Technical Expertise
+                    <h4 className="text-white font-medium mb-4 flex items-center gap-2">
+                      <Verified className="text-purple-500 text-sm" /> Technical
+                      Expertise
                     </h4>
-                    <p className="text-small text-[#A1A1B5]">
+                    <p className="text-zinc-500 text-sm leading-relaxed">
                       JavaScript, Python, PHP, React, Vue.js, Node.js, Express,
                       Django, Flutter, MySQL, PostgreSQL, MongoDB, AWS, and
                       Google Cloud.
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white mb-2">
+                    <h4 className="text-white font-medium mb-4 flex items-center gap-2">
+                      <Verified className="text-purple-500 text-sm" />{" "}
                       Certifications
                     </h4>
-                    <ul className="text-small text-[#A1A1B5] space-y-1">
-                      <li>Google Cybersecurity Professional Certificate</li>
-                      <li>CISCO Introduction to Cybersecurity</li>
-                      <li>PCAP Python Programming Certification</li>
+                    <ul className="text-zinc-500 text-sm space-y-2">
+                      <li>• Google Cybersecurity Professional Certificate</li>
+                      <li>• CISCO Introduction to Cybersecurity</li>
+                      <li>• PCAP Python Programming Certification</li>
                     </ul>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
-          <div className="container-narrow">
-            <h2 className="text-section text-white mb-10">
-              Delivery Track Record
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {/* --- TRACK RECORD BAR --- */}
+        <section className="py-20 bg-[#050505] border-y border-white/5">
+          <div className="container mx-auto px-6">
+            <div className="flex flex-wrap justify-between items-center gap-10">
               {deliveryHighlights.map((item) => (
-                <Card key={item.label} className="surface-card text-center">
-                  <CardContent className="p-5">
-                    <p className="text-2xl font-bold text-[#C4B5FD] mb-1">
-                      {item.value}
-                    </p>
-                    <p className="text-xs text-[#A1A1B5] uppercase tracking-wide">
-                      {item.label}
-                    </p>
-                  </CardContent>
-                </Card>
+                <div key={item.label} className="flex flex-col">
+                  <span className="text-4xl text-white font-medium mb-1">
+                    {item.value}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold">
+                    {item.label}
+                  </span>
+                </div>
               ))}
             </div>
-            <Card className="surface-card">
-              <CardContent className="p-7">
-                <h3 className="text-subtitle text-white mb-3">
-                  Role Coverage Across Published Projects
-                </h3>
-                <Stack direction="row" flexWrap="wrap" gap={1} className="mb-4">
-                  {Object.entries(roleBreakdown).map(([role, count]) => (
-                    <Chip
-                      key={role}
-                      label={`${role}: ${count}`}
-                      size="small"
-                      variant="outlined"
-                      sx={{
-                        borderColor: "rgba(139,92,246,0.35)",
-                        color: "#C4B5FD",
-                      }}
-                    />
-                  ))}
-                </Stack>
-                <p className="text-sm text-[#B5B7C6]">
-                  Portfolio includes security engineering, technical project
-                  management, project leadership, and full-stack implementation
-                  roles with public repository evidence for each published case.
-                </p>
-              </CardContent>
-            </Card>
           </div>
         </section>
 
-        <section className="section-padding bg-[#05050A] border-t border-white/5">
-          <div className="container-narrow">
-            <h2 className="text-section text-white mb-6">
-              Procurement and Compliance Profile
-            </h2>
-            <Card className="surface-card mb-8">
-              <CardContent className="p-7 md:p-8">
-                <p className="text-body text-[#B5B7C6] mb-5">
-                  IMPACTSTACK AFRICA (PTY) LTD is registered with the Companies
-                  and Intellectual Property Commission (CIPC), listed on the
-                  National Treasury Central Supplier Database (CSD), and
-                  maintains valid tax compliance status. These credentials
-                  support procurement-readiness for municipalities, state-owned
-                  entities, and enterprise clients.
+        {/* --- PROCUREMENT SECTION (PURPLE GRADIENT) --- */}
+        <section className="py-24 bg-[#050505]">
+          <div className="container mx-auto px-6">
+            <div className="bg-gradient-to-br from-[#1A1A2E] to-[#0D0D15] border border-purple-500/20 rounded-[4rem] p-10 md:p-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+              <div>
+                <h2 className="text-4xl md:text-5xl font-medium text-white mb-8 leading-tight tracking-tight">
+                  Procurement-Ready <br /> for Enterprise.
+                </h2>
+                <p className="text-zinc-400 text-lg mb-10 font-light leading-relaxed">
+                  IMPACTSTACK AFRICA (PTY) LTD is registered with the CIPC and
+                  listed on the National Treasury Central Supplier Database
+                  (CSD). We maintain valid tax compliance for municipalities and
+                  state-owned entities.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {procurementProfile.map((item) => (
                     <div
                       key={item.label}
-                      className="rounded-xl bg-[#11111A] border border-white/10 p-4"
+                      className="bg-white/5 backdrop-blur-sm border border-white/10 p-5 rounded-3xl group hover:border-purple-500/50 transition-colors"
                     >
-                      <p className="text-xs uppercase tracking-wide text-[#A1A1B5] mb-1">
+                      <p className="text-[10px] uppercase text-purple-400 font-bold mb-1 tracking-widest">
                         {item.label}
                       </p>
-                      <p className="text-sm text-white">{item.value}</p>
+                      <p className="text-sm text-zinc-200 font-medium">
+                        {item.value}
+                      </p>
                     </div>
                   ))}
                 </div>
-                <p className="text-sm text-[#B5B7C6]">
-                  Core offering coverage includes enterprise software
-                  development, visitor management systems, and IT infrastructure
-                  services delivered with a focus on reliability and
-                  cost-effectiveness.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+              </div>
 
-        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
-          <div className="container-narrow">
-            <h2 className="text-section text-white text-center mb-12">
-              Our Values
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {values.map((v) => (
-                <Card key={v.title} className="surface-card card-hover">
-                  <CardContent className="p-8">
-                    <div className="text-4xl text-[#C4B5FD] mb-4">{v.icon}</div>
-                    <h3 className="text-subtitle text-white mb-2">{v.title}</h3>
-                    <p className="text-body text-[#B5B7C6]">{v.desc}</p>
-                  </CardContent>
-                </Card>
-              ))}
+              <div className="bg-white/5 rounded-[3rem] aspect-square flex items-center justify-center p-12 border border-white/5 relative overflow-hidden">
+                {/* Decorative glow behind the icon */}
+                <div className="absolute inset-0 bg-purple-500/5 blur-3xl rounded-full" />
+
+                <div className="text-center relative z-10">
+                  <div className="text-purple-500/30 text-7xl mb-6">🏛️</div>
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    gap={1}
+                    justifyContent="center"
+                  >
+                    {Object.entries(roleBreakdown).map(([role, count]) => (
+                      <Chip
+                        key={role}
+                        label={`${role}: ${count}`}
+                        size="small"
+                        sx={{
+                          bgcolor: "rgba(255,255,255,0.05)",
+                          color: "#A1A1AA",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                          backdropFilter: "blur(4px)",
+                          "&:hover": { borderColor: "rgba(168, 85, 247, 0.4)" },
+                        }}
+                      />
+                    ))}
+                  </Stack>
+                  <p className="mt-8 text-xs text-zinc-500 max-w-xs mx-auto leading-relaxed">
+                    Portfolio includes security engineering, project leadership,
+                    and full-stack implementation.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>

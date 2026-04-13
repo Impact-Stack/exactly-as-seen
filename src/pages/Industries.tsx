@@ -1,96 +1,152 @@
+import React from "react";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import { industriesData } from "@/lib/industries";
-import { event as trackEvent } from "@/lib/analytics";
 import { Link } from "react-router-dom";
-import { Button, Card, CardContent, Chip, Stack } from "@mui/material";
-import heroBg from "@/assets/hero-bg.jpg";
-import caseEcommerce from "@/assets/case-ecommerce.jpg";
-import caseHr from "@/assets/case-hr.jpg";
-import caseNfc from "@/assets/case-nfc.jpg";
+import { motion } from "framer-motion";
+import { Button, Card, CardContent, Chip } from "@mui/material";
 
 export default function IndustriesPage() {
+  const leftColumn = industriesData.slice(0, 3);
+  const rightColumn = industriesData.slice(3, 5);
+
   return (
     <>
-      <SEO
-        title="Industries | ImpactStack Africa"
-        description="Industry delivery experience across government, financial services, healthcare, mining, and retail in South Africa."
-        url={absoluteUrl("/industries")}
-      />
+      <SEO title="Industries | ImpactStack Africa" url={absoluteUrl("/industries")} />
       <PageShell>
-        <section className="bg-[#05050A] py-24 px-4 border-b border-white/5 relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 opacity-15">
-            <img src={heroBg} alt="" className="w-full h-full object-cover" aria-hidden="true" />
-          </div>
-          <div className="container-narrow text-center relative">
-            <p className="tag-label mb-5">Industries</p>
-            <h1 className="text-hero text-white mb-4">Delivery Experience Across Core Sectors</h1>
-            <p className="text-lg text-[#B5B7C6] max-w-3xl mx-auto">
-              ImpactStack Africa supports public and private-sector teams with secure, compliant delivery models tailored
-              to local operational realities.
-            </p>
-          </div>
-        </section>
-
-        <section className="py-12 bg-[#05050A] border-t border-white/5">
-          <div className="container-narrow">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[
-                { image: caseHr, label: "Public Sector", caption: "Compliance-aligned delivery" },
-                { image: caseEcommerce, label: "Retail", caption: "Commerce and pricing intelligence" },
-                { image: caseNfc, label: "Field Ops", caption: "Operational device workflows" },
-              ].map((item) => (
-                <Card key={item.label} className="surface-card overflow-hidden">
-                  <img src={item.image} alt={item.caption} className="h-40 w-full object-cover" loading="lazy" />
-                  <CardContent>
-                    <p className="text-xs uppercase tracking-wide text-[#A1A1B5]">{item.label}</p>
-                    <p className="text-sm text-white mt-1">{item.caption}</p>
-                  </CardContent>
-                </Card>
-              ))}
+        <section className="bg-[#05050A] relative min-h-screen w-full py-32 overflow-hidden">
+          
+          {/* ATMOSPHERIC BACKGROUND */}
+          <div className="fixed inset-0 z-0 flex justify-center items-center pointer-events-none">
+            <div className="relative w-full max-w-[1000px] aspect-square opacity-[0.08]">
+              <video 
+                src="/mb.mp4" 
+                autoPlay loop muted playsInline 
+                className="w-full h-full object-cover blur-[80px]" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-transparent to-[#05050A]" />
             </div>
           </div>
-        </section>
 
-        <section className="section-padding bg-[#0A0A0A] border-t border-white/5">
-          <div className="container-narrow">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {industriesData.map((industry) => (
-                <Card key={industry.title} className="surface-card card-hover">
-                  <CardContent className="p-6">
-                    <div className="icon-shell w-12 h-12 mb-4">
-                      <industry.icon className="w-6 h-6" />
-                    </div>
-                    <h2 className="text-subtitle text-white mb-2">{industry.title}</h2>
-                    <p className="text-body text-[#B5B7C6] mb-4">{industry.description}</p>
-                    <p className="text-xs text-[#A1A1B5] mb-4">{industry.evidence}</p>
-                    <Stack direction="row" flexWrap="wrap" gap={1} className="mb-4">
-                      <Chip label={industry.projectType} size="small" variant="outlined" sx={{ borderColor: "rgba(139,92,246,0.35)", color: "#C4B5FD" }} />
-                    </Stack>
-                    <Button
-                      component={Link}
-                      to={`/contact?projectType=${encodeURIComponent(industry.projectType)}&source=industries_page`}
-                      onClick={() =>
-                        trackEvent({
-                          action: "industry_cta_click",
-                          category: "Industries Page",
-                          label: industry.title,
-                        })
-                      }
-                      variant="contained"
-                      color="primary"
-                      className="button-primary px-5 py-2 text-sm"
-                    >
-                      Discuss this industry
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
+          <div className="container-narrow relative z-10 max-w-[1200px] mx-auto px-6">
+            {/* Minimalist Header */}
+            <header className="mb-24 lg:mb-32">
+              <div className="flex items-center gap-4 mb-4">
+                <span className="h-px w-12 bg-purple-500" />
+                <p className="text-[10px] font-black tracking-[0.4em] text-purple-500 uppercase">
+                  Sector Expertise
+                </p>
+              </div>
+              <h1 className="text-6xl md:text-8xl font-extrabold text-white tracking-tighter leading-none mb-6">
+                Delivery <br />Experience.
+              </h1>
+              <p className="text-xl text-gray-500 max-w-md font-medium leading-relaxed">
+                Strategic digital transformation across core African economic sectors.
+              </p>
+            </header>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+              {/* LEFT COLUMN: Staggered Group */}
+              <div className="flex flex-col gap-12">
+                {leftColumn.map((industry, i) => (
+                  <motion.div
+                    key={industry.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <IndustryCard industry={industry} index={i + 1} />
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* RIGHT COLUMN: Offset Group */}
+              <div className="flex flex-col gap-12 lg:mt-48">
+                {rightColumn.map((industry, i) => (
+                  <motion.div
+                    key={industry.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.15 }}
+                    viewport={{ once: true }}
+                  >
+                    <IndustryCard industry={industry} index={i + 4} />
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
       </PageShell>
     </>
+  );
+}
+
+function IndustryCard({ industry, index }: { industry: any; index: number }) {
+  const displayNum = index.toString().padStart(2, '0');
+
+  return (
+    <Card 
+      sx={{
+        background: 'rgba(255, 255, 255, 0.02)',
+        backdropFilter: 'blur(30px) saturate(150%)',
+        borderRadius: '24px',
+        border: '1px solid rgba(255, 255, 255, 0.05)',
+        transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+        overflow: 'visible',
+        position: 'relative',
+        "&:hover": {
+          background: 'rgba(255, 255, 255, 0.04)',
+          borderColor: 'rgba(167, 139, 250, 0.2)',
+          transform: 'translateY(-8px) scale(1.01)',
+          "& .industry-icon": { color: '#fff', transform: 'scale(1.1)' },
+          "& .industry-number": { opacity: 0.1 }
+        }
+      }}
+    >
+      <CardContent className="p-10">
+        <div className="flex justify-between items-start mb-12">
+          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 industry-icon transition-all duration-500">
+             <industry.icon size={28} className="text-purple-400" />
+          </div>
+          <span className="industry-number text-white/5 font-black text-7xl tracking-tighter transition-opacity duration-500 absolute top-4 right-8 select-none pointer-events-none">
+            {displayNum}
+          </span>
+        </div>
+        
+        <div className="relative z-10">
+          <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">
+            {industry.title}
+          </h2>
+          <p className="text-md text-gray-400 leading-relaxed font-normal mb-8 max-w-[280px]">
+            {industry.description}
+          </p>
+        </div>
+        
+        <div className="flex items-center justify-between border-t border-white/5 pt-8">
+          <Chip 
+            label={industry.projectType.toUpperCase()} 
+            size="small" 
+            sx={{ 
+                bgcolor: 'transparent', 
+                border: '1px solid rgba(167, 139, 250, 0.2)',
+                color: '#a78bfa', 
+                fontSize: '9px',
+                letterSpacing: '0.15em',
+                height: '24px',
+                fontWeight: 900
+            }} 
+          />
+          <Link
+            to={`/contact?projectType=${encodeURIComponent(industry.projectType)}`}
+            className="text-white text-xs font-bold tracking-widest uppercase hover:text-purple-400 transition-colors"
+          >
+            Explore &rarr;
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
