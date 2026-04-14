@@ -8,21 +8,21 @@ const valueProps = [
     icon: MdVerified,
     title: "Enterprise Assurance",
     text: "Security-first delivery standards aligned to modern compliance expectations.",
-    background: "/assurance-bg.jpg", // Path in public folder
+    background: "/assurance-bg.webp", // Path in public folder
     count: "01",
   },
   {
     icon: MdSpeed,
     title: "Execution Velocity",
     text: "Lean engineering and delivery governance that keeps projects moving.",
-    background: "/velocity-bg.jpg",
+    background: "/velocity-bg.webp",
     count: "02",
   },
   {
     icon: MdHandshake,
     title: "Outcome Partnership",
     text: "Direct collaboration with stakeholders from discovery to go-live support.",
-    background: "/partnership-bg.jpg",
+    background: "/partnership-bg.webp",
     count: "03",
   },
 ];

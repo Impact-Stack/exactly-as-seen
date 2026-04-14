@@ -69,7 +69,7 @@ function SolutionCard({
             <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-transparent to-purple-900/10" />
 
             {/* Visual Mist Overlay (Optional: matching purple.webp) */}
-            <div className="absolute top-0 right-0 w-full h-[60%] opacity-20 mix-blend-screen bg-[url('/path-to-mist.png')] bg-cover" />
+            <div className="absolute top-0 right-0 w-full h-[60%] opacity-20 mix-blend-screen bg-cover" />
           </motion.div>
         )}
       </AnimatePresence>

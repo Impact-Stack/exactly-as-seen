@@ -17,11 +17,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { toast } from "@/components/ui/sonner";
-import investswipeMockup from "@/assets/investswipe-mockup.png";
+import investswipeMockup from "@/assets/investswipe-mockup.webp";
 import { event as trackEvent } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/site";
 import { Button, Card } from "@mui/material";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg.webp";
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -205,7 +205,7 @@ export default function InvestSwipePage() {
         <section className="bg-[#05050A] py-24 px-4 border-b border-white/5 relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 opacity-20">
             <img
-              src="/download (19).jpg"
+              src="/download (19).webp"
               alt=""
               className="w-full h-full object-cover"
               style={{ objectPosition: "center 20%" }} // Adjust 20% to move the "focus" up or down
@@ -243,7 +243,7 @@ export default function InvestSwipePage() {
           {/* Layer 1: Atmospheric Background Asset */}
           <div className="absolute inset-0 z-0">
             <img
-              src="/assets/gsdgdgdg-Photoroom.jpg"
+              src="/assets/gsdgdgdg-Photoroom.webp"
               alt=""
               className="w-full h-full object-cover object-center opacity-30 grayscale-[40%]"
             />
@@ -651,13 +651,19 @@ export default function InvestSwipePage() {
                           className="absolute inset-0 z-0 pointer-events-none"
                         >
                           <video
-                            src="/gif.mp4"
                             autoPlay
                             loop
                             muted
                             playsInline
+                            preload="none"
                             className="w-full h-full object-cover opacity-60 scale-105"
-                          />
+                          >
+                            <source src="/gif.webm" type="video/webm" />
+                            <source
+                              src="/gif-compressed.mp4"
+                              type="video/mp4"
+                            />
+                          </video>
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/40 to-black" />
                         </motion.div>
                       )}

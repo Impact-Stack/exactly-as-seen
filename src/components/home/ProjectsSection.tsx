@@ -74,7 +74,7 @@ export default function ProjectsSection() {
           pointer-events: none;
         }
 
-        /* Crosshair grid lines — exact match to reference */
+        /* Crosshair grid lines */
         .crosshair {
           position: absolute;
           inset: 0;
@@ -97,25 +97,6 @@ export default function ProjectsSection() {
           right: 0;
           height: 1px;
           background: rgba(255,255,255,0.07);
-        }
-
-        /* Rotated vertical text — left side */
-        .orb-sidebar-text {
-          position: absolute;
-          left: 18px;
-          top: 50%;
-          transform: translateY(-50%) rotate(-90deg);
-          transform-origin: center center;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.6rem;
-          font-weight: 400;
-          letter-spacing: 0.18em;
-          color: rgba(255,255,255,0.22);
-          text-transform: uppercase;
-          white-space: nowrap;
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
         }
 
         .orb-welcome {
@@ -146,35 +127,6 @@ export default function ProjectsSection() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-        }
-        .orb-btn {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.2s;
-          flex-shrink: 0;
-        }
-        .orb-btn-settings {
-          border: 1px solid rgba(255,255,255,0.14);
-          background: rgba(255,255,255,0.05);
-          color: rgba(255,255,255,0.45);
-        }
-        .orb-btn-settings:hover {
-          background: rgba(255,255,255,0.1);
-          color: rgba(255,255,255,0.8);
-        }
-        .orb-btn-next {
-          border: none;
-          background: #ffffff;
-          color: #0a0014;
-        }
-        .orb-btn-next:hover {
-          background: rgba(255,255,255,0.9);
-          transform: translateX(2px);
         }
 
         /* ── Project cards ── */
@@ -212,7 +164,6 @@ export default function ProjectsSection() {
             rgba(10,0,20,0.88) 100%
           );
         }
-        /* Gradient fallback when no image */
         .proj-card-gradient {
           position: absolute;
           inset: 0;
@@ -282,7 +233,6 @@ export default function ProjectsSection() {
           font-weight: 500;
         }
 
-        /* Hover expand for cards */
         .proj-card:hover .proj-card-scrim {
           background: linear-gradient(
             to bottom,
@@ -290,6 +240,44 @@ export default function ProjectsSection() {
             rgba(10,0,20,0.4) 40%,
             rgba(10,0,20,0.93) 100%
           );
+        }
+
+        /* ── Responsive bento grid ── */
+        .proj-bento {
+          display: grid;
+          gap: 12px;
+          /* Mobile: single column, auto height */
+          grid-template-columns: 1fr;
+          grid-template-rows: auto;
+        }
+
+        .proj-bento .orb-panel-wrapper { grid-column: 1; grid-row: auto; }
+        .proj-bento .card-first        { grid-column: 1; grid-row: auto; min-height: 280px; }
+        .proj-bento .card-second       { grid-column: 1; grid-row: auto; min-height: 280px; }
+        .proj-bento .card-third        { grid-column: 1; grid-row: auto; min-height: 320px; }
+
+        /* Tablet: 2 columns */
+        @media (min-width: 640px) {
+          .proj-bento {
+            grid-template-columns: 1fr 1fr;
+          }
+          .proj-bento .orb-panel-wrapper { grid-column: 1 / 3; }
+          .proj-bento .card-first        { grid-column: 1; }
+          .proj-bento .card-second       { grid-column: 2; }
+          .proj-bento .card-third        { grid-column: 1 / 3; }
+        }
+
+        /* Desktop: 3 columns, fixed height bento */
+        @media (min-width: 1024px) {
+          .proj-bento {
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            height: 560px;
+          }
+          .proj-bento .orb-panel-wrapper { grid-column: 1; grid-row: 1 / 3; }
+          .proj-bento .card-first        { grid-column: 2; grid-row: 1; min-height: unset; }
+          .proj-bento .card-second       { grid-column: 3; grid-row: 1; min-height: unset; }
+          .proj-bento .card-third        { grid-column: 2 / 4; grid-row: 2; min-height: unset; }
         }
       `}</style>
 
@@ -330,123 +318,109 @@ export default function ProjectsSection() {
             </h2>
           </motion.div>
 
-          {/* ── Bento grid ── */}
+          {/* ── Responsive Bento grid ── */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.55, delay: 0.1 }}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr 1fr",
-              gridTemplateRows: "1fr 1fr",
-              gap: 12,
-              height: 560,
-            }}
+            className="proj-bento"
           >
-            {/* ── LEFT: Hero orb panel spanning 2 rows ── */}
+            {/* ── LEFT: Hero orb panel ── */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.55, delay: 0.15 }}
-              style={{ gridColumn: "1", gridRow: "1 / 3" }}
-              className="orb-panel"
+              className="orb-panel-wrapper"
             >
-              {/* Orb */}
-              <div className="orb" />
+              <div className="orb-panel">
+                <div className="orb" />
+                <div className="crosshair" />
 
-              {/* Crosshair */}
-              <div className="crosshair" />
-
-              {/* Vertical text labels */}
-              <div style={{
-                position: "absolute",
-                left: 18,
-                top: "30%",
-                display: "flex",
-                flexDirection: "column",
-                gap: 36,
-              }}>
-                <span style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.2em",
-                  color: "rgba(255,255,255,0.2)",
-                  textTransform: "uppercase",
-                  writingMode: "vertical-rl",
-                  transform: "rotate(180deg)",
+                <div style={{
+                  position: "absolute",
+                  left: 18,
+                  top: "30%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 36,
                 }}>
-                  FEATURED
-                </span>
-                <span style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.2em",
-                  color: "rgba(255,255,255,0.12)",
-                  textTransform: "uppercase",
-                  writingMode: "vertical-rl",
-                  transform: "rotate(180deg)",
-                }}>
-                  0 1 × 3
-                </span>
-              </div>
+                  <span style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "0.55rem",
+                    letterSpacing: "0.2em",
+                    color: "rgba(255,255,255,0.2)",
+                    textTransform: "uppercase",
+                    writingMode: "vertical-rl",
+                    transform: "rotate(180deg)",
+                  }}>
+                    FEATURED
+                  </span>
+                  <span style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "0.55rem",
+                    letterSpacing: "0.2em",
+                    color: "rgba(255,255,255,0.12)",
+                    textTransform: "uppercase",
+                    writingMode: "vertical-rl",
+                    transform: "rotate(180deg)",
+                  }}>
+                    0 1 × 3
+                  </span>
+                </div>
 
-              {/* Bottom content */}
-              <div style={{ position: "relative", zIndex: 2 }}>
-                <p className="orb-welcome">Featured Delivery</p>
-                <h3 className="orb-headline">
-                  Recent security,{" "}
-                  <em>platform</em>{" "}
-                  and enterprise work
-                </h3>
-                <div className="orb-controls">
-                  <Button
-                    component={Link}
-                    to="/portfolio"
-                    variant="outlined"
-                    size="small"
-                    sx={{
-                      borderColor: "rgba(255,255,255,0.15)",
-                      color: "rgba(255,255,255,0.55)",
-                      fontSize: "0.65rem",
-                      letterSpacing: "0.08em",
-                      fontFamily: "'DM Sans', sans-serif",
-                      textTransform: "none",
-                      borderRadius: "100px",
-                      px: 2,
-                      "&:hover": {
-                        borderColor: "rgba(255,255,255,0.35)",
-                        color: "#fff",
-                        background: "rgba(255,255,255,0.04)",
-                      },
-                    }}
-                  >
-                    Full portfolio
-                  </Button>
+                <div style={{ position: "relative", zIndex: 2 }}>
+                  <p className="orb-welcome">Featured Delivery</p>
+                  <h3 className="orb-headline">
+                    Recent security,{" "}
+                    <em>platform</em>{" "}
+                    and enterprise work
+                  </h3>
+                  <div className="orb-controls">
+                    <Button
+                      component={Link}
+                      to="/portfolio"
+                      variant="outlined"
+                      size="small"
+                      sx={{
+                        borderColor: "rgba(255,255,255,0.15)",
+                        color: "rgba(255,255,255,0.55)",
+                        fontSize: "0.65rem",
+                        letterSpacing: "0.08em",
+                        fontFamily: "'DM Sans', sans-serif",
+                        textTransform: "none",
+                        borderRadius: "100px",
+                        px: 2,
+                        "&:hover": {
+                          borderColor: "rgba(255,255,255,0.35)",
+                          color: "#fff",
+                          background: "rgba(255,255,255,0.04)",
+                        },
+                      }}
+                    >
+                      Full portfolio
+                    </Button>
+                  </div>
                 </div>
               </div>
             </motion.div>
 
-            {/* ── TOP-MIDDLE: Project 1 ── */}
+            {/* ── Project 1 ── */}
             {first && (() => {
               const Icon = featuredProjectIcons[first.id] || MdShield;
-              const repoLink = first.links.find((l) => l.kind === "github");
               return (
                 <motion.article
                   key={first.id}
                   initial={{ opacity: 0, y: 16 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.45, delay: 0.2 }}
-                  style={{ gridColumn: "2", gridRow: "1" }}
-                  className="proj-card"
+                  className="proj-card card-first"
                 >
-                  {/* Gradient bg */}
                   <div
                     className="proj-card-gradient"
                     style={{ background: projectGradients[0] }}
                   />
                   <div className="proj-card-scrim" />
 
-                  {/* Top-right chip */}
                   <div className="proj-card-tag">
                     <Chip
                       label={first.type}
@@ -484,7 +458,7 @@ export default function ProjectsSection() {
               );
             })()}
 
-            {/* ── TOP-RIGHT: Project 2 ── */}
+            {/* ── Project 2 ── */}
             {second && (() => {
               const Icon = featuredProjectIcons[second.id] || MdShield;
               return (
@@ -493,8 +467,7 @@ export default function ProjectsSection() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.45, delay: 0.26 }}
-                  style={{ gridColumn: "3", gridRow: "1" }}
-                  className="proj-card"
+                  className="proj-card card-second"
                 >
                   <div
                     className="proj-card-gradient"
@@ -539,7 +512,7 @@ export default function ProjectsSection() {
               );
             })()}
 
-            {/* ── BOTTOM: Project 3 — spans cols 2+3, full detail card ── */}
+            {/* ── Project 3 ── */}
             {third && (() => {
               const Icon = featuredProjectIcons[third.id] || MdShield;
               const repoLink = third.links.find((l) => l.kind === "github");
@@ -549,8 +522,7 @@ export default function ProjectsSection() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.45, delay: 0.32 }}
-                  style={{ gridColumn: "2 / 4", gridRow: "2" }}
-                  className="proj-card"
+                  className="proj-card card-third"
                 >
                   <div
                     className="proj-card-gradient"

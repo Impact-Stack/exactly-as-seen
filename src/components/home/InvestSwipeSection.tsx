@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
 import { Link } from "react-router-dom";
-import investswipeMockup from "@/assets/investswipe-mockup.png";
+import investswipeMockup from "@/assets/investswipe-mockup.webp";
 import { Button, Card, CardContent, Chip } from "@mui/material";
 
 // Feature set aligned with InvestSwipe's core value proposition

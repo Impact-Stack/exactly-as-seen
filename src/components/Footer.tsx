@@ -63,7 +63,7 @@ export default function Footer() {
               {/* 1. Logo & Brand Name Stacked */}
               <Link to="/" className="flex items-center mb-4 group">
                 <img
-              src="/isa (4).png"
+              src="/isa (4).webp"
               alt="ImpactStack Africa Logo"
               className="h-12 w-auto object-contain -ml-1 brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
             />

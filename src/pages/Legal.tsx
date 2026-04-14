@@ -4,7 +4,7 @@ import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg.webp";
 
 interface LegalDoc { title: string; description: string; updated: string; sections: Array<{ heading: string; body: string }>; }
 

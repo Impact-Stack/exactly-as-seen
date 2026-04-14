@@ -1,87 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MdMenu, MdClose, MdExpandMore } from "react-icons/md";
-import { Button, IconButton } from "@mui/material";
-
-// ── Data ──────────────────────────────────────────────────────────────────────
-
-const megaMenus: Record<
-  string,
-  {
-    primaryLinks: { label: string; href: string }[];
-    columns: { title: string; links: { label: string; href: string }[] }[];
-    spotlight?: { title: string; description: string; meta: string };
-  }
-> = {
-  Solutions: {
-    primaryLinks: [
-      { label: "Enterprise Web Apps", href: "/services/web" },
-      { label: "Mobile Solutions", href: "/services/mobile" },
-      { label: "Security and Compliance", href: "/services/security" },
-      { label: "Government Delivery", href: "/services/government" },
-    ],
-    columns: [
-      {
-        title: "Delivery Support",
-        links: [
-          { label: "Discovery and Scoping", href: "/contact" },
-          { label: "System Integration", href: "/services/web" },
-          { label: "Legacy Modernization", href: "/services/web" },
-          { label: "Quality Assurance", href: "/services/web" },
-        ],
-      },
-      {
-        title: "Featured",
-        links: [
-          { label: "InvestSwipe Platform", href: "/investswipe" },
-          { label: "Portfolio", href: "/portfolio" },
-          { label: "Pricing Overview", href: "/pricing" },
-        ],
-      },
-    ],
-    spotlight: {
-      title: "Built for Africa's Digital Future",
-      description:
-        "From government portals to fintech platforms, we architect software that scales with ambition.",
-      meta: "Our Work  •  ImpactStack Africa",
-    },
-  },
-  About: {
-    primaryLinks: [
-      { label: "Our Story", href: "/about" },
-      { label: "Leadership", href: "/about" },
-      { label: "Values and Mission", href: "/about" },
-      { label: "Careers", href: "/about" },
-    ],
-    columns: [
-      {
-        title: "Resources",
-        links: [
-          { label: "News and Insights", href: "/insights" },
-          { label: "Case Studies", href: "/portfolio" },
-          { label: "Partners", href: "/about" },
-          { label: "Contact", href: "/contact" },
-        ],
-      },
-    ],
-    spotlight: {
-      title: "Driven by Purpose, Built with Precision",
-      description:
-        "A team of engineers and strategists committed to delivering software that creates lasting impact.",
-      meta: "Company  •  ImpactStack Africa",
-    },
-  },
-};
-
-const navLinks = [
-  { label: "Solutions", hasDropdown: true, href: "/services/web" },
-  { label: "Industries", href: "/industries" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "About", hasDropdown: true, href: "/about" },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Insights", href: "/insights" },
-  { label: "Contact", href: "/contact" },
-];
+// Corrected path-based imports for react-icons
+import { MdMenu, MdClose } from "react-icons/md";
+// Standard path-based imports for MUI
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+// Using the @ alias we just fixed in tsconfig.app.json
+import { megaMenus, navLinks } from "@/data/menuData";
+import { motion, AnimatePresence } from "framer-motion";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -298,22 +224,18 @@ export default function Header() {
         }
       `}</style>
 
-      <header
-        className="fixed top-0 left-0 right-0 z-50 bg-[#05050A]/80 backdrop-blur-xl"
-      >
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#05050A]/80 backdrop-blur-xl">
         <div className="container-narrow flex items-center justify-between h-[76px]">
-
           {/* Logo */}
           <Link
             to="/"
             className="flex items-center text-xl font-bold font-display group"
           >
             <img
-              src="/isa (2).png"
+              src="/isa (2).webp"
               alt="ImpactStack Africa Logo"
               className="h-12 w-auto object-contain brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
             />
-
           </Link>
 
           {/* Desktop Nav */}
@@ -344,7 +266,7 @@ export default function Header() {
                     aria-controls={menuId}
                     onClick={() =>
                       setActiveMenu((prev) =>
-                        prev === link.label ? null : link.label
+                        prev === link.label ? null : link.label,
                       )
                     }
                     onKeyDown={(e) => {
@@ -365,7 +287,6 @@ export default function Header() {
                       }}
                     >
                       <div className="mega-inner">
-
                         {/* Column 1 — large primary links */}
                         <div className="mega-primary">
                           {menu.primaryLinks.map((l) => (
@@ -385,7 +306,13 @@ export default function Header() {
                           {menu.columns.map((col) => (
                             <div key={col.title} style={{ minWidth: 150 }}>
                               <p className="mega-col-title">{col.title}</p>
-                              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                              <ul
+                                style={{
+                                  listStyle: "none",
+                                  padding: 0,
+                                  margin: 0,
+                                }}
+                              >
                                 {col.links.map((l) => (
                                   <li key={l.label}>
                                     <Link
@@ -414,7 +341,9 @@ export default function Header() {
                             </p>
                             <div className="mega-spotlight-card">
                               <div className="mega-spotlight-card-inner">
-                                <div className="mega-spotlight-card-icon">⬡</div>
+                                <div className="mega-spotlight-card-icon">
+                                  ⬡
+                                </div>
                                 <div className="mega-spotlight-card-label">
                                   ImpactStack
                                 </div>
@@ -448,7 +377,7 @@ export default function Header() {
               to="/contact"
               variant="outlined" // Switched to outlined to better match a bordered design
               className="button-secondary w-full px-6 py-2.5 text-sm inline-block border border-gray-500 rounded hover:border-white transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ textTransform: 'none' }}
+              style={{ textTransform: "none" }}
             >
               Book a Consultation
             </Button>
@@ -474,32 +403,67 @@ export default function Header() {
 
         {/* Mobile nav */}
         {mobileOpen && (
-          <div
-            id="mobile-nav"
-            className="lg:hidden bg-[#0B0B12] border-t border-white/5 px-4 pb-6"
-          >
-            <nav className="flex flex-col gap-3 pt-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.href || "/"}
-                  className="mobile-nav-link"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Button
-                component={Link}
-                to="/contact"
-                variant="contained"
-                color="primary"
-                className="button-primary mt-2"
-                onClick={() => setMobileOpen(false)}
-              >
-                Book a Consultation
-              </Button>
-            </nav>
+          <div className="flex flex-col gap-3 mb-6 px-2">
+            {navLinks.map((link) => {
+              const active = isActive(pathname, link.label, link.href);
+              const menu = link.hasDropdown ? megaMenus[link.label] : null;
+
+              return (
+                <div key={link.label}>
+                  {/* Main Link */}
+                  <Link
+                    to={link.href || "/"}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center justify-between px-4 py-2 rounded-lg transition-all ${
+                      active
+                        ? "bg-purple-700/50 text-white"
+                        : "text-gray-300 hover:bg-white/10"
+                    }`}
+                  >
+                    <span className="text-sm font-medium">{link.label}</span>
+                  </Link>
+
+                  {/* Dropdown Content */}
+                  {menu && (
+                    <div className="ml-4 mt-2 flex flex-col gap-3 border-l border-white/10 pl-4">
+                      {/* Primary Links */}
+                      <div>
+                        {menu.primaryLinks.map((item) => (
+                          <Link
+                            key={item.label}
+                            to={item.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="block text-xs text-gray-300 hover:text-white py-1"
+                          >
+                            {item.label}
+                          </Link>
+                        ))}
+                      </div>
+
+                      {/* Columns */}
+                      {menu.columns.map((col) => (
+                        <div key={col.title}>
+                          <p className="text-[10px] text-gray-500 uppercase mb-1 tracking-wider">
+                            {col.title}
+                          </p>
+
+                          {col.links.map((item) => (
+                            <Link
+                              key={item.label}
+                              to={item.href}
+                              onClick={() => setMobileOpen(false)}
+                              className="block text-xs text-gray-400 hover:text-white py-1"
+                            >
+                              {item.label}
+                            </Link>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </header>

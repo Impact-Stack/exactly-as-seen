@@ -223,7 +223,7 @@ export default function ContactPage() {
           <div className="flex flex-col lg:flex-row gap-2 rounded-xl flex-1 justify-center">
             {/* LEFT PANEL */}
             <div className="hidden lg:block lg:w-[42%] relative">
-              <CrossfadeVideo src="/contact-bg.mp4" />
+              <CrossfadeVideo src="/contact-bg-compressed..mp4" />
               <div className="absolute inset-0 rounded-xl h-[90%] bg-black/40 bg-gradient-to-t from-[#05050A] via-transparent to-black/20" />
               <div className="absolute top-6 left-6 z-10">
                 <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-medium font-mono">

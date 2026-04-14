@@ -48,7 +48,7 @@ export default function InsightsPage() {
           {/* Fixed Background Layer */}
           <div 
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url('/gradient.jpg')` }}
+            style={{ backgroundImage: `url('/gradient.webp')` }}
           />
           
           {/* Frosted Glass Overlay */}
