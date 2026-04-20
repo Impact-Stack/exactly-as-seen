@@ -1,12 +1,14 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Typography,
-  Divider,
-} from "@mui/material";
+
+// Optimized MUI Imports for better tree-shaking
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Chip from "@mui/material/Chip";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
@@ -17,7 +19,7 @@ import {
 } from "@/lib/pricing";
 import footerBg from "/footer-bg.webp";
 
-// Add this to your global CSS or a <style> tag in the component
+// Move styles outside to prevent re-creation on render
 const floatingDotsStyles = `
   @keyframes dot-float {
     0%, 100% { transform: translateY(0) translateX(0); }
@@ -27,8 +29,22 @@ const floatingDotsStyles = `
   }
   .animate-dot-float {
     animation: dot-float 8s ease-in-out infinite;
+    will-change: transform;
   }
 `;
+
+const FLOATING_DOTS = [
+  { top: "10%", left: "15%", size: 8, opacity: 10, delay: "0s" },
+  { top: "45%", left: "5%", size: 6, opacity: 20, delay: "2s" },
+  { top: "15%", right: "20%", size: 6, opacity: 10, delay: "4s" },
+  { top: "70%", right: "10%", size: 8, opacity: 5, delay: "1s" },
+  { top: "30%", left: "40%", size: 4, opacity: 20, delay: "3s" },
+  { top: "60%", left: "25%", size: 4, opacity: 30, delay: "5s" },
+  { top: "40%", right: "35%", size: 4, opacity: 20, delay: "2s" },
+  { bottom: "20%", left: "15%", size: 6, opacity: 10, delay: "6s" },
+  { bottom: "15%", right: "40%", size: 4, opacity: 20, delay: "0.5s" },
+  { top: "80%", left: "50%", size: 4, opacity: 10, delay: "7s" },
+];
 
 export default function Pricing() {
   return (
@@ -48,55 +64,29 @@ export default function Pricing() {
               src={footerBg}
               alt=""
               className="w-full h-full object-cover scale-150 blur-[140px] opacity-50"
+              loading="eager"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#020205]/60 via-transparent to-[#020205]" />
           </div>
 
-          {/* DYNAMIC FLOATING DOTS (Increased density & Floating effect) */}
+          {/* DYNAMIC FLOATING DOTS */}
           <div className="absolute inset-0 z-0 pointer-events-none">
-            {/* Large/Soft Dots */}
-            <div
-              className="absolute top-[10%] left-[15%] w-2 h-2 bg-white/10 rounded-full animate-dot-float"
-              style={{ animationDelay: "0s" }}
-            />
-            <div
-              className="absolute top-[45%] left-[5%] w-1.5 h-1.5 bg-white/20 rounded-full animate-dot-float"
-              style={{ animationDelay: "2s" }}
-            />
-            <div
-              className="absolute top-[15%] right-[20%] w-1.5 h-1.5 bg-white/10 rounded-full animate-dot-float"
-              style={{ animationDelay: "4s" }}
-            />
-            <div
-              className="absolute top-[70%] right-[10%] w-2 h-2 bg-white/5 rounded-full animate-dot-float"
-              style={{ animationDelay: "1s" }}
-            />
-
-            {/* Small/Bright Dots */}
-            <div
-              className="absolute top-[30%] left-[40%] w-1 h-1 bg-white/20 rounded-full animate-dot-float"
-              style={{ animationDelay: "3s" }}
-            />
-            <div
-              className="absolute top-[60%] left-[25%] w-1 h-1 bg-white/30 rounded-full animate-dot-float"
-              style={{ animationDelay: "5s" }}
-            />
-            <div
-              className="absolute top-[40%] right-[35%] w-1 h-1 bg-white/20 rounded-full animate-dot-float"
-              style={{ animationDelay: "2s" }}
-            />
-            <div
-              className="absolute bottom-[20%] left-[15%] w-1.5 h-1.5 bg-white/10 rounded-full animate-dot-float"
-              style={{ animationDelay: "6s" }}
-            />
-            <div
-              className="absolute bottom-[15%] right-[40%] w-1 h-1 bg-white/20 rounded-full animate-dot-float"
-              style={{ animationDelay: "0.5s" }}
-            />
-            <div
-              className="absolute top-[80%] left-[50%] w-1 h-1 bg-white/10 rounded-full animate-dot-float"
-              style={{ animationDelay: "7s" }}
-            />
+            {FLOATING_DOTS.map((dot, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full animate-dot-float bg-white"
+                style={{
+                  top: dot.top,
+                  left: dot.left,
+                  right: dot.right,
+                  bottom: dot.bottom,
+                  width: `${dot.size}px`,
+                  height: `${dot.size}px`,
+                  opacity: dot.opacity / 100,
+                  animationDelay: dot.delay,
+                }}
+              />
+            ))}
             <div className="absolute top-[5%] right-[5%] w-1 h-1 bg-white/40 rounded-full animate-pulse" />
           </div>
 
@@ -167,7 +157,7 @@ export default function Pricing() {
                           component={Link}
                           to={offer.destination}
                           fullWidth
-                          className="!border-white/20 !text-white !py-4 !rounded-full !normal-case !font-bold !text-sm border !backdrop-blur-md"
+                          className="!border-white/20 !text-white !py-4 !rounded-full !normal-case !font-bold !text-sm border !backdrop-blur-md hover:!bg-white/5 transition-colors"
                         >
                           View Tiers
                         </Button>
@@ -184,7 +174,14 @@ export default function Pricing() {
                       <div className="mb-8">
                         <Chip
                           label="Bulk Only"
-                          className="!bg-blue-600 !text-[9px] !font-bold !text-white !mb-4 !h-6"
+                          sx={{ 
+                            bgcolor: '#2563eb', 
+                            color: 'white', 
+                            fontSize: '9px', 
+                            fontWeight: 'bold', 
+                            mb: 2, 
+                            height: 24 
+                          }}
                         />
                         <h2 className="text-2xl font-bold mb-3 tracking-tight">
                           Hardware & Gov
@@ -205,22 +202,18 @@ export default function Pricing() {
                       </div>
 
                       <div className="space-y-4 mb-10 flex-grow">
-                        <div className="flex items-start gap-3 text-[13px] text-white/50 font-medium">
-                          ✓ Tiered bulk pricing models
-                        </div>
-                        <div className="flex items-start gap-3 text-[13px] text-white/50 font-medium">
-                          ✓ Secure device logistics
-                        </div>
-                        <div className="flex items-start gap-3 text-[13px] text-white/50 font-medium">
-                          ✓ Maintenance & support
-                        </div>
+                        {['Tiered bulk pricing models', 'Secure device logistics', 'Maintenance & support'].map((text) => (
+                          <div key={text} className="flex items-start gap-3 text-[13px] text-white/50 font-medium">
+                            ✓ {text}
+                          </div>
+                        ))}
                       </div>
 
                       <Button
                         component={Link}
                         to="/contact"
                         fullWidth
-                        className="!border-white/20 !text-white !py-4 !rounded-full !normal-case !font-bold !text-sm border !backdrop-blur-md"
+                        className="!border-white/20 !text-white !py-4 !rounded-full !normal-case !font-bold !text-sm border !backdrop-blur-md hover:!bg-white/5 transition-colors"
                       >
                         Request Quote
                       </Button>
@@ -241,43 +234,33 @@ export default function Pricing() {
                   </h2>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div>
-                      <Typography className="!text-blue-400 !font-bold !text-xs !uppercase !tracking-widest !mb-4">
-                        Payment Structure
-                      </Typography>
-                      <Typography className="!text-white !text-xl !font-bold !mb-4">
-                        50/50 Deposit Terms
-                      </Typography>
-                      <Typography className="!text-white/40 !leading-relaxed text-sm">
-                        A 50% deposit is required before work commences. The
-                        remaining 50% is due on the final day of delivery.
-                      </Typography>
-                    </div>
-
-                    <div>
-                      <Typography className="!text-blue-400 !font-bold !text-xs !uppercase !tracking-widest !mb-4">
-                        Validity & Invoicing
-                      </Typography>
-                      <Typography className="!text-white !text-xl !font-bold !mb-4">
-                        7-Day Quote Window
-                      </Typography>
-                      <Typography className="!text-white/40 !leading-relaxed text-sm">
-                        All quotes are valid for 7 calendar days from the date
-                        of issue. An official invoice is issued for every
-                        transaction.
-                      </Typography>
-                    </div>
-
-                    {/* <div>
-                      <Typography className="!text-blue-400 !font-bold !text-xs !uppercase !tracking-widest !mb-4">Additional Work</Typography>
-                      <Typography className="!text-white !text-xl !font-bold !mb-4">Hourly Standard Rate</Typography>
-                      <Typography className="!text-white/40 !leading-relaxed text-sm">
-                        Consultation and ad-hoc updates are billed at our company standard hourly rate (Excl. VAT).
-                      </Typography>
-                    </div> */}
+                    {[
+                      {
+                        label: "Payment Structure",
+                        title: "50/50 Deposit Terms",
+                        desc: "A 50% deposit is required before work commences. The remaining 50% is due on the final day of delivery."
+                      },
+                      {
+                        label: "Validity & Invoicing",
+                        title: "7-Day Quote Window",
+                        desc: "All quotes are valid for 7 calendar days from the date of issue. An official invoice is issued for every transaction."
+                      }
+                    ].map((policy) => (
+                      <div key={policy.title}>
+                        <Typography sx={{ color: '#60a5fa', fontWeight: 'bold', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.15em', mb: 2 }}>
+                          {policy.label}
+                        </Typography>
+                        <Typography sx={{ color: 'white', fontSize: '1.25rem', fontWeight: 'bold', mb: 2 }}>
+                          {policy.title}
+                        </Typography>
+                        <Typography sx={{ color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, fontSize: '0.875rem' }}>
+                          {policy.desc}
+                        </Typography>
+                      </div>
+                    ))}
                   </div>
 
-                  <Divider className="!bg-white/10 !my-12" />
+                  <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', my: 6 }} />
 
                   <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex flex-wrap gap-3">
@@ -285,12 +268,19 @@ export default function Pricing() {
                         <Chip
                           key={service}
                           label={service}
-                          className="!bg-white/5 !text-white/30 !border-white/10 !text-[11px] !font-bold !rounded-full"
                           variant="outlined"
+                          sx={{ 
+                            bgcolor: 'rgba(255,255,255,0.05)', 
+                            color: 'rgba(255,255,255,0.3)', 
+                            borderColor: 'rgba(255,255,255,0.1)', 
+                            fontSize: '11px', 
+                            fontWeight: 'bold', 
+                            borderRadius: '9999px' 
+                          }}
                         />
                       ))}
                     </div>
-                    <Typography className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/20">
+                    <Typography sx={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 'bold', color: 'rgba(255,255,255,0.2)' }}>
                       Pricing to be reviewed upon VAT registration confirmation.
                     </Typography>
                   </div>

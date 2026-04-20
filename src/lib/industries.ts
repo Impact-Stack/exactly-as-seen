@@ -1,4 +1,9 @@
-import { MdAccountBalance, MdApartment, MdLocalHospital, MdSecurity, MdStorefront } from "react-icons/md";
+// This is the most compatible way to get tree-shaking in Vite without TS errors
+import { MdAccountBalance } from "react-icons/md";
+import { MdApartment } from "react-icons/md";
+import { MdLocalHospital } from "react-icons/md";
+import { MdSecurity } from "react-icons/md";
+import { MdStorefront } from "react-icons/md";
 import type { IconType } from "react-icons";
 
 export interface IndustryItem {

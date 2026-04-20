@@ -1,11 +1,19 @@
-import React from "react";
+// --- Optimized MUI Imports ---
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Chip from "@mui/material/Chip";
+
+// --- Optimized Framer Motion ---
+// Note: m is a smaller version of motion if you use a MotionConfig,
+// but direct import is still better than a barrel.
+import { motion } from "framer-motion";
+
+// --- React & Components ---
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import { industriesData } from "@/lib/industries";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Button, Card, CardContent, Chip } from "@mui/material";
 
 export default function IndustriesPage() {
   const leftColumn = industriesData.slice(0, 3);
@@ -23,13 +31,16 @@ export default function IndustriesPage() {
           <div className="fixed inset-0 z-0 flex justify-center items-center pointer-events-none">
             <div className="relative w-full max-w-[1000px] aspect-square opacity-[0.08]">
               <video
-                src="/mb-compressed.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-cover blur-[80px]"
-              />
+                preload="auto"
+                className="w-full h-full object-cover"
+              >
+                <source src="/Untitled design.webm" type="video/webm" />
+                <source src="/mb-compressed.mp4" type="video/mp4" />
+              </video>
               <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-transparent to-[#05050A]" />
             </div>
           </div>
@@ -102,6 +113,7 @@ function IndustryCard({ industry, index }: { industry: any; index: number }) {
         borderRadius: "24px",
         border: "1px solid rgba(255, 255, 255, 0.05)",
         transition: "all 0.4s cubic-bezier(0.23, 1, 0.32, 1)",
+        willChange: "transform, opacity", // Add this
         overflow: "visible",
         position: "relative",
         "&:hover": {

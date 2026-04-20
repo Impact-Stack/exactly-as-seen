@@ -1,4 +1,5 @@
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const solutionPopups = [
@@ -31,22 +32,17 @@ const solutionPopups = [
   },
 ];
 
-const reveal: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.8,
-      ease: [0.2, 0.65, 0.3, 0.9],
-    },
-  }),
-};
-
 const MotionLink = motion(Link);
 
 export default function HeroSection() {
+
+const [showVideo, setShowVideo] = useState(false);
+
+useEffect(() => {
+  const timer = setTimeout(() => setShowVideo(true), 1200);
+  return () => clearTimeout(timer);
+}, []);
+
   return (
     <section className="relative h-screen flex items-center bg-[#020204] text-white">
       {/* 1. BACKGROUND & ORB */}
@@ -54,24 +50,40 @@ export default function HeroSection() {
         <div className="absolute inset-0 z-[2] bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none" />
 
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(90vw,700px)] aspect-square z-[1]"
+          className="absolute top-1/2 md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] md:-translate-y-1/2 w-[min(90vw,700px)] aspect-square z-[1]"
           style={{
             maskImage: "radial-gradient(circle, black 30%, transparent 70%)",
             WebkitMaskImage:
               "radial-gradient(circle, black 30%, transparent 70%)",
           }}
         >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            className="w-full h-full object-contain mix-blend-screen opacity-90 scale-110"
-          >
-            <source src="/orb.webm" type="video/webm" />
-            <source src="/orb-compressed.mp4" type="video/mp4" />
-          </video>
+          {/* 🔹 LOGO PLACEHOLDER */}
+          {!showVideo && (
+            <img
+              src="/fav-logo.webp"
+              alt="Loading"
+              className="w-full h-full object-contain opacity-80 scale-75 animate-pulse"
+            />
+          )}
+
+          {/* 🔹 VIDEO */}
+          {showVideo && (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="none"
+              onLoadedData={(e) => {
+                e.currentTarget.classList.remove("opacity-0");
+                e.currentTarget.classList.add("opacity-90");
+              }}
+              className="w-full h-full object-contain mix-blend-screen opacity-0 scale-110 transition-opacity duration-700"
+            >
+              <source src="/orb-ultra.webm" type="video/webm" />
+              <source src="/orb-compressed.mp4" type="video/mp4" />
+            </video>
+          )}
         </div>
 
         {/* 2. EXTRACTION ANIMATION — hidden on mobile */}
@@ -158,7 +170,9 @@ export default function HeroSection() {
         <div className="max-w-4xl">
           <h1
             className="text-5xl sm:text-6xl md:text-[4.5rem] xl:text-[4.5rem] font-medium tracking-tighter leading-[1.08]"
-            style={{ marginTop: "clamp(-200px, -25vh, -80px)" }}
+            style={{
+              marginTop: "clamp(-320px, -45vh, -160px)", // stronger lift on mobile
+            }}
           >
             <div className="overflow-hidden">
               <motion.span
@@ -212,10 +226,12 @@ export default function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3.5 }}
-        className="absolute bottom-6 md:bottom-10 2xl:bottom-24 left-6 md:left-10 xl:left-16 2xl:left-20 z-20 grid grid-cols-3 gap-6 md:gap-12 2xl:gap-20 border-t border-white/5 pt-4 md:pt-6 w-fit"
+        className="absolute bottom-24 md:bottom-10 2xl:bottom-24 left-6 md:left-10 xl:left-16 2xl:left-20 z-20 grid grid-cols-3 gap-6 md:gap-12 2xl:gap-20 border-t border-white/5 pt-4 md:pt-6 w-fit"
       >
         <div>
-          <p className="text-2xl md:text-3xl font-light tracking-tighter text-white">20+</p>
+          <p className="text-2xl md:text-3xl font-light tracking-tighter text-white">
+            20+
+          </p>
           <p className="text-[8px] md:text-[9px] uppercase tracking-widest text-gray-500 leading-tight mt-1">
             Projects <span className="block">Delivered</span>
           </p>
@@ -229,7 +245,9 @@ export default function HeroSection() {
           </p>
         </div>
         <div>
-          <p className="text-2xl md:text-3xl font-light tracking-tighter text-white">6</p>
+          <p className="text-2xl md:text-3xl font-light tracking-tighter text-white">
+            6
+          </p>
           <p className="text-[8px] md:text-[9px] uppercase tracking-widest text-gray-500 leading-tight mt-1">
             Sectors <span className="block">Served</span>
           </p>

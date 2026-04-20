@@ -1,6 +1,12 @@
-import React from "react";
-import { Card, CardContent, Chip, Link, Stack } from "@mui/material";
-import { ArrowForward, FiberManualRecord, Verified } from "@mui/icons-material";
+// --- Optimized MUI Core Imports ---
+import Chip from "@mui/material/Chip";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+
+// --- Optimized MUI Icons Import ---
+import Verified from "@mui/icons-material/Verified";
+
+// Other imports remain the same
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
@@ -79,7 +85,8 @@ export default function AboutPage() {
               <span className="text-[#C4B5FD] text-3xl">✦</span>
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-medium text-white mb-6 tracking-tight leading-tight">
-              Empowering South Africa&apos;s <br className="hidden sm:block" /> Next Generation
+              Empowering South Africa&apos;s <br className="hidden sm:block" />{" "}
+              Next Generation
             </h1>
             <p className="max-w-2xl mx-auto text-lg md:text-xl text-zinc-400 font-light leading-relaxed mb-10">
               Youth-led technology company creating opportunities through
@@ -135,6 +142,7 @@ export default function AboutPage() {
                   <img
                     src="/robot.webp"
                     alt="Chrome character"
+                    loading="lazy"
                     className="w-full h-full object-contain object-right-bottom translate-y-6 group-hover:translate-y-2 transition-transform duration-700 ease-out"
                   />
                 </div>
@@ -214,15 +222,26 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h4 className="text-white font-medium mb-4 flex items-center gap-2">
-                      <Verified className="text-purple-500 text-sm" />{" "}
-                      Certifications
+                      <Verified className="text-purple-500 text-sm" /> Core
+                      Engineering Team
                     </h4>
-                    <ul className="text-zinc-500 text-sm space-y-2">
-                      <li>• Google Cybersecurity Professional Certificate</li>
-                      <li>• CISCO Introduction to Cybersecurity</li>
-                      <li>• PCAP Python Programming Certification</li>
-                    </ul>
+                    <p className="text-zinc-500 text-sm leading-relaxed">
+                      Neleh Heunis, Khanya Freddie, Bheka Nyoni, Stacey-Lee
+                      Pietersen, Zoe Petersen, and Bilqees Ajam.
+                    </p>
                   </div>
+                </div>
+
+                <div className="mt-8 pt-8 border-t border-white/5">
+                  <h4 className="text-white font-medium mb-4 flex items-center gap-2">
+                    <Verified className="text-purple-500 text-sm" />{" "}
+                    Certifications
+                  </h4>
+                  <ul className="text-zinc-500 text-sm grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <li>• Google Cybersecurity Professional Certificate</li>
+                    <li>• CISCO Introduction to Cybersecurity</li>
+                    <li>• PCAP Python Programming Certification</li>
+                  </ul>
                 </div>
               </div>
             </div>

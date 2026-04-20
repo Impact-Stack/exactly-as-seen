@@ -1,7 +1,13 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOpenInNew } from "react-icons/md";
-import { Button, Chip, Stack } from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
+
+// --- PERFORMANCE OPTIMIZED IMPORTS ---
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { event as trackEvent } from "@/lib/analytics";
@@ -11,15 +17,10 @@ import {
   projectFilterOptions,
   type ProjectFilter,
 } from "@/lib/projects";
-import {
-  buildProjectFaqSchema,
-  buildProjectItemListSchema,
-} from "@/lib/schema-projects";
 import { absoluteUrl } from "@/lib/site";
-import footerBg from "/footer-bg.webp";
+// import footerBg from "/footer-bg.webp";
 
-// ─── Gradient cycle (matches ProjectsSection palette) ─────────────────────────
-
+// ─── Constants ──────────────────────────────────────────────────────────────
 const PROJECT_GRADIENTS = [
   "linear-gradient(135deg, #1a0533 0%, #3b1278 50%, #6d28d9 100%)",
   "linear-gradient(135deg, #0f0724 0%, #4c1d95 45%, #7c3aed 100%)",
@@ -29,32 +30,10 @@ const PROJECT_GRADIENTS = [
 const gradientForIndex = (i: number) =>
   PROJECT_GRADIENTS[i % PROJECT_GRADIENTS.length];
 
-// ─── Structured data ──────────────────────────────────────────────────────────
-
-const portfolioStructuredData = [
-  buildProjectItemListSchema(
-    portfolioProjects,
-    "ImpactStack Africa Full Project Portfolio",
-  ),
-  buildProjectFaqSchema([
-    {
-      question: "What types of projects does ImpactStack Africa deliver?",
-      answer:
-        "ImpactStack Africa delivers security labs, web applications, mobile MVPs, and training-to-production project implementations.",
-    },
-    {
-      question: "How can I discuss a similar project?",
-      answer:
-        "Use any project card CTA to open the consultation form with project context prefilled for faster discovery and scope alignment.",
-    },
-  ]),
-];
-
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState<ProjectFilter>("All");
 
+  // Memoize filtered results to prevent heavy recalculation on every render
   const filteredProjects = useMemo(() => {
     if (activeFilter === "All") return portfolioProjects;
     return portfolioProjects.filter((p) => p.filterTags.includes(activeFilter));
@@ -72,33 +51,13 @@ export default function PortfolioPage() {
   return (
     <>
       <SEO
-        title="Portfolio | ImpactStack Africa Project Delivery Proof"
-        description="Review real project delivery evidence across SOC security labs, web platforms, and mobile products built by ImpactStack Africa."
+        title="Portfolio | ImpactStack Africa"
+        description="Verified implementation evidence across security labs and web products."
         url={absoluteUrl("/portfolio")}
-        keywords={[
-          "security operations center lab",
-          "enterprise web applications South Africa",
-          "mobile MVP delivery",
-          "POPIA compliance engineering",
-          "government technology projects",
-          "role-based access control",
-        ]}
-        structuredData={portfolioStructuredData}
       />
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
-
-        @keyframes dot-float {
-          0%, 100% { transform: translateY(0) translateX(0); }
-          25% { transform: translateY(-15px) translateX(10px); }
-          50% { transform: translateY(-5px) translateX(-10px); }
-          75% { transform: translateY(10px) translateX(5px); }
-        }
-        .animate-dot-float {
-          animation: dot-float 8s ease-in-out infinite;
-        }
-
+        /* HW Acceleration for smooth transitions */
         .port-card {
           position: relative;
           overflow: hidden;
@@ -107,11 +66,16 @@ export default function PortfolioPage() {
           flex-direction: column;
           justify-content: flex-end;
           min-height: 400px;
-          transition: transform 0.25s ease;
+          will-change: transform; 
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .port-card:hover {
-          transform: translateY(-2px);
+
+        @media (max-width: 768px) {
+          .port-card { min-height: auto; }
         }
+
+        .port-card:hover { transform: translateY(-4px); }
+
         .port-card-scrim {
           position: absolute;
           inset: 0;
@@ -119,476 +83,264 @@ export default function PortfolioPage() {
           background: linear-gradient(
             to bottom,
             rgba(10,0,20,0.08) 0%,
-            rgba(10,0,20,0.28) 40%,
-            rgba(10,0,20,0.93) 100%
-          );
-          transition: background 0.3s ease;
-        }
-        .port-card:hover .port-card-scrim {
-          background: linear-gradient(
-            to bottom,
-            rgba(10,0,20,0.12) 0%,
-            rgba(10,0,20,0.35) 40%,
-            rgba(10,0,20,0.96) 100%
+            rgba(10,0,20,0.4) 30%,
+            rgba(10,0,20,0.95) 100%
           );
         }
-        .port-card-tags {
-          position: absolute;
-          top: 18px;
-          right: 18px;
-          z-index: 3;
-          display: flex;
-          gap: 6px;
-          flex-wrap: wrap;
-          justify-content: flex-end;
-          max-width: 60%;
+
+        @keyframes dot-float {
+          0%, 100% { transform: translate3d(0, 0, 0); }
+          50% { transform: translate3d(5px, -10px, 0); }
         }
-        .port-card-content {
-          position: relative;
-          z-index: 2;
-          padding: 28px 28px 26px;
+        .animate-dot-float {
+          animation: dot-float 10s ease-in-out infinite;
+          will-change: transform;
         }
-        .port-card-title {
-          font-family: 'Syne', sans-serif;
-          font-size: 1.2rem;
-          font-weight: 700;
-          color: #ffffff;
-          letter-spacing: -0.025em;
-          line-height: 1.2;
-          margin: 0 0 5px;
-        }
-        .port-card-subtitle {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.73rem;
-          color: rgba(196,181,253,0.72);
-          margin: 0 0 12px;
-        }
-        .port-card-summary {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.79rem;
-          color: rgba(255,255,255,0.5);
-          line-height: 1.65;
-          margin: 0 0 18px;
-        }
-        .port-detail-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-          gap: 16px;
-          margin-bottom: 16px;
-        }
+
+        .port-card-tags { position: absolute; top: 16px; right: 16px; z-index: 3; display: flex; gap: 6px; }
+        .port-card-content { position: relative; z-index: 2; padding: 28px; }
+        
         @media (max-width: 640px) {
-          .port-detail-grid {
-            grid-template-columns: 1fr;
-            gap: 10px;
+          .port-card-content { padding: 20px; }
+        }
+
+        .port-card-title { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .port-card-subtitle { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; color: rgba(196,181,253,0.8); margin-bottom: 12px; }
+        .port-card-summary { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 20px; }
+        
+        .port-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+        @media (max-width: 1024px) { .port-detail-grid { grid-template-columns: 1fr; gap: 12px; } }
+        
+        .port-detail-label { font-size: 0.65rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; margin-bottom: 2px; }
+        .port-detail-text { font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
+        
+        .port-evidence-list { list-style: none; padding: 0; margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
+        .port-evidence-item { font-size: 0.75rem; color: rgba(255,255,255,0.5); display: flex; gap: 8px; }
+        .port-evidence-bullet { color: #8b5cf6; flex-shrink: 0; }
+
+        .port-collab-text {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.65rem;
+          color: rgba(255, 255, 255, 0.35);
+          letter-spacing: 0.02em;
+          text-align: center;
+        }
+
+        .port-collab-highlight {
+          color: rgba(196, 181, 253, 0.6);
+          font-weight: 500;
+        }
+
+        .port-card-tags { 
+          position: absolute; 
+          top: 16px; 
+          right: 16px; 
+          z-index: 3; 
+          display: flex; 
+          gap: 6px; 
+        }
+
+        /* Fix for Mobile Overlap */
+        @media (max-width: 640px) {
+          .port-card-tags {
+            position: relative; /* Change from absolute to relative */
+            top: auto;
+            right: auto;
+            margin-bottom: 12px; /* Add spacing between chip and title */
+            padding: 20px 20px 0 20px; /* Match content padding */
+          }
+          
+          .port-card-content {
+            padding-top: 10px; /* Reduce top padding since tags are now above */
           }
         }
-        .port-detail-label {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.68rem;
-          font-weight: 500;
-          color: rgba(255,255,255,0.85);
-          margin: 0 0 4px;
-        }
-        .port-detail-text {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.68rem;
-          color: rgba(255,255,255,0.44);
-          line-height: 1.55;
-          margin: 0;
-        }
-        .port-evidence-list {
-          list-style: none;
-          padding: 0;
-          margin: 0 0 18px;
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-        }
-        .port-evidence-item {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.71rem;
-          color: rgba(255,255,255,0.44);
-          display: flex;
-          gap: 7px;
-          align-items: flex-start;
-        }
-        .port-evidence-bullet {
-          color: #8b5cf6;
-          font-size: 0.55rem;
-          margin-top: 3px;
-          flex-shrink: 0;
-        }
-        .port-evidence-title {
-          color: rgba(255,255,255,0.76);
-          font-weight: 500;
-        }
-        .port-card-footer {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin-top: 20px;
-        }
-        .port-footer-left {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          flex-wrap: wrap;
-        }
-        .port-link-service {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.73rem;
-          font-weight: 600;
-          color: #c4b5fd;
-          text-decoration: none;
-          transition: color 0.2s;
-        }
-        .port-link-service:hover {
-          color: #e9d5ff;
-        }
-        .port-link-repo {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.73rem;
-          color: rgba(255,255,255,0.38);
-          text-decoration: none;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          transition: color 0.2s;
-        }
-        .port-link-repo:hover {
-          color: rgba(255,255,255,0.7);
-        }
+        
+        .filter-container::-webkit-scrollbar { display: none; }
+        .filter-container { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
       <PageShell>
-        {/* ── Hero ── */}
-        <section className="bg-[#020205] py-24 px-4 relative overflow-hidden">
-          <div className="container-narrow text-center relative">
-            <h1 className="text-hero text-white mb-4">
-              Project Delivery Portfolio
-            </h1>
-            <p className="text-card-title text-[#B5B7C6] font-light">
-              Verified implementation evidence across security, web, and mobile
-              delivery work.
-            </p>
-          </div>
-        </section>
-
-        {/* ── Cards section ── */}
-        <div className="relative bg-[#020205] overflow-hidden">
-          {/* Ambient background — same as Pricing page */}
-          <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="relative bg-[#020205] min-h-screen overflow-hidden">
+          {/* Ambient Background - Lazy loaded & Blur Optimized */}
+          {/* <div className="absolute inset-0 pointer-events-none">
             <img
               src={footerBg}
               alt=""
-              className="w-full h-full object-cover scale-150 blur-[140px] opacity-50"
+              loading="lazy"
+              className="w-full h-full object-cover scale-125 blur-[120px] opacity-25"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#020205]/60 via-transparent to-[#020205]" />
-          </div>
+          </div> */}
 
-          {/* Floating dots — same as Pricing page */}
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <div
-              className="absolute top-[10%] left-[15%] w-2 h-2 bg-white/10 rounded-full animate-dot-float"
-              style={{ animationDelay: "0s" }}
-            />
-            <div
-              className="absolute top-[45%] left-[5%] w-1.5 h-1.5 bg-white/20 rounded-full animate-dot-float"
-              style={{ animationDelay: "2s" }}
-            />
-            <div
-              className="absolute top-[15%] right-[20%] w-1.5 h-1.5 bg-white/10 rounded-full animate-dot-float"
-              style={{ animationDelay: "4s" }}
-            />
-            <div
-              className="absolute top-[70%] right-[10%] w-2 h-2 bg-white/5 rounded-full animate-dot-float"
-              style={{ animationDelay: "1s" }}
-            />
-            <div
-              className="absolute top-[30%] left-[40%] w-1 h-1 bg-white/20 rounded-full animate-dot-float"
-              style={{ animationDelay: "3s" }}
-            />
-            <div
-              className="absolute top-[60%] left-[25%] w-1 h-1 bg-white/30 rounded-full animate-dot-float"
-              style={{ animationDelay: "5s" }}
-            />
-            <div
-              className="absolute top-[40%] right-[35%] w-1 h-1 bg-white/20 rounded-full animate-dot-float"
-              style={{ animationDelay: "2s" }}
-            />
-            <div
-              className="absolute bottom-[20%] left-[15%] w-1.5 h-1.5 bg-white/10 rounded-full animate-dot-float"
-              style={{ animationDelay: "6s" }}
-            />
-            <div
-              className="absolute bottom-[15%] right-[40%] w-1 h-1 bg-white/20 rounded-full animate-dot-float"
-              style={{ animationDelay: "0.5s" }}
-            />
-            <div
-              className="absolute top-[80%] left-[50%] w-1 h-1 bg-white/10 rounded-full animate-dot-float"
-              style={{ animationDelay: "7s" }}
-            />
-            <div className="absolute top-[5%] right-[5%] w-1 h-1 bg-white/40 rounded-full animate-pulse" />
-          </div>
-
-          {/* Content */}
-          <section className="section-padding border-t border-white/5 relative z-10">
-            <div className="container-narrow">
-              {/* Filter chips */}
-              <Stack direction="row" flexWrap="wrap" gap={1} className="mb-4">
-                {projectFilterOptions.map((filterValue) => {
-                  const active = activeFilter === filterValue;
-                  return (
-                    <Chip
-                      key={filterValue}
-                      component="button"
-                      onClick={() => changeFilter(filterValue)}
-                      label={filterValue}
-                      variant={active ? "filled" : "outlined"}
-                      color={active ? "secondary" : "default"}
-                      sx={{
-                        borderRadius: "100px",
-                        borderColor: active
-                          ? "rgba(139,92,246,0.4)"
-                          : "rgba(255,255,255,0.12)",
-                        bgcolor: active
-                          ? "rgba(139,92,246,0.2)"
-                          : "transparent",
-                        color: active ? "#C4B5FD" : "#A1A1B5",
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: "0.72rem",
-                        "&:hover": {
-                          borderColor: "rgba(255,255,255,0.3)",
-                          color: "#ffffff",
-                        },
-                      }}
-                      aria-pressed={active}
-                    />
-                  );
-                })}
-              </Stack>
-
-              <p
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "0.75rem",
-                  color: "#A1A1B5",
-                  marginBottom: 28,
-                }}
-              >
-                Showing {filteredProjects.length} of {portfolioProjects.length}{" "}
-                projects.
-              </p>
-
-              {/* ── Project cards ── */}
+          {/* Low-CPU Floating Elements */}
+          <div className="absolute inset-0 pointer-events-none opacity-20">
+            {[...Array(6)].map((_, i) => (
               <div
-                style={{ display: "flex", flexDirection: "column", gap: 12 }}
+                key={i}
+                className="absolute w-1 h-1 bg-white rounded-full animate-dot-float"
+                style={{
+                  top: `${15 + i * 12}%`,
+                  left: `${10 + i * 15}%`,
+                  animationDelay: `${i * 1.5}s`,
+                }}
+              />
+            ))}
+          </div>
+
+          <section className="relative z-10 py-12 md:py-20 px-4 container-narrow">
+            <header className="text-center mb-10 md:mb-16">
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight"
               >
-                {filteredProjects.map((project, index) => {
-                  const repoLink = project.links.find(
-                    (link) => link.kind === "github",
-                  );
+                Project Delivery
+              </motion.h1>
+            </header>
 
-                  return (
-                    <article
-                      key={project.id}
-                      id={project.id}
-                      className="port-card"
-                      style={{ background: gradientForIndex(index) }}
-                    >
-                      {/* Scrim */}
-                      <div className="port-card-scrim" />
-
-                      {/* Top-right tags */}
-                      <div className="port-card-tags">
-                        <Chip
-                          label={project.type}
-                          size="small"
-                          sx={{
-                            background: "rgba(139,92,246,0.22)",
-                            border: "1px solid rgba(139,92,246,0.4)",
-                            color: "#c4b5fd",
-                            fontSize: "0.6rem",
-                            height: 22,
-                            fontFamily: "'DM Sans', sans-serif",
-                            backdropFilter: "blur(8px)",
-                          }}
-                        />
-                        <Chip
-                          label={project.role}
-                          size="small"
-                          sx={{
-                            background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.13)",
-                            color: "rgba(255,255,255,0.55)",
-                            fontSize: "0.6rem",
-                            height: 22,
-                            fontFamily: "'DM Sans', sans-serif",
-                            backdropFilter: "blur(8px)",
-                          }}
-                        />
-                      </div>
-
-                      {/* Content */}
-                      <div className="port-card-content">
-                        <h2 className="port-card-title">{project.title}</h2>
-                        <p className="port-card-subtitle">{project.subtitle}</p>
-                        <p className="port-card-summary">{project.summary}</p>
-
-                        {/* Challenge / Implementation / Security */}
-                        <div className="port-detail-grid">
-                          <div>
-                            <p className="port-detail-label">Challenge</p>
-                            <p className="port-detail-text">
-                              {project.challenge}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="port-detail-label">Implementation</p>
-                            <p className="port-detail-text">
-                              {project.implementation}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="port-detail-label">
-                              Security posture
-                            </p>
-                            <p className="port-detail-text">
-                              {project.security}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Evidence */}
-                        <ul className="port-evidence-list">
-                          {project.evidence.map((item) => (
-                            <li key={item.title} className="port-evidence-item">
-                              <span className="port-evidence-bullet">▸</span>
-                              <span>
-                                <span className="port-evidence-title">
-                                  {item.title}:
-                                </span>{" "}
-                                {item.detail}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-
-                        {/* Technology chips */}
-                        <Stack
-                          direction="row"
-                          flexWrap="wrap"
-                          gap={0.75}
-                          sx={{ mb: 0 }}
-                        >
-                          {project.technologies.map((tech) => (
-                            <Chip
-                              key={tech}
-                              label={tech}
-                              size="small"
-                              sx={{
-                                background: "rgba(139,92,246,0.09)",
-                                border: "1px solid rgba(139,92,246,0.25)",
-                                color: "#c4b5fd",
-                                fontSize: "0.6rem",
-                                height: 20,
-                                fontFamily: "'DM Sans', sans-serif",
-                              }}
-                            />
-                          ))}
-                        </Stack>
-
-                        {/* Footer actions */}
-                        <div className="port-card-footer">
-                          <div className="port-footer-left">
-                            <Button
-                              component={Link}
-                              to={buildProjectInquiryHref(
-                                project,
-                                "portfolio_project_card",
-                              )}
-                              onClick={() =>
-                                trackEvent({
-                                  action: "project_card_cta_click",
-                                  category: "Portfolio",
-                                  label: `portfolio:${project.id}`,
-                                })
-                              }
-                              variant="contained"
-                              sx={{
-                                background: "#7c3aed",
-                                color: "#fff",
-                                fontSize: "0.72rem",
-                                fontFamily: "'DM Sans', sans-serif",
-                                textTransform: "none",
-                                fontWeight: 600,
-                                letterSpacing: "0.02em",
-                                borderRadius: "7px",
-                                px: 2.5,
-                                py: 1,
-                                "&:hover": { background: "#6d28d9" },
-                              }}
-                            >
-                              Discuss this project
-                            </Button>
-
-                            {project.serviceHref ? (
-                              <Link
-                                to={project.serviceHref}
-                                className="port-link-service"
-                              >
-                                Related service
-                              </Link>
-                            ) : null}
-                          </div>
-
-                          {repoLink ? (
-                            <a
-                              href={repoLink.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="port-link-repo"
-                            >
-                              <MdOpenInNew style={{ width: 13, height: 13 }} />
-                              View source repository
-                            </a>
-                          ) : null}
-                        </div>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-
-              {/* ── Bottom CTA ── */}
-              <div className="text-center mt-14">
-                <Button
-                  component={Link}
-                  to="/contact"
-                  variant="outlined"
-                  sx={{
-                    borderColor: "rgba(139,92,246,0.4)",
-                    color: "#c4b5fd",
-                    fontFamily: "'DM Sans', sans-serif",
-                    textTransform: "none",
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                    borderRadius: "8px",
-                    px: 5,
-                    py: 1.5,
-                    "&:hover": {
-                      borderColor: "#8b5cf6",
-                      background: "rgba(139,92,246,0.07)",
-                      color: "#ddd6fe",
-                    },
-                  }}
-                >
-                  Book a Consultation
-                </Button>
-              </div>
+            {/* Performance Optimized Filter Chips - Scrollable on Mobile */}
+            <div className="filter-container flex overflow-x-auto pb-4 mb-8 justify-start md:justify-center">
+              <Stack direction="row" gap={1} px={1}>
+                {projectFilterOptions.map((f) => (
+                  <Chip
+                    key={f}
+                    onClick={() => changeFilter(f)}
+                    label={f}
+                    sx={{
+                      bgcolor:
+                        activeFilter === f
+                          ? "rgba(124, 58, 237, 0.25)"
+                          : "rgba(255,255,255,0.03)",
+                      color: activeFilter === f ? "#fff" : "#71717a",
+                      border: "1px solid",
+                      borderColor:
+                        activeFilter === f
+                          ? "rgba(124, 58, 237, 0.5)"
+                          : "rgba(255,255,255,0.08)",
+                      px: 1,
+                      "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
+                    }}
+                  />
+                ))}
+              </Stack>
             </div>
+
+            {/* Layout Animations (Smoother than standard CSS) */}
+            <motion.div layout className="flex flex-col gap-6 md:gap-8">
+              <AnimatePresence mode="popLayout">
+                {filteredProjects.map((project, idx) => (
+                  <motion.article
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3 }}
+                    className="port-card"
+                    style={{ background: gradientForIndex(idx) }}
+                  >
+                    <div className="port-card-scrim" />
+
+                    <div className="port-card-tags">
+                      <Chip
+                        label={project.type}
+                        size="small"
+                        sx={{
+                          bgcolor: "rgba(124,58,237,0.4)",
+                          color: "#fff",
+                          fontSize: "10px",
+                          fontWeight: 600,
+                        }}
+                      />
+                    </div>
+
+                    <div className="port-card-content">
+                      <h2 className="port-card-title">{project.title}</h2>
+                      <p className="port-card-subtitle">{project.subtitle}</p>
+                      <p className="port-card-summary">{project.summary}</p>
+
+                      <div className="port-detail-grid">
+                        <div>
+                          <p className="port-detail-label">Challenge</p>
+                          <p className="port-detail-text">
+                            {project.challenge}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="port-detail-label">Implementation</p>
+                          <p className="port-detail-text">
+                            {project.implementation}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="port-detail-label">Security</p>
+                          <p className="port-detail-text">{project.security}</p>
+                        </div>
+                      </div>
+
+                      <ul className="port-evidence-list">
+                        {project.evidence.map((item) => (
+                          <li key={item.title} className="port-evidence-item">
+                            <span className="port-evidence-bullet">▸</span>
+                            <span>
+                              <strong>{item.title}:</strong> {item.detail}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-6 pt-6 border-t border-white/10">
+                        <Button
+                          component={Link}
+                          to={buildProjectInquiryHref(project, "portfolio")}
+                          variant="contained"
+                          sx={{
+                            bgcolor: "#7c3aed",
+                            textTransform: "none",
+                            borderRadius: "12px",
+                            px: 4,
+                            py: 1,
+                            fontWeight: 600,
+                            minWidth: { xs: "100%", sm: "160px" },
+                            boxShadow: "0 4px 14px 0 rgba(124, 58, 237, 0.3)",
+                          }}
+                        >
+                          Discuss Project
+                        </Button>
+
+                        {/* Collaboration String */}
+                        <a
+                          href="https://lifechoices.co.za/life-choices-academy/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="port-collab-link text-[10px]"
+                        >
+                          In collaboration with{" "}
+                          <span className="port-collab-highlight">
+                            Life Choices Academy
+                          </span>
+                        </a>
+
+                        {project.links.find((l) => l.kind === "github") ? (
+                          <a
+                            href={
+                              project.links.find((l) => l.kind === "github")
+                                ?.href
+                            }
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-2 text-[11px] font-medium text-white/40 hover:text-white transition-colors"
+                          >
+                            <MdOpenInNew size={14} /> View Source
+                          </a>
+                        ) : (
+                          <div className="hidden sm:block w-[100px]" />
+                        )}
+                      </div>
+                    </div>
+                  </motion.article>
+                ))}
+              </AnimatePresence>
+            </motion.div>
           </section>
         </div>
       </PageShell>

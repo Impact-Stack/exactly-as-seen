@@ -1,4 +1,13 @@
+// --- CORE REACT & ROUTING ---
 import { type FormEvent, useState } from "react";
+import { Link } from "react-router-dom";
+import React from "react";
+
+// --- MUI OPTIMIZATION (Crucial for bundle size) ---
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+
+// --- REACT ICONS (Direct path imports) ---
 import {
   MdAdd,
   MdCheck,
@@ -7,23 +16,17 @@ import {
   MdOutlinePlayCircle,
   MdOutlineTouchApp,
 } from "react-icons/md";
-import { Link } from "react-router-dom";
+
+// --- ANIMATION & UTILS ---
+import { motion, AnimatePresence } from "framer-motion";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { toast } from "@/components/ui/sonner";
-import investswipeMockup from "@/assets/investswipe-mockup.webp";
 import { event as trackEvent } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/site";
-import { Button, Card } from "@mui/material";
-import heroBg from "@/assets/hero-bg.webp";
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
+// --- ASSETS ---
+import investswipeMockup from "@/assets/investswipe-mockup.webp";
 
 const faqs = [
   {
@@ -223,16 +226,9 @@ export default function InvestSwipePage() {
             <Button
               component={Link}
               to={CONTACT_INVESTSWIPE_HREF}
-              onClick={() =>
-                trackEvent({
-                  action: "hero_waitlist_click",
-                  category: "InvestSwipe",
-                  label: "Hero CTA",
-                })
-              }
-              variant="outlined" // Switched to outlined to better match a bordered design
-              className="button-secondary px-10 py-4 text-sm inline-block border border-gray-500 rounded hover:border-white transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ textTransform: "none" }}
+              variant="outlined"
+              className="px-10 py-3 text-sm border border-gray-500 rounded-full hover:border-white transition-colors"
+              sx={{ textTransform: "none", color: "white" }} // Use sx for MUI-specific styling
             >
               Join Waitlist
             </Button>
@@ -242,11 +238,6 @@ export default function InvestSwipePage() {
         <section className="relative min-h-screen flex items-center justify-center py-24 overflow-hidden bg-[#050505]">
           {/* Layer 1: Atmospheric Background Asset */}
           <div className="absolute inset-0 z-0">
-            <img
-              src="/assets/gsdgdgdg-Photoroom.webp"
-              alt=""
-              className="w-full h-full object-cover object-center opacity-30 grayscale-[40%]"
-            />
             <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
           </div>
 
@@ -449,50 +440,15 @@ export default function InvestSwipePage() {
                   interactions, navigation, and wealth-building flow directly
                   from our live Figma workspace.
                 </p>
-
-                <div className="flex flex-wrap gap-4">
-                  {INVESTSWIPE_FIGMA_URL && (
-                    <Button
-                      component="a"
-                      href={INVESTSWIPE_FIGMA_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={() =>
-                        trackEvent({
-                          action: "figma_open_click",
-                          category: "InvestSwipe",
-                          label: "Figma Prototype Link",
-                        })
-                      }
-                      className="px-8 py-4 bg-white text-black font-semibold rounded-2xl hover:bg-white/90 transition-all normal-case"
-                    >
-                      Open in Figma
-                    </Button>
-                  )}
-
-                  <div className="flex -space-x-3 items-center ml-2">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="w-10 h-10 rounded-full border-2 border-[#05050A] bg-gray-800 overflow-hidden"
-                      >
-                        <img
-                          src={`https://i.pravatar.cc/100?img=${i + 10}`}
-                          alt="User"
-                        />
-                      </div>
-                    ))}
-                    <p className="pl-6 text-sm text-white/50 font-medium">
-                      Be among the first 500 beta users
-                    </p>
-                  </div>
-                </div>
+                <p className="text-sm text-white/50 font-medium">
+                  Be among the first 500 beta users
+                </p>
               </div>
 
               {/* RIGHT COLUMN: The Interactive Display */}
               <div className="lg:col-span-7 order-1 lg:order-2">
                 <div className="relative group">
-                  {/* Glassmorphism Frame */}
+                  {/* Glassmorphism Frame Decor */}
                   <div className="absolute -inset-4 bg-gradient-to-tr from-purple-500/20 to-blue-500/20 rounded-[40px] blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
 
                   <div className="relative rounded-[32px] border border-white/10 bg-[#0A0A0F]/80 backdrop-blur-3xl overflow-hidden shadow-2xl">
@@ -507,27 +463,28 @@ export default function InvestSwipePage() {
                         />
                       </div>
                     ) : (
-                      <div className="p-12 text-center">
+                      /* FIXED: Added flex, items-center, and min-height to ensure perfect centering */
+                      <div className="p-12 min-h-[400px] flex flex-col items-center justify-center text-center">
                         <img
                           src={investswipeMockup}
                           alt="Mockup Preview"
-                          className="max-w-[280px] mx-auto mb-8 drop-shadow-[0_20px_50px_rgba(168,85,247,0.4)]"
+                          className="block max-w-[280px] w-full h-auto mb-8 drop-shadow-[0_20px_50px_rgba(168,85,247,0.4)]"
                         />
                         <h3 className="text-xl text-white font-medium mb-2">
                           Live Preview Offline
                         </h3>
-                        <p className="text-white/40 text-sm max-w-xs mx-auto">
+                        <p className="text-white/40 text-sm max-w-xs">
                           Configure your{" "}
                           <code className="text-purple-400">
                             VITE_INVESTSWIPE_FIGMA_URL
-                          </code>
+                          </code>{" "}
                           to enable the interactive prototype.
                         </p>
                       </div>
                     )}
                   </div>
 
-                  {/* Floating Accessory Element (Matches the circle in reference) */}
+                  {/* Floating Accessory Element */}
                   <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse" />
                 </div>
               </div>
@@ -566,7 +523,7 @@ export default function InvestSwipePage() {
                 </h2>
 
                 <p className="text-xl text-white/60 mb-12 max-w-lg">
-                  We’ve taken the friction out of the markets. Familiar
+                  We've taken the friction out of the markets. Familiar
                   interface, revolutionary financial impact for a new
                   generation.
                 </p>
