@@ -10,14 +10,14 @@ export default function SpeakToExpertCTA() {
   return (
     <section className="relative py-32 px-4 overflow-hidden" ref={ref}>
       {/* Background Glow Layer */}
-      <div 
+      <div
         className="absolute inset-0 z-0 bg-cover bg-center opacity-30 scale-110 pointer-events-none"
-        style={{ backgroundImage: `url('/pink-glow.gif')` }}
+        style={{ backgroundImage: `url('/pink-glow.webp')` }}
       />
       <div className="absolute inset-0 z-10 bg-black/80 backdrop-blur-3xl" />
 
       <div className="container-narrow relative z-20">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -35,7 +35,7 @@ export default function SpeakToExpertCTA() {
               >
                 Let's Build
               </motion.p>
-              
+
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -44,15 +44,16 @@ export default function SpeakToExpertCTA() {
                 Speak to a <br />
                 <span className="text-white/30">Delivery Expert</span>
               </motion.h2>
-              
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.1 }}
                 className="text-xl text-white/60 font-medium leading-relaxed"
               >
-                Tell us about your objectives and constraints. We will map the fastest, 
-                most reliable delivery path with a clear proposal and timeline.
+                Tell us about your objectives and constraints. We will map the
+                fastest, most reliable delivery path with a clear proposal and
+                timeline.
               </motion.p>
             </div>
 
@@ -86,7 +87,8 @@ export default function SpeakToExpertCTA() {
                     bgcolor: "rgba(255,255,255,0.9)",
                     transform: "scale(1.05)",
                   },
-                  transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                  transition:
+                    "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                 }}
               >
                 Get Started

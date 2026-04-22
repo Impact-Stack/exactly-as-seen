@@ -5,7 +5,10 @@ import SEO from "@/components/SEO";
 import { toast } from "@/components/ui/sonner";
 import { event as trackEvent } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/site";
-import { Button, MenuItem, Select } from "@mui/material";
+// --- Optimized MUI Path Imports ---
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 const PROJECT_TYPE_OPTIONS = [
   { value: "Web Application", label: "Web Application" },
@@ -15,9 +18,6 @@ const PROJECT_TYPE_OPTIONS = [
   { value: "InvestSwipe Partnership", label: "InvestSwipe Partnership" },
   { value: "Other", label: "Other" },
 ];
-
-const FADE_DURATION = 1500; // ms for the crossfade
-const PRELOAD_SECS = 2; // seconds before end to start fading
 
 function CrossfadeVideo({ src }: { src: string }) {
   const refA = useRef<HTMLVideoElement>(null);
@@ -223,7 +223,7 @@ export default function ContactPage() {
           <div className="flex flex-col lg:flex-row gap-2 rounded-xl flex-1 justify-center">
             {/* LEFT PANEL */}
             <div className="hidden lg:block lg:w-[42%] relative">
-              <CrossfadeVideo src="/contact-bg.mp4" />
+              <CrossfadeVideo src="/contact-bg-compressed.mp4" />
               <div className="absolute inset-0 rounded-xl h-[90%] bg-black/40 bg-gradient-to-t from-[#05050A] via-transparent to-black/20" />
               <div className="absolute top-6 left-6 z-10">
                 <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-medium font-mono">

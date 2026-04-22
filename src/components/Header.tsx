@@ -1,87 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
-import { MdMenu, MdClose, MdExpandMore } from "react-icons/md";
-import { Button, IconButton } from "@mui/material";
-
-// ── Data ──────────────────────────────────────────────────────────────────────
-
-const megaMenus: Record<
-  string,
-  {
-    primaryLinks: { label: string; href: string }[];
-    columns: { title: string; links: { label: string; href: string }[] }[];
-    spotlight?: { title: string; description: string; meta: string };
-  }
-> = {
-  Solutions: {
-    primaryLinks: [
-      { label: "Enterprise Web Apps", href: "/services/web" },
-      { label: "Mobile Solutions", href: "/services/mobile" },
-      { label: "Security and Compliance", href: "/services/security" },
-      { label: "Government Delivery", href: "/services/government" },
-    ],
-    columns: [
-      {
-        title: "Delivery Support",
-        links: [
-          { label: "Discovery and Scoping", href: "/contact" },
-          { label: "System Integration", href: "/services/web" },
-          { label: "Legacy Modernization", href: "/services/web" },
-          { label: "Quality Assurance", href: "/services/web" },
-        ],
-      },
-      {
-        title: "Featured",
-        links: [
-          { label: "InvestSwipe Platform", href: "/investswipe" },
-          { label: "Portfolio", href: "/portfolio" },
-          { label: "Pricing Overview", href: "/pricing" },
-        ],
-      },
-    ],
-    spotlight: {
-      title: "Built for Africa's Digital Future",
-      description:
-        "From government portals to fintech platforms, we architect software that scales with ambition.",
-      meta: "Our Work  •  ImpactStack Africa",
-    },
-  },
-  About: {
-    primaryLinks: [
-      { label: "Our Story", href: "/about" },
-      { label: "Leadership", href: "/about" },
-      { label: "Values and Mission", href: "/about" },
-      { label: "Careers", href: "/about" },
-    ],
-    columns: [
-      {
-        title: "Resources",
-        links: [
-          { label: "News and Insights", href: "/insights" },
-          { label: "Case Studies", href: "/portfolio" },
-          { label: "Partners", href: "/about" },
-          { label: "Contact", href: "/contact" },
-        ],
-      },
-    ],
-    spotlight: {
-      title: "Driven by Purpose, Built with Precision",
-      description:
-        "A team of engineers and strategists committed to delivering software that creates lasting impact.",
-      meta: "Company  •  ImpactStack Africa",
-    },
-  },
-};
-
-const navLinks = [
-  { label: "Solutions", hasDropdown: true, href: "/services/web" },
-  { label: "Industries", href: "/industries" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "About", hasDropdown: true, href: "/about" },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Insights", href: "/insights" },
-  { label: "Contact", href: "/contact" },
-];
+import { MdMenu, MdClose } from "react-icons/md";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import { motion, AnimatePresence } from "framer-motion";
+import { megaMenus, navLinks } from "@/data/menuData";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -100,6 +24,95 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const { pathname } = useLocation();
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openMenu = (label: string) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setActiveMenu(label);
+  };
+
+  const scheduleClose = () => {
+    closeTimer.current = setTimeout(() => {
+      setActiveMenu(null);
+    }, 150);
+  };
+
+  const cancelClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  };
+
+  // ── Mobile overlay (portalled to document.body) ───────────────────────────
+  const mobileOverlay = createPortal(
+    <AnimatePresence>
+      {mobileOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeInOut" }}
+          style={{ position: "fixed", inset: 0, zIndex: 99999, background: "#05050A" }}
+          className="flex flex-col items-center justify-center"
+        >
+          {/* Top bar */}
+          <div className="absolute top-0 left-0 right-0 h-[76px] flex items-center justify-between px-5">
+            <Link to="/" onClick={() => setMobileOpen(false)}>
+              <img
+                src="/isa (2).webp"
+                alt="ImpactStack Africa Logo"
+                className="h-10 w-auto object-contain brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]"
+              />
+            </Link>
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="text-white/50 hover:text-white transition-colors p-1"
+              aria-label="Close menu"
+            >
+              <MdClose className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Centered links */}
+          <nav className="flex flex-col items-center gap-1 w-full px-6">
+            {navLinks.map((link, i) => {
+              const active = isActive(pathname, link.label, link.href);
+
+              return (
+                <motion.div
+                  key={link.label}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.2, delay: i * 0.04, ease: "easeOut" }}
+                  className="w-full max-w-[280px]"
+                >
+                  <Link
+                    to={link.href || "/"}
+                    onClick={() => setMobileOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={`relative flex items-center justify-center px-6 py-3.5 rounded-xl transition-colors duration-200 outline-none w-full ${
+                      active ? "text-white" : "text-white/35 hover:text-white/60"
+                    }`}
+                  >
+                    {active && (
+                      <motion.div
+                        layoutId="active-mobile-nav-pill"
+                        className="absolute inset-0 bg-purple-600/25 border border-purple-500/35 rounded-xl shadow-[0_0_32px_0_rgba(139,92,246,0.15)]"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.55 }}
+                      />
+                    )}
+                    <span className="relative z-10 text-xl font-medium tracking-wide">
+                      {link.label}
+                    </span>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </nav>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body
+  );
 
   return (
     <>
@@ -140,12 +153,14 @@ export default function Header() {
 
         /* ── Mega menu panel ── */
         .mega-panel {
-          position: absolute;
-          top: calc(100% + 1px);
+          position: fixed;
+          top: 72px;
           left: 50%;
           transform: translateX(-50%);
           z-index: 100;
           min-width: 780px;
+          width: 95vw;
+          max-width: 1200px;
         }
         .mega-inner {
           background: #0c0c0e;
@@ -296,24 +311,33 @@ export default function Header() {
         .mobile-nav-link:hover {
           color: #ffffff;
         }
+
+        /* Bridge the gap between trigger and panel */
+        .mega-panel::before {
+          content: '';
+          position: absolute;
+          top: -12px;
+          left: 0;
+          right: 0;
+          height: 12px;
+        }
       `}</style>
 
-      <header
-        className="fixed top-0 left-0 right-0 z-50 bg-[#05050A]/80 backdrop-blur-xl"
-      >
-        <div className="container-narrow flex items-center justify-between h-[76px]">
+      {/* Portal overlay rendered outside header */}
+      {mobileOverlay}
 
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#05050A]/80 backdrop-blur-xl">
+        <div className="container-narrow flex items-center justify-between h-[76px]">
           {/* Logo */}
           <Link
             to="/"
             className="flex items-center text-xl font-bold font-display group"
           >
             <img
-              src="/isa (2).png"
+              src="/isa (2).webp"
               alt="ImpactStack Africa Logo"
               className="h-12 w-auto object-contain brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
             />
-
           </Link>
 
           {/* Desktop Nav */}
@@ -328,13 +352,8 @@ export default function Header() {
                 <div
                   key={link.label}
                   className="relative"
-                  onMouseEnter={() => setActiveMenu(link.label)}
-                  onMouseLeave={() => setActiveMenu(null)}
-                  onFocus={() => setActiveMenu(link.label)}
-                  onBlur={(e) => {
-                    const next = e.relatedTarget as Node | null;
-                    if (!e.currentTarget.contains(next)) setActiveMenu(null);
-                  }}
+                  onMouseEnter={() => openMenu(link.label)}
+                  onMouseLeave={scheduleClose}
                 >
                   <button
                     className={`nav-link${active ? " active" : ""}`}
@@ -344,7 +363,7 @@ export default function Header() {
                     aria-controls={menuId}
                     onClick={() =>
                       setActiveMenu((prev) =>
-                        prev === link.label ? null : link.label
+                        prev === link.label ? null : link.label,
                       )
                     }
                     onKeyDown={(e) => {
@@ -360,12 +379,13 @@ export default function Header() {
                       id={menuId}
                       className="mega-panel"
                       role="menu"
+                      onMouseEnter={cancelClose}
+                      onMouseLeave={scheduleClose}
                       onKeyDown={(e) => {
                         if (e.key === "Escape") setActiveMenu(null);
                       }}
                     >
                       <div className="mega-inner">
-
                         {/* Column 1 — large primary links */}
                         <div className="mega-primary">
                           {menu.primaryLinks.map((l) => (
@@ -385,7 +405,13 @@ export default function Header() {
                           {menu.columns.map((col) => (
                             <div key={col.title} style={{ minWidth: 150 }}>
                               <p className="mega-col-title">{col.title}</p>
-                              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                              <ul
+                                style={{
+                                  listStyle: "none",
+                                  padding: 0,
+                                  margin: 0,
+                                }}
+                              >
                                 {col.links.map((l) => (
                                   <li key={l.label}>
                                     <Link
@@ -414,7 +440,9 @@ export default function Header() {
                             </p>
                             <div className="mega-spotlight-card">
                               <div className="mega-spotlight-card-inner">
-                                <div className="mega-spotlight-card-icon">⬡</div>
+                                <div className="mega-spotlight-card-icon">
+                                  ⬡
+                                </div>
                                 <div className="mega-spotlight-card-label">
                                   ImpactStack
                                 </div>
@@ -446,14 +474,13 @@ export default function Header() {
             <Button
               component={Link}
               to="/contact"
-              variant="outlined" // Switched to outlined to better match a bordered design
+              variant="outlined"
               className="button-secondary w-full px-6 py-2.5 text-sm inline-block border border-gray-500 rounded hover:border-white transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ textTransform: 'none' }}
+              style={{ textTransform: "none" }}
             >
               Book a Consultation
             </Button>
           </div>
-          {/* px-6 py-2.5 text-sm */}
 
           {/* Mobile toggle */}
           <IconButton
@@ -471,37 +498,6 @@ export default function Header() {
             )}
           </IconButton>
         </div>
-
-        {/* Mobile nav */}
-        {mobileOpen && (
-          <div
-            id="mobile-nav"
-            className="lg:hidden bg-[#0B0B12] border-t border-white/5 px-4 pb-6"
-          >
-            <nav className="flex flex-col gap-3 pt-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.href || "/"}
-                  className="mobile-nav-link"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Button
-                component={Link}
-                to="/contact"
-                variant="contained"
-                color="primary"
-                className="button-primary mt-2"
-                onClick={() => setMobileOpen(false)}
-              >
-                Book a Consultation
-              </Button>
-            </nav>
-          </div>
-        )}
       </header>
     </>
   );

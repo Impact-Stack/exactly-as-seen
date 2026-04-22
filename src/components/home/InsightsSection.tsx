@@ -31,7 +31,7 @@ export default function InsightsSection() {
       {/* Background Image from Public Folder */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000"
-        style={{ backgroundImage: `url('/gradient.jpg')` }}
+        style={{ backgroundImage: `url('/gradient.webp')` }}
       />
       
       {/* Glassmorphism Dark Overlay */}

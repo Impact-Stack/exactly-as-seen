@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
-import { MdEmail, MdPhone } from "react-icons/md";
+import { MdAccessTime, MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
 
 const footerLinks = {
   solutions: [
@@ -48,7 +48,8 @@ export default function Footer() {
         <img
           src="/footer-bg.webp"
           alt=""
-          className="w-full h-full object-cover opacity-60"
+          loading="lazy"
+          className="w-full h-full object-cover opacity-40 scale-105"
         />
       </div>
 
@@ -63,10 +64,10 @@ export default function Footer() {
               {/* 1. Logo & Brand Name Stacked */}
               <Link to="/" className="flex items-center mb-4 group">
                 <img
-              src="/isa (4).png"
-              alt="ImpactStack Africa Logo"
-              className="h-12 w-auto object-contain -ml-1 brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
-            />
+                  src="/isa (4).webp"
+                  alt="ImpactStack Africa Logo"
+                  className="h-12 w-auto object-contain -ml-1 brightness-130 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-105"
+                />
               </Link>
 
               {/* 2. Description Text */}
@@ -82,10 +83,10 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#A1A1B5] hover:text-white transition-all duration-200 hover:-translate-y-1"
+                    className="p-2 rounded-lg bg-white/5 border border-white/10 text-[#A1A1B5] hover:text-white hover:bg-white/10 hover:-translate-y-1 transition-all duration-300"
                     aria-label={social.label}
                   >
-                    <social.icon className="w-6 h-6" />
+                    <social.icon className="w-5 h-5" />
                   </a>
                 ))}
               </div>
@@ -100,7 +101,7 @@ export default function Footer() {
                   <li key={l.label}>
                     <Link
                       to={l.href}
-                      className="text-sm text-[#A1A1B5] hover:text-white transition-colors"
+                      className="text-sm text-[#A1A1B5] hover:text-white hover:translate-x-1 inline-block transition-all duration-200"
                     >
                       {l.label}
                     </Link>
@@ -118,7 +119,7 @@ export default function Footer() {
                   <li key={l.label}>
                     <Link
                       to={l.href}
-                      className="text-sm text-[#A1A1B5] hover:text-white transition-colors"
+                      className="text-sm text-[#A1A1B5] hover:text-white hover:translate-x-1 inline-block transition-all duration-200"
                     >
                       {l.label}
                     </Link>
@@ -128,30 +129,30 @@ export default function Footer() {
             </div>
 
             <div>
-              <h4 className="text-xs uppercase tracking-widest text-white/60 font-semibold mb-4">
-                CONTACT
+              <h4 className="text-[11px] uppercase tracking-[0.2em] text-white/40 font-bold mb-6">
+                Connect
               </h4>
-              <ul className="space-y-3 text-sm text-[#A1A1B5]">
+              <ul className="space-y-4 text-sm text-[#A1A1B5]">
                 <li>
-                  <a
-                    href="mailto:business@impactstack.africa"
-                    className="hover:text-white transition-colors inline-flex items-center gap-2"
-                  >
-                    <MdEmail className="w-4 h-4" />
+                  <a href="mailto:business@impactstack.africa" className="hover:text-white transition-colors flex items-center gap-3 group">
+                    <MdEmail className="w-4 h-4 text-purple-500/70 group-hover:text-purple-400" />
                     business@impactstack.africa
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="tel:+27838947546"
-                    className="hover:text-white transition-colors inline-flex items-center gap-2"
-                  >
-                    <MdPhone className="w-4 h-4" />
+                  <a href="tel:+27838947546" className="hover:text-white transition-colors flex items-center gap-3 group">
+                    <MdPhone className="w-4 h-4 text-purple-500/70 group-hover:text-purple-400" />
                     +27 83 894 7546
                   </a>
                 </li>
-                <li>Kommetjie, Cape Town</li>
-                <li>Mon-Fri, 8AM-5PM SAST</li>
+                <li className="flex items-start gap-3">
+                  <MdLocationOn className="w-4 h-4 mt-0.5 text-purple-500/70" />
+                  <span>Kommetjie, Cape Town</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <MdAccessTime className="w-4 h-4 text-purple-500/70" />
+                  <span>Mon-Fri, 8AM-5PM SAST</span>
+                </li>
               </ul>
             </div>
           </div>
