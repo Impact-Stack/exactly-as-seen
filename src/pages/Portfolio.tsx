@@ -230,6 +230,7 @@ export default function PortfolioPage() {
                 {filteredProjects.map((project, idx) => (
                   <motion.article
                     key={project.id}
+                    id={project.id}
                     layout
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

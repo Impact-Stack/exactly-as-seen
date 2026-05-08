@@ -151,7 +151,7 @@ export default function Footer() {
                 </li>
                 <li className="flex items-center gap-3">
                   <MdAccessTime className="w-4 h-4 text-purple-500/70" />
-                  <span>Mon-Fri, 8AM-5PM SAST</span>
+                  <span>Mon-Fri</span>
                 </li>
               </ul>
             </div>
