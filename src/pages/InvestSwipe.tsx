@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import React from "react";
 
 // --- CLERK ---
-import { Waitlist } from "@clerk/clerk-react";
+import { Waitlist } from "@clerk/react";
 
 // --- MUI OPTIMIZATION (Crucial for bundle size) ---
 import Button from "@mui/material/Button";
@@ -67,7 +67,7 @@ const INVESTSWIPE_FIGMA_EMBED_URL = INVESTSWIPE_FIGMA_URL
   : null;
 
 // Clerk Waitlist dark-theme appearance config
-const clerkWaitlistAppearance = {
+const clerkWaitlistAppearance = { 
   variables: {
     colorBackground: "transparent",
     colorText: "#ffffff",
@@ -86,7 +86,7 @@ const clerkWaitlistAppearance = {
     card: {
       background: "transparent",
       boxShadow: "none",
-      padding: "0",
+      padding: "2rem",
       gap: "1rem",
     },
     // Header / title
@@ -141,9 +141,15 @@ const clerkWaitlistAppearance = {
       ":disabled": { opacity: "0.5" },
     },
     // Footer / "Powered by Clerk" row
-    footer: {
-      "& + div": { display: "none" }, // hides the Clerk branding row if present
+    footer: { 
+      background: "transparent",
+      borderTop: "1px solid rgba(255,255,255,0.05)",
+      marginTop: "1rem", 
+      backgroundImage: "none",
     },
+    footerAction: { display: "none" },
+    footerActionLink: { display: "none" },
+    footerPages: { display: "none" },
     // Social OAuth buttons (if shown)
     socialButtonsBlockButton: {
       background: "rgba(255,255,255,0.05)",
@@ -706,7 +712,7 @@ export default function InvestSwipePage() {
 
             <p className="text-lg md:text-xl text-[#B5B7C6] font-normal mb-10 max-w-[500px] mx-auto leading-relaxed">
               500 beta spots. Be among the first to experience fractional
-              investing with **InvestSwipe**.
+              investing with <b>InvestSwipe</b>.
             </p>
 
             <div className="flex flex-col items-center gap-4">
