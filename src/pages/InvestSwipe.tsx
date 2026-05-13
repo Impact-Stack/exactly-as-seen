@@ -1,7 +1,10 @@
 // --- CORE REACT & ROUTING ---
-import { type FormEvent, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import React from "react";
+
+// --- CLERK ---
+import { Waitlist } from "@clerk/react";
 
 // --- MUI OPTIMIZATION (Crucial for bundle size) ---
 import Button from "@mui/material/Button";
@@ -21,7 +24,6 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
-import { toast } from "@/components/ui/sonner";
 import { event as trackEvent } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/site";
 
@@ -31,7 +33,7 @@ import investswipeMockup from "@/assets/investswipe-mockup.webp";
 const faqs = [
   {
     q: "Is InvestSwipe safe and legal?",
-    a: "Yes. We partner with a licensed FSCA-regulated broker. Your investments are held by the broker in segregated accounts.",
+    a: "InvestSwipe operates in a simulated environment. It does not involve real investments or a licensed FSCA-regulated broker, and no actual funds are held or traded.",
   },
   {
     q: "What is the minimum investment?",
@@ -55,7 +57,6 @@ const faqs = [
   },
 ];
 
-const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID?.trim();
 const CONTACT_INVESTSWIPE_HREF =
   "/contact?projectType=InvestSwipe%20Partnership";
 
@@ -65,9 +66,115 @@ const INVESTSWIPE_FIGMA_EMBED_URL = INVESTSWIPE_FIGMA_URL
   ? `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(INVESTSWIPE_FIGMA_URL)}`
   : null;
 
+// Clerk Waitlist dark-theme appearance config
+const clerkWaitlistAppearance = { 
+  variables: {
+    colorBackground: "transparent",
+    colorText: "#ffffff",
+    colorTextSecondary: "rgba(255,255,255,0.5)",
+    colorPrimary: "#a855f7",
+    colorDanger: "#f87171",
+    colorSuccess: "#34d399",
+    colorInputBackground: "rgba(255,255,255,0.05)",
+    colorInputText: "#ffffff",
+    borderRadius: "1rem",
+    fontFamily: "inherit",
+    fontSize: "0.875rem",
+  },
+  elements: {
+    // Root card — transparent so our glassmorphism wrapper shows through
+    card: {
+      background: "transparent",
+      boxShadow: "none",
+      padding: "2rem",
+      gap: "1rem",
+    },
+    // Header / title
+    headerTitle: {
+      color: "#ffffff",
+      fontSize: "2.5rem",
+      fontWeight: "700",
+      fontFamily: "serif",
+      letterSpacing: "-0.03em",
+      lineHeight: "1.1",
+    },
+    headerSubtitle: {
+      color: "rgba(255,255,255,0.5)",
+      fontSize: "0.875rem",
+    },
+    // Logo area — hide Clerk branding to keep our own badge
+    logoBox: { display: "none" },
+    // Input fields
+    formFieldInput: {
+      background: "rgba(255,255,255,0.05)",
+      border: "1px solid rgba(255,255,255,0.10)",
+      borderRadius: "1rem",
+      color: "#ffffff",
+      padding: "1rem 1.25rem",
+      fontSize: "0.875rem",
+      outline: "none",
+      transition: "border-color 0.2s, box-shadow 0.2s",
+      "::placeholder": { color: "rgba(255,255,255,0.20)" },
+      ":focus": {
+        borderColor: "rgba(168,85,247,0.5)",
+        boxShadow: "0 0 0 1px rgba(168,85,247,0.3)",
+      },
+    },
+    formFieldLabel: {
+      color: "rgba(255,255,255,0.6)",
+      fontSize: "0.75rem",
+      marginBottom: "0.375rem",
+    },
+    // Submit button
+    formButtonPrimary: {
+      background: "#ffffff",
+      color: "#000000",
+      fontWeight: "600",
+      fontSize: "0.875rem",
+      borderRadius: "1rem",
+      padding: "1rem",
+      width: "100%",
+      marginTop: "0.5rem",
+      transition: "opacity 0.2s, transform 0.1s",
+      ":hover": { opacity: "0.9" },
+      ":active": { transform: "scale(0.98)" },
+      ":disabled": { opacity: "0.5" },
+    },
+    // Footer / "Powered by Clerk" row
+    footer: { 
+      background: "transparent",
+      borderTop: "1px solid rgba(255,255,255,0.05)",
+      marginTop: "1rem", 
+      backgroundImage: "none",
+    },
+    footerAction: { display: "none" },
+    footerActionLink: { display: "none" },
+    footerPages: { display: "none" },
+    // Social OAuth buttons (if shown)
+    socialButtonsBlockButton: {
+      background: "rgba(255,255,255,0.05)",
+      border: "1px solid rgba(255,255,255,0.10)",
+      color: "#ffffff",
+      borderRadius: "0.75rem",
+    },
+    // Divider line
+    dividerLine: { background: "rgba(255,255,255,0.08)" },
+    dividerText: { color: "rgba(255,255,255,0.3)", fontSize: "0.75rem" },
+    // Success / error alert banners
+    alert: {
+      background: "rgba(168,85,247,0.08)",
+      border: "1px solid rgba(168,85,247,0.2)",
+      borderRadius: "0.75rem",
+      color: "#ffffff",
+    },
+    alertText: { color: "rgba(255,255,255,0.8)" },
+    // Internal form container spacing
+    form: { gap: "0.75rem" },
+    formFields: { gap: "0.75rem" },
+  },
+};
+
 export default function InvestSwipePage() {
-  const [waitlistSubmitting, setWaitlistSubmitting] = useState(false);
-  const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   const structuredData: Record<string, unknown>[] = [
@@ -144,58 +251,6 @@ export default function InvestSwipePage() {
     },
   ];
 
-  const handleQuickWaitlistSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setWaitlistSubmitting(true);
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const payload = {
-      fullName: formData.get("fullName"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      projectType: "InvestSwipe Partnership",
-      message: "InvestSwipe beta waitlist signup from landing page.",
-      source: "investswipe_quick_waitlist",
-    };
-
-    try {
-      if (!FORMSPREE_ID) {
-        throw new Error("Formspree not configured");
-      }
-
-      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error("Form submission failed");
-      }
-
-      trackEvent({
-        action: "investswipe_quick_waitlist_submit",
-        category: "InvestSwipe",
-        label: "Quick Waitlist Form",
-      });
-      toast.success(
-        "Beta spot requested. Optional step 2: share your full brief below.",
-      );
-      setWaitlistSubmitted(true);
-      form.reset();
-    } catch {
-      toast.error(
-        "Could not save the waitlist request. Please continue with the full contact form.",
-      );
-    } finally {
-      setWaitlistSubmitting(false);
-    }
-  };
-
   return (
     <>
       <SEO
@@ -211,7 +266,7 @@ export default function InvestSwipePage() {
               src="/download (19).webp"
               alt=""
               className="w-full h-full object-cover"
-              style={{ objectPosition: "center 20%" }} // Adjust 20% to move the "focus" up or down
+              style={{ objectPosition: "center 20%" }}
               aria-hidden="true"
             />
           </div>
@@ -228,7 +283,7 @@ export default function InvestSwipePage() {
               to={CONTACT_INVESTSWIPE_HREF}
               variant="outlined"
               className="px-10 py-3 text-sm border border-gray-500 rounded-full hover:border-white transition-colors"
-              sx={{ textTransform: "none", color: "white" }} // Use sx for MUI-specific styling
+              sx={{ textTransform: "none", color: "white" }}
             >
               Join Waitlist
             </Button>
@@ -246,7 +301,7 @@ export default function InvestSwipePage() {
 
           <div className="container-narrow relative z-10 mx-auto px-6 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-              {/* LEFT COLUMN: Your provided content */}
+              {/* LEFT COLUMN */}
               <div className="lg:col-span-5 pt-4">
                 <p className="tag-label mb-3">JOIN THE BETA</p>
                 <h2 className="text-section text-white mb-4">
@@ -276,7 +331,7 @@ export default function InvestSwipePage() {
                 </div>
               </div>
 
-              {/* RIGHT COLUMN: The Form (Styling exactly as previously provided) */}
+              {/* RIGHT COLUMN: Clerk Waitlist */}
               <div className="lg:col-span-7 flex justify-center lg:justify-end">
                 <div className="w-full max-w-lg p-8 md:p-12 rounded-[32px] border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-2xl">
                   {/* Top Badge */}
@@ -286,50 +341,8 @@ export default function InvestSwipePage() {
                     </span>
                   </div>
 
-                  <div className="text-center mb-10">
-                    <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 tracking-tight">
-                      Join the waitlist
-                    </h2>
-                    <p className="text-body text-white/50 max-w-xs mx-auto">
-                      Get exclusive early access to our software and stay
-                      updated on launch news.
-                    </p>
-                  </div>
-
-                  <form
-                    className="space-y-4"
-                    onSubmit={handleQuickWaitlistSubmit}
-                  >
-                    <div className="relative group">
-                      <input
-                        id="waitlistName"
-                        name="fullName"
-                        type="text"
-                        required
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-purple-500/50 transition-all"
-                        placeholder="Full Name"
-                      />
-                    </div>
-
-                    <div className="relative group">
-                      <input
-                        id="waitlistEmail"
-                        name="email"
-                        type="email"
-                        required
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-purple-500/50 transition-all"
-                        placeholder="Your mailaddress"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={waitlistSubmitting}
-                      className="w-full bg-white text-black font-semibold py-4 rounded-2xl hover:bg-opacity-90 transition-all disabled:opacity-50 mt-4"
-                    >
-                      {waitlistSubmitting ? "Saving..." : "Join waitlist"}
-                    </button>
-                  </form>
+                  {/* Clerk Waitlist Component */}
+                  <Waitlist appearance={clerkWaitlistAppearance} />
 
                   {/* Secondary Link */}
                   <div className="mt-8 text-center">
@@ -343,9 +356,7 @@ export default function InvestSwipePage() {
                         })
                       }
                     >
-                      {waitlistSubmitted
-                        ? "Step 1 complete. Continue to Full Project Brief →"
-                        : "Step 2 is optional for priority access"}
+                      Step 2 is optional for priority access
                     </Link>
                   </div>
                 </div>
@@ -356,7 +367,6 @@ export default function InvestSwipePage() {
 
         {/* REDESIGNED CHALLENGE SECTION */}
         <section className="section-padding relative overflow-hidden bg-[#05050A] border-t border-white/5">
-          {/* Background Glow for Depth */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
 
           <div className="container-narrow relative z-10 text-center mx-auto px-6">
@@ -388,12 +398,10 @@ export default function InvestSwipePage() {
                   className="relative overflow-hidden bg-purple-950/5 border-white/10 backdrop-blur-xl rounded-[40px] p-10 shadow-2xl transition-all duration-300 hover:scale-[1.02] flex flex-col items-center justify-center border"
                   style={{
                     boxShadow: "inset 0 0 20px rgba(167, 139, 250, 0.05)",
-                    backgroundColor: "rgba(15, 10, 31, 0.2)", // Moody purple tint
+                    backgroundColor: "rgba(15, 10, 31, 0.2)",
                   }}
                 >
-                  {/* Subtle Top Highlight for Glass Effect */}
                   <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
                   <p className="text-5xl md:text-6xl font-bold text-white tracking-tighter mb-4">
                     {s.num}
                   </p>
@@ -403,8 +411,6 @@ export default function InvestSwipePage() {
                   <p className="text-sm text-white/40 leading-relaxed max-w-[200px] font-light">
                     {s.desc}
                   </p>
-
-                  {/* Internal Glow for Extra Polish */}
                   <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl" />
                 </Card>
               ))}
@@ -413,13 +419,11 @@ export default function InvestSwipePage() {
         </section>
 
         <section className="relative py-24 overflow-hidden bg-[#05050A]">
-          {/* Atmospheric Background Glows */}
           <div className="absolute top-1/4 -right-20 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
           <div className="absolute bottom-1/4 -left-20 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
 
           <div className="container mx-auto px-6 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-              {/* LEFT COLUMN: Content & Branding */}
               <div className="lg:col-span-5 order-2 lg:order-1">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
                   <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
@@ -445,10 +449,8 @@ export default function InvestSwipePage() {
                 </p>
               </div>
 
-              {/* RIGHT COLUMN: The Interactive Display */}
               <div className="lg:col-span-7 order-1 lg:order-2">
                 <div className="relative group">
-                  {/* Glassmorphism Frame Decor */}
                   <div className="absolute -inset-4 bg-gradient-to-tr from-purple-500/20 to-blue-500/20 rounded-[40px] blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
 
                   <div className="relative rounded-[32px] border border-white/10 bg-[#0A0A0F]/80 backdrop-blur-3xl overflow-hidden shadow-2xl">
@@ -463,7 +465,6 @@ export default function InvestSwipePage() {
                         />
                       </div>
                     ) : (
-                      /* FIXED: Added flex, items-center, and min-height to ensure perfect centering */
                       <div className="p-12 min-h-[400px] flex flex-col items-center justify-center text-center">
                         <img
                           src={investswipeMockup}
@@ -484,7 +485,6 @@ export default function InvestSwipePage() {
                     )}
                   </div>
 
-                  {/* Floating Accessory Element */}
                   <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse" />
                 </div>
               </div>
@@ -493,15 +493,12 @@ export default function InvestSwipePage() {
         </section>
 
         <section className="relative py-24 bg-[#05050A] overflow-hidden">
-          {/* Soft background accents */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/5 blur-[120px] -z-10" />
 
           <div className="container mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-              {/* Visual Mockup Column */}
               <div className="lg:col-span-6 relative">
                 <div className="relative z-10 flex justify-center">
-                  {/* Glass floating card for the phone mockup */}
                   <div className="relative p-8 rounded-[48px] bg-gradient-to-b from-white/5 to-transparent border border-white/10 backdrop-blur-sm shadow-2xl">
                     <img
                       src={investswipeMockup}
@@ -510,12 +507,9 @@ export default function InvestSwipePage() {
                     />
                   </div>
                 </div>
-
-                {/* Decorative background element from the reference image */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] bg-gradient-to-tr from-purple-500/20 to-blue-500/0 rounded-full blur-3xl opacity-30 -z-0" />
               </div>
 
-              {/* Content Column */}
               <div className="lg:col-span-6">
                 <h2 className="text-4xl md:text-5xl font-serif text-white mb-6 leading-tight">
                   Swipe Right to <br />
@@ -528,7 +522,6 @@ export default function InvestSwipePage() {
                   generation.
                 </p>
 
-                {/* Feature Grid - Replaces the simple bullet list */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {[
                     {
@@ -597,7 +590,6 @@ export default function InvestSwipePage() {
                     className="relative border-b border-white/10 cursor-pointer overflow-hidden group"
                     onClick={() => setExpandedIndex(isExpanded ? null : index)}
                   >
-                    {/* Atmospheric Background Video/Effect on Expand */}
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.div
@@ -627,7 +619,6 @@ export default function InvestSwipePage() {
                     </AnimatePresence>
 
                     <div className="relative z-10 flex flex-col md:flex-row items-center gap-10 md:gap-16 py-14 px-4 md:px-10">
-                      {/* ID & Label */}
                       <div className="flex items-center gap-8 min-w-[320px]">
                         <p
                           className={`text-[10px] font-mono font-bold border-b pb-1 self-start mt-4 transition-colors duration-500 ${
@@ -647,7 +638,6 @@ export default function InvestSwipePage() {
                         </h3>
                       </div>
 
-                      {/* Content Area */}
                       <div className="flex-1 space-y-4 text-left">
                         <p
                           className={`text-[12px] uppercase tracking-[0.4em] font-black transition-colors duration-500 ${
@@ -672,7 +662,6 @@ export default function InvestSwipePage() {
                         </AnimatePresence>
                       </div>
 
-                      {/* Icon Indicator */}
                       <div
                         className={`w-14 h-14 rounded-full border flex items-center justify-center transition-all duration-500 ${
                           isExpanded
@@ -695,12 +684,10 @@ export default function InvestSwipePage() {
         </section>
 
         <section className="relative bg-[#05050A] py-32 px-4 text-center border-t border-white/5 overflow-hidden">
-          {/* BACKGROUND GLOW EFFECTS */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-purple-600/10 blur-[120px] rounded-full pointer-events-none" />
           <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
           <div className="relative z-10 max-w-[800px] mx-auto">
-            {/* AVAILABILITY BADGE */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -725,7 +712,7 @@ export default function InvestSwipePage() {
 
             <p className="text-lg md:text-xl text-[#B5B7C6] font-normal mb-10 max-w-[500px] mx-auto leading-relaxed">
               500 beta spots. Be among the first to experience fractional
-              investing with **InvestSwipe**.
+              investing with <b>InvestSwipe</b>.
             </p>
 
             <div className="flex flex-col items-center gap-4">

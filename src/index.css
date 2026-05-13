@@ -84,6 +84,9 @@
     --sidebar-ring-rgb: 139 92 246;
     --footer-rgb: 5 5 10;
     --footer-foreground-rgb: 255 255 255;
+
+    /* CLERK */
+    --clerk-color-warning: rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -234,3 +237,19 @@
 }
 
 body::-webkit-scrollbar { display: none; }
+
+/* Kill Clerk dev-mode stripes completely */
+.cl-footer,
+.cl-footer * {
+  background-image: none !important;
+}
+
+/* VERY IMPORTANT: handle pseudo elements */
+.cl-footer::before,
+.cl-footer::after,
+.cl-footer *::before,
+.cl-footer *::after {
+  background-image: none !important;
+  content: none !important;
+}
+

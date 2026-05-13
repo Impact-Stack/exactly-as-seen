@@ -224,46 +224,155 @@ export default function ProjectsSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.4 }}
+                style={{
+                  position: "relative",
+                  overflow: "hidden"
+                }}
               >
-                <div className="proj-card-gradient" style={{ background: projectGradients[2] }} />
-                <div className="proj-card-scrim" style={{ background: "linear-gradient(to right, rgba(5,5,10,0.95) 0%, rgba(5,5,10,0.4) 100%)" }} />
-                
-                <div className="proj-card-tag">
-                   <Chip label={third.type} size="small" sx={{ bgcolor: "rgba(139,92,246,0.2)", color: "#c4b5fd", fontSize: "0.6rem", border: "1px solid rgba(139,92,246,0.3)" }} />
-                </div>
+                {/* Fixed gradient background */}
+                <div
+                  className="proj-card-gradient"
+                  style={{
+                    background: projectGradients[2],
+                    position: "absolute",
+                    inset: 0,
+                    zIndex: 0
+                  }}
+                />
 
-                <div className="proj-card-content" style={{ maxWidth: "550px" }}>
-                  <div style={{ gap: 12, marginBottom: 12 }}>
-                    <div className="proj-card-icon " style={{ width: 40, height: 40 }}>
-                      <MdPeople size={20} color="#c4b5fd" />
-                    </div>
-                    <div>
-                      <h4 className="proj-card-title" style={{ marginBottom: 0 }}>{third.title}</h4>
-                      <p style={{ color: "rgba(196,181,253,0.7)", fontSize: "0.75rem" }}>{third.subtitle}</p>
-                    </div>
+                <div
+                  className="proj-card-scrim"
+                  style={{
+                    background:
+                      "linear-gradient(to right, rgba(5,5,10,0.95) 0%, rgba(5,5,10,0.4) 100%)",
+                    position: "absolute",
+                    inset: 0,
+                    zIndex: 1
+                  }}
+                />
+
+                {/* Scrollable content (scrollbar hidden inline) */}
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 2,
+                    height: "100%",
+                    overflowY: "auto",
+                    paddingRight: "6px",
+
+                    // Hide scrollbar (inline approach)
+                    scrollbarWidth: "none", // Firefox
+                    msOverflowStyle: "none" // IE/Edge
+                  }}
+                  ref={(el) => {
+                    if (el) {
+                      el.style.setProperty("--webkit-scrollbar", "none");
+                    }
+                  }}
+                  onWheel={(e) => e.stopPropagation()}
+                >
+                  <div style={{ display: "none" }}>
+                    {/* forces WebKit scrollbar override */}
+                    <style>
+                      {`
+                        div::-webkit-scrollbar {
+                          display: none;
+                        }
+                      `}
+                    </style>
                   </div>
-                  
-                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", lineHeight: 1.6, marginBottom: 16 }}>{third.summary}</p>
 
-                  <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mb: 3 }}>
-                    {third.evidence.map((item) => (
-                      <Box key={item.title} sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                        <span style={{ color: "#8b5cf6" }}>▸</span>
-                        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.7rem" }}><strong>{item.title}:</strong> {item.detail}</span>
-                      </Box>
-                    ))}
-                  </Box>
+                  <div className="proj-card-tag">
+                    <Chip
+                      label={third.type}
+                      size="small"
+                      sx={{
+                        bgcolor: "rgba(139,92,246,0.2)",
+                        color: "#c4b5fd",
+                        fontSize: "0.6rem",
+                        border: "1px solid rgba(139,92,246,0.3)"
+                      }}
+                    />
+                  </div>
 
-                  <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                    <Button
-                      component={Link}
-                      to={buildProjectInquiryHref(third, "home_featured")}
-                      variant="contained"
-                      sx={{ bgcolor: "#7c3aed", "&:hover": { bgcolor: "#6d28d9" }, textTransform: "none", fontSize: "0.75rem", borderRadius: "6px" }}
+                  <div className="proj-card-content" style={{ maxWidth: "700px" }}>
+                    <div style={{ gap: 12, marginBottom: 12 }}>
+                      <div className="proj-card-icon" style={{ width: 40, height: 40 }}>
+                        <MdPeople size={20} color="#c4b5fd" />
+                      </div>
+                      <div>
+                        <h4 className="proj-card-title" style={{ marginBottom: 0 }}>
+                          {third.title}
+                        </h4>
+                        <p
+                          style={{
+                            color: "rgba(196,181,253,0.7)",
+                            fontSize: "0.75rem"
+                          }}
+                        >
+                          {third.subtitle}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p
+                      style={{
+                        color: "rgba(255,255,255,0.6)",
+                        fontSize: "0.8rem",
+                        lineHeight: 1.2,
+                        marginBottom: 10
+                      }}
                     >
-                      Discuss project
-                    </Button>
-                    <Link to={third.serviceHref || "#"} style={{ color: "#c4b5fd", fontSize: "0.75rem", textDecoration: "none", fontWeight: 600 }}>Related service</Link>
+                      {third.summary}
+                    </p>
+
+                    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mb: 3 }}>
+                      {third.evidence.map((item) => (
+                        <Box
+                          key={item.title}
+                          sx={{ display: "flex", gap: 1, alignItems: "center" }}
+                        >
+                          <span style={{ color: "#8b5cf6" }}>▸</span>
+                          <span
+                            style={{
+                              color: "rgba(255,255,255,0.5)",
+                              fontSize: "0.7rem"
+                            }}
+                          >
+                            <strong>{item.title}:</strong> {item.detail}
+                          </span>
+                        </Box>
+                      ))}
+                    </Box>
+
+                    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                      <Button
+                        component={Link}
+                        to={buildProjectInquiryHref(third, "home_featured")}
+                        variant="contained"
+                        sx={{
+                          bgcolor: "#7c3aed",
+                          "&:hover": { bgcolor: "#6d28d9" },
+                          textTransform: "none",
+                          fontSize: "0.75rem",
+                          borderRadius: "6px"
+                        }}
+                      >
+                        Discuss project
+                      </Button>
+
+                      <Link
+                        to={third.serviceHref || "#"}
+                        style={{
+                          color: "#c4b5fd",
+                          fontSize: "0.75rem",
+                          textDecoration: "none",
+                          fontWeight: 600
+                        }}
+                      >
+                        Related service
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </motion.article>
