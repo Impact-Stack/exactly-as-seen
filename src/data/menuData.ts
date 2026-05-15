@@ -46,7 +46,6 @@ export const megaMenus: Record<
       { label: "Our Story", href: "/about" },
       { label: "Leadership", href: "/about" },
       { label: "Values and Mission", href: "/about" },
-      { label: "Careers", href: "/about" },
     ],
     columns: [
       {
@@ -54,7 +53,7 @@ export const megaMenus: Record<
         links: [
           { label: "News and Insights", href: "/insights" },
           { label: "Case Studies", href: "/portfolio" },
-          { label: "Partners", href: "/about" },
+          { label: "Pricing", href: "/pricing" },
           { label: "Contact", href: "/contact" },
         ],
       },
@@ -69,11 +68,11 @@ export const megaMenus: Record<
 };
 
 export const navLinks = [
+  { label: "Home", href: "/" },
   { label: "Solutions", hasDropdown: true, href: "/services/web" },
   { label: "Industries", href: "/industries" },
-  { label: "Pricing", href: "/pricing" },
   { label: "About", hasDropdown: true, href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
-  { label: "Insights", href: "/insights" },
+  { label: "Insights", href: "/insights" }, 
   { label: "Contact", href: "/contact" },
 ];

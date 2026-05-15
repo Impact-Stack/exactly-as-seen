@@ -86,11 +86,6 @@ export default function ValueProposition() {
                     <p className="text-xs md:text-sm font-bold text-white tracking-[0.2em]">
                       {item.count} <span className="mx-1 md:mx-2 opacity-20">/</span> <span className="opacity-30">03</span>
                     </p>
-                    
-                    {/* Scaled down the button for mobile */}
-                    <div className="w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center bg-black/60 border border-white/10 text-white/40 hover:text-white hover:bg-[#8B5CF6] hover:border-[#8B5CF6] transition-all cursor-pointer group">
-                      <MdNorthEast className="w-5 h-5 md:w-6 md:h-6 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </div>
                   </div>
                 </CardContent>
               </Card>
