@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { motion, AnimatePresence } from "framer-motion";
 import { megaMenus, navLinks } from "@/data/menuData";
+import {event} from "../lib/analytics";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -550,7 +551,7 @@ export default function Header() {
                               <Link
                                 to="/investswipe"
                                 onClick={() =>
-                                  trackEvent({
+                                  event({
                                     action: "nav_spotlight_waitlist_click",
                                     category: "InvestSwipe",
                                     label: "Mega Menu Spotlight",
