@@ -7,22 +7,22 @@ const faqs = [
   {
     question: "How fast can we start a project?",
     answer:
-      "Discovery can begin within 1-2 weeks, depending on stakeholder availability. We share a scoped proposal and timeline within 48 hours after discovery.",
+      "We offer a free 45-minute initial consultation to understand your needs. Ongoing consultations are paid. Please refer to our pricing page for more details.",
   },
   {
     question: "Do you support government procurement requirements?",
     answer:
-      "Yes. We are CIPC-registered, CSD-listed, SARS tax compliant, and EME B-BBEE compliant with 80/20 preference-point eligibility.",
+      "Yes. We are CIPC-registered, CSD-listed, SARS tax compliant and EME B-BBEE compliant with 80/20 preference-point eligibility.",
   },
   {
     question: "What is your typical delivery model?",
     answer:
-      "We run discovery, align scope and risks, then deliver in structured increments with transparent reporting and measurable milestones.",
+      "We follow the 3P² model: Package, Flat Add-on, Percentage and Retainer—allowing flexible engagement based on your project scope and needs.",
   },
   {
     question: "Can you work with existing systems and vendors?",
     answer:
-      "Yes. We integrate with existing APIs, infrastructure, and operational workflows. We prioritize minimal disruption and safe data handling.",
+      "Yes. We integrate with existing APIs, infrastructure and operational workflows. We prioritize minimal disruption and safe data handling.",
   },
 ];
 

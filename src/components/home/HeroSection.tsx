@@ -230,7 +230,7 @@ useEffect(() => {
       >
         <div>
           <p className="text-2xl md:text-3xl font-light tracking-tighter text-white">
-            20+
+            5+
           </p>
           <p className="text-[8px] md:text-[9px] uppercase tracking-widest text-gray-500 leading-tight mt-1">
             Projects <span className="block">Delivered</span>
@@ -246,7 +246,7 @@ useEffect(() => {
         </div>
         <div>
           <p className="text-2xl md:text-3xl font-light tracking-tighter text-white">
-            6
+            5
           </p>
           <p className="text-[8px] md:text-[9px] uppercase tracking-widest text-gray-500 leading-tight mt-1">
             Sectors <span className="block">Served</span>

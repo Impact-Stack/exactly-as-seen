@@ -9,6 +9,7 @@ import { Waitlist } from "@clerk/react";
 // --- MUI OPTIMIZATION (Crucial for bundle size) ---
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import Chip from "@mui/material/Chip";
 
 // --- REACT ICONS (Direct path imports) ---
 import {
@@ -26,6 +27,7 @@ import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { event as trackEvent } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/site";
+import { useInView } from "@/hooks/use-in-view";
 
 // --- ASSETS ---
 import investswipeMockup from "@/assets/investswipe-mockup.webp";
@@ -55,6 +57,13 @@ const faqs = [
     q: "Who built this?",
     a: "ImpactStack Africa, a youth-led Cape Town tech company. Led by Google Cybersecurity certified developer Liso Hlatshwayo, 21.",
   },
+];
+
+const features: string[] = [
+  "Accessible starting investment",
+  "Short-form education content",
+  "Simple swipe interaction model",
+  "Community learning features",
 ];
 
 const CONTACT_INVESTSWIPE_HREF =
@@ -176,6 +185,7 @@ const clerkWaitlistAppearance = {
 
 export default function InvestSwipePage() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const { ref, isInView } = useInView();
 
   const structuredData: Record<string, unknown>[] = [
     {
@@ -332,8 +342,8 @@ export default function InvestSwipePage() {
               </div>
 
               {/* RIGHT COLUMN: Clerk Waitlist */}
-              <div className="lg:col-span-7 flex justify-center lg:justify-end">
-                <div className="w-full max-w-lg p-8 md:p-12 rounded-[32px] border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-2xl">
+              <div className="lg:col-span-7 flex justify-center lg:justify-end px-4 sm:px-0">
+                <div className="w-full max-w-lg p-6 sm:p-8 md:p-12 rounded-[24px] sm:rounded-[32px] border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-2xl">
                   {/* Top Badge */}
                   <div className="flex justify-center mb-6">
                     <span className="px-3 py-1 text-[10px] tracking-widest text-blue-400 uppercase bg-blue-500/10 border border-blue-500/20 rounded-full">
@@ -342,10 +352,12 @@ export default function InvestSwipePage() {
                   </div>
 
                   {/* Clerk Waitlist Component */}
-                  <Waitlist appearance={clerkWaitlistAppearance} />
+                  <div className="w-full overflow-hidden [&_.cl-card]:w-full [&_.cl-card]:max-w-full [&_.cl-card]:rounded-none [&_.cl-card]:shadow-none [&_.cl-card]:border-0">
+                    <Waitlist appearance={clerkWaitlistAppearance} />
+                  </div>
 
                   {/* Secondary Link */}
-                  <div className="mt-8 text-center">
+                  <div className="mt-6 sm:mt-8 text-center">
                     <Link
                       to={CONTACT_INVESTSWIPE_HREF}
                       className="text-xs font-medium text-white/40 hover:text-white underline underline-offset-4 transition-colors"
@@ -362,6 +374,70 @@ export default function InvestSwipePage() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="relative py-24 overflow-hidden bg-[#05050A]" ref={ref}>
+          {/* Ambient glow blobs */}
+          <div className="absolute top-1/4 -right-20 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute bottom-1/4 -left-20 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
+    
+          <div className="container mx-auto px-6 relative z-10 max-w-5xl">
+            {/* Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="mb-14"
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
+                <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                <p className="text-[10px] tracking-[0.2em] text-purple-400 font-bold uppercase">
+                  Fintech Product · Target Q3 2026
+                </p>
+              </div>
+    
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter text-white mb-4 leading-none">
+                InvestSwipe
+              </h2>
+    
+              <p className="text-xl text-[#B5B7C6] font-medium leading-relaxed max-w-2xl">
+                Accessible investing for emerging markets. A mobile-first platform
+                designed for entry-level investors in South Africa, featuring guided
+                onboarding and swipe-based portfolio actions.
+              </p>
+            </motion.div>
+    
+            {/* Feature grid */}
+            <motion.ul
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12"
+            >
+              {features.map((f, i) => (
+                <li
+                  key={f}
+                  className="flex items-center gap-4 px-6 py-4 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm text-[#B5B7C6] group hover:border-purple-500/30 hover:bg-purple-500/5 transition-all duration-300"
+                >
+                  <span className="w-2 h-2 bg-purple-500 rounded-full shadow-[0_0_8px_rgba(168,85,247,0.6)] group-hover:scale-150 transition-transform flex-shrink-0" />
+                  <span className="text-sm font-medium tracking-wide">{f}</span>
+                </li>
+              ))}
+            </motion.ul>
+    
+            {/* CTA row */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.28, ease: "easeOut" }}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
+            >
+    
+              <p className="text-sm text-white/40 font-medium">
+                Be among the first 500 beta users
+              </p>
+            </motion.div>
           </div>
         </section>
 
@@ -414,80 +490,6 @@ export default function InvestSwipePage() {
                   <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl" />
                 </Card>
               ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="relative py-24 overflow-hidden bg-[#05050A]">
-          <div className="absolute top-1/4 -right-20 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute bottom-1/4 -left-20 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
-
-          <div className="container mx-auto px-6 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-              <div className="lg:col-span-5 order-2 lg:order-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
-                  <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
-                  <p className="text-[10px] tracking-[0.2em] text-purple-400 font-bold uppercase">
-                    Figma Prototype
-                  </p>
-                </div>
-
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-6">
-                  Manage Everything <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-                    in Your Hand
-                  </span>
-                </h2>
-
-                <p className="text-lg text-[#B5B7C6] leading-relaxed mb-10 max-w-md">
-                  Experience the seamless interface of InvestSwipe. Test the
-                  interactions, navigation, and wealth-building flow directly
-                  from our live Figma workspace.
-                </p>
-                <p className="text-sm text-white/50 font-medium">
-                  Be among the first 500 beta users
-                </p>
-              </div>
-
-              <div className="lg:col-span-7 order-1 lg:order-2">
-                <div className="relative group">
-                  <div className="absolute -inset-4 bg-gradient-to-tr from-purple-500/20 to-blue-500/20 rounded-[40px] blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
-
-                  <div className="relative rounded-[32px] border border-white/10 bg-[#0A0A0F]/80 backdrop-blur-3xl overflow-hidden shadow-2xl">
-                    {INVESTSWIPE_FIGMA_EMBED_URL ? (
-                      <div className="relative aspect-video lg:aspect-[4/3] w-full">
-                        <iframe
-                          title="InvestSwipe Figma mockup"
-                          src={INVESTSWIPE_FIGMA_EMBED_URL}
-                          className="absolute inset-0 w-full h-full border-0"
-                          loading="lazy"
-                          allowFullScreen
-                        />
-                      </div>
-                    ) : (
-                      <div className="p-12 min-h-[400px] flex flex-col items-center justify-center text-center">
-                        <img
-                          src={investswipeMockup}
-                          alt="Mockup Preview"
-                          className="block max-w-[280px] w-full h-auto mb-8 drop-shadow-[0_20px_50px_rgba(168,85,247,0.4)]"
-                        />
-                        <h3 className="text-xl text-white font-medium mb-2">
-                          Live Preview Offline
-                        </h3>
-                        <p className="text-white/40 text-sm max-w-xs">
-                          Configure your{" "}
-                          <code className="text-purple-400">
-                            VITE_INVESTSWIPE_FIGMA_URL
-                          </code>{" "}
-                          to enable the interactive prototype.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse" />
-                </div>
-              </div>
             </div>
           </div>
         </section>

@@ -12,7 +12,7 @@ export default function IndustriesSection() {
     <section
       id="industries"
       ref={ref}
-      className="relative py-32 px-6 overflow-hidden min-h-screen"
+      className="relative py-20 px-6 overflow-hidden min-h-screen"
     >
       {/* 🔥 BACKGROUND */}
       <div className="absolute inset-0 z-0 pointer-events-none">

@@ -106,11 +106,10 @@ const Index = () => {
       />
       <PageShell>
         <HeroSection />
-        <ProofStrip />
-        <ValueProposition />
-        <SolutionsOverview />
         <ProcurementBadgeStrip />
         <IndustriesSection />
+        <ValueProposition />
+        <SolutionsOverview />
         <ProjectsSection />
         <InsightsSection />
         <InvestSwipeSection />

@@ -2,23 +2,10 @@ import { motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
 import { Link } from "react-router-dom";
 import { event as trackEvent } from "@/lib/analytics";
-import { getProjectById, projectInsightsSeed } from "@/lib/projects";
+import { getLatestArticles } from "@/lib/articles";
 import { Button } from "@mui/material";
 
-const posts = projectInsightsSeed.reduce<Array<{
-  id: string;
-  title: string;
-  category: "Security" | "Architecture" | "Mobile";
-  date: string;
-  summary: string;
-  projectId: string;
-  relatedProject: NonNullable<ReturnType<typeof getProjectById>>;
-}>>((acc, item) => {
-  const relatedProject = getProjectById(item.projectId);
-  if (!relatedProject) return acc;
-  acc.push({ ...item, relatedProject });
-  return acc;
-}, []);
+const posts = getLatestArticles(3);
 
 export default function InsightsSection() {
   const { ref, isInView } = useInView();
@@ -66,7 +53,7 @@ export default function InsightsSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {posts.map((post, i) => (
             <motion.article
-              key={post.title}
+              key={post.id}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
@@ -78,7 +65,7 @@ export default function InsightsSection() {
                 <div>
                   <div className="flex justify-between items-start mb-12">
                     <span className="text-[10px] font-mono font-bold text-white/40 tracking-widest">
-                      0{i + 1} — 0{posts.length}
+                      {post.id} — {String(posts.length).padStart(2, "0")}
                     </span>
                     <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/20 group-hover:text-white group-hover:border-white transition-colors">
                       <span className="text-xl">↗</span>
@@ -100,11 +87,11 @@ export default function InsightsSection() {
                   </p>
                   
                   <Link
-                    to={`/portfolio#${post.relatedProject.id}`}
-                    onClick={() => trackEvent({ action: "insight_project_click", category: "Home Insights", label: post.relatedProject.id })}
+                    to={`/insights/${post.slug}`}
+                    onClick={() => trackEvent({ action: "insight_article_click", category: "Home Insights", label: post.slug })}
                     className="inline-flex items-center text-[11px] font-black uppercase tracking-[0.2em] text-white hover:text-[#C4B5FD] transition-colors"
                   >
-                    View Project <span className="ml-2">→</span>
+                    Read Article <span className="ml-2">→</span>
                   </Link>
                 </div>
               </div>

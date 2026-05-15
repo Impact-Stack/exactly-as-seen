@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { motion, AnimatePresence } from "framer-motion";
 import { megaMenus, navLinks } from "@/data/menuData";
+import {event} from "../lib/analytics";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -428,29 +429,178 @@ export default function Header() {
                           ))}
                         </div>
 
-                        {/* Column 3 — spotlight */}
+                        {/* Column 3 — InvestSwipe Waitlist Spotlight */}
                         {menu.spotlight && (
                           <div className="mega-spotlight">
-                            <p className="mega-spotlight-eyebrow">Spotlight</p>
-                            <p className="mega-spotlight-title">
-                              {menu.spotlight.title}
-                            </p>
-                            <p className="mega-spotlight-desc">
-                              {menu.spotlight.description}
-                            </p>
-                            <div className="mega-spotlight-card">
-                              <div className="mega-spotlight-card-inner">
-                                <div className="mega-spotlight-card-icon">
-                                  ⬡
-                                </div>
-                                <div className="mega-spotlight-card-label">
-                                  ImpactStack
-                                </div>
+                            <div
+                              style={{
+                                position: "relative",
+                                padding: "1.5rem",
+                                borderRadius: "20px",
+                                background: "linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(59,130,246,0.08) 100%)",
+                                border: "1px solid rgba(139,92,246,0.2)",
+                                overflow: "hidden",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "1rem",
+                              }}
+                            >
+                              {/* Ambient glow */}
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  top: "-40px",
+                                  right: "-40px",
+                                  width: "160px",
+                                  height: "160px",
+                                  borderRadius: "50%",
+                                  background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)",
+                                  pointerEvents: "none",
+                                }}
+                              />
+
+                              {/* Eyebrow */}
+                              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    width: "6px",
+                                    height: "6px",
+                                    borderRadius: "50%",
+                                    background: "#a78bfa",
+                                    boxShadow: "0 0 6px #a78bfa",
+                                    animation: "pulse 2s infinite",
+                                  }}
+                                />
+                                <p
+                                  style={{
+                                    fontSize: "10px",
+                                    fontWeight: 700,
+                                    letterSpacing: "0.15em",
+                                    textTransform: "uppercase",
+                                    color: "#a78bfa",
+                                    margin: 0,
+                                  }}
+                                >
+                                  Now Open — 500 Beta Spots
+                                </p>
                               </div>
+
+                              {/* Wordmark */}
+                              <div>
+                                <p
+                                  style={{
+                                    fontSize: "22px",
+                                    fontWeight: 900,
+                                    letterSpacing: "-0.03em",
+                                    color: "#ffffff",
+                                    margin: "0 0 4px",
+                                    lineHeight: 1.1,
+                                  }}
+                                >
+                                  Invest
+                                  <span
+                                    style={{
+                                      background: "linear-gradient(90deg, #a78bfa, #60a5fa)",
+                                      WebkitBackgroundClip: "text",
+                                      WebkitTextFillColor: "transparent",
+                                    }}
+                                  >
+                                    Swipe
+                                  </span>
+                                </p>
+                                <p
+                                  style={{
+                                    fontSize: "12px",
+                                    color: "rgba(255,255,255,0.45)",
+                                    margin: 0,
+                                    fontWeight: 500,
+                                  }}
+                                >
+                                  Accessible investing for emerging markets.
+                                </p>
+                              </div>
+
+                              {/* Feature pills */}
+                              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                                {[
+                                  "Fractional shares",
+                                  "Swipe to invest",
+                                  "Guided onboarding",
+                                  "Community learning",
+                                ].map((f) => (
+                                  <span
+                                    key={f}
+                                    style={{
+                                      fontSize: "10px",
+                                      fontWeight: 600,
+                                      padding: "3px 9px",
+                                      borderRadius: "100px",
+                                      background: "rgba(255,255,255,0.06)",
+                                      border: "1px solid rgba(255,255,255,0.1)",
+                                      color: "rgba(255,255,255,0.55)",
+                                      letterSpacing: "0.02em",
+                                    }}
+                                  >
+                                    {f}
+                                  </span>
+                                ))}
+                              </div>
+
+                              {/* CTA button */}
+                              <Link
+                                to="/investswipe"
+                                onClick={() =>
+                                  event({
+                                    action: "nav_spotlight_waitlist_click",
+                                    category: "InvestSwipe",
+                                    label: "Mega Menu Spotlight",
+                                  })
+                                }
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  padding: "10px 14px",
+                                  borderRadius: "12px",
+                                  background: "linear-gradient(135deg, #7c3aed, #4f46e5)",
+                                  color: "#fff",
+                                  fontSize: "11px",
+                                  fontWeight: 800,
+                                  letterSpacing: "0.12em",
+                                  textTransform: "uppercase",
+                                  textDecoration: "none",
+                                  transition: "opacity 0.15s, transform 0.15s",
+                                  marginTop: "4px",
+                                }}
+                                onMouseEnter={(e) => {
+                                  (e.currentTarget as HTMLElement).style.opacity = "0.88";
+                                  (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+                                }}
+                                onMouseLeave={(e) => {
+                                  (e.currentTarget as HTMLElement).style.opacity = "1";
+                                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                                }}
+                              >
+                                Join the Waitlist
+                                <span style={{ fontSize: "14px", fontWeight: 400 }}>→</span>
+                              </Link>
+
+                              {/* Meta */}
+                              <p
+                                style={{
+                                  fontSize: "10px",
+                                  fontFamily: "monospace",
+                                  color: "rgba(255,255,255,0.2)",
+                                  letterSpacing: "0.1em",
+                                  textTransform: "uppercase",
+                                  margin: 0,
+                                  textAlign: "center",
+                                }}
+                              >
+                                Cape Town, SA — Launching Q3 2026
+                              </p>
                             </div>
-                            <p className="mega-spotlight-meta">
-                              {menu.spotlight.meta}
-                            </p>
                           </div>
                         )}
                       </div>
