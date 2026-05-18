@@ -8,21 +8,19 @@ export const megaMenus: Record<
     spotlight?: { title: string; description: string; meta: string };
   }
 > = {
-  Solutions: {
+  Industries: {
     primaryLinks: [
-      { label: "Enterprise Web Apps", href: "/services/web" },
-      { label: "Mobile Solutions", href: "/services/mobile" },
-      { label: "Security and Compliance", href: "/services/security" },
-      { label: "Government Delivery", href: "/services/government" },
+      { label: "View All Industries", href: "/industries/" },
     ],
     columns: [
       {
-        title: "Delivery Support",
+        title: "Industries",
         links: [
-          { label: "Discovery and Scoping", href: "/contact" },
-          { label: "System Integration", href: "/services/web" },
-          { label: "Legacy Modernization", href: "/services/web" },
-          { label: "Quality Assurance", href: "/services/web" },
+          { label: "Government and Public Sector", href: "/industries/government-and-public-sector" },
+          { label: "Financial Services", href: "/industries/financial-services" },
+          { label: "Healthcare", href: "/industries/healthcare" },
+          { label: "Mining and Energy", href: "/industries/mining-and-energy" },
+          { label: "Retail and Commerce", href: "/industries/retail-and-commerce" },
         ],
       },
       {
@@ -69,8 +67,7 @@ export const megaMenus: Record<
 
 export const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Solutions", hasDropdown: true, href: "/services/web" },
-  { label: "Industries", href: "/industries" },
+  { label: "Industries", hasDropdown: true, href: "/industries" },
   { label: "About", hasDropdown: true, href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Insights", href: "/insights" }, 

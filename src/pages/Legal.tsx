@@ -176,10 +176,10 @@ export default function LegalPage() {
                     <p className="relative z-10 text-[11px] text-white/40 leading-relaxed">
                       Questions regarding our terms? Reach out to our team:
                       <a
-                        href="mailto:hello@impactstack.africa"
+                        href="mailto:business@impactstack.africa"
                         className="text-purple-400 font-mono mt-2 block hover:text-purple-300 transition-colors"
                       >
-                        hello@impactstack.africa
+                        business@impactstack.africa
                       </a>
                     </p>
                   </div>

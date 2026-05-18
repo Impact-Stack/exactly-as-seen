@@ -107,9 +107,8 @@ const Index = () => {
       <PageShell>
         <HeroSection />
         <ProcurementBadgeStrip />
-        <IndustriesSection />
-        <ValueProposition />
         <SolutionsOverview />
+        <ValueProposition />
         <ProjectsSection />
         <InsightsSection />
         <InvestSwipeSection />

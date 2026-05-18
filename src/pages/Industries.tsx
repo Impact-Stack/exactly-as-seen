@@ -15,6 +15,13 @@ import { absoluteUrl } from "@/lib/site";
 import { industriesData } from "@/lib/industries";
 import { Link } from "react-router-dom";
 
+function slugify(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export default function IndustriesPage() {
   const leftColumn = industriesData.slice(0, 3);
   const rightColumn = industriesData.slice(3, 5);
@@ -102,8 +109,14 @@ export default function IndustriesPage() {
   );
 }
 
-function IndustryCard({ industry, index }: { industry: any; index: number }) {
+type IndustryCardProps = {
+  industry: (typeof industriesData)[number];
+  index: number;
+};
+
+function IndustryCard({ industry, index }: IndustryCardProps) {
   const displayNum = index.toString().padStart(2, "0");
+  const slug = slugify(industry.title);
 
   return (
     <Card
@@ -159,7 +172,7 @@ function IndustryCard({ industry, index }: { industry: any; index: number }) {
             }}
           />
           <Link
-            to={`/contact?projectType=${encodeURIComponent(industry.projectType)}`}
+            to={`/industries/${slug}`}
             className="text-white text-xs font-bold tracking-widest uppercase hover:text-purple-400 transition-colors"
           >
             Explore &rarr;

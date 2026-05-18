@@ -2,170 +2,40 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import {
-  MdLayers,
-  MdCloud,
-  MdMonitor,
-  MdBuild,
-  MdBarChart,
-  MdVerified,
-  MdMemory,
-  MdWifi,
-  MdPeople,
-  MdPhoneAndroid,
-  MdAccountBalance,
-  MdArrowForward,
-  MdChevronLeft,
-  MdChevronRight,
-} from "react-icons/md";
-import type { IconType } from "react-icons";
+import { MdArrowForward, MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { industriesData } from "@/lib/industries";
 
-// ─── 1. INTERFACE DEFINITION ────────────────────────────────────────────────
-interface Solution {
-  num: string;
-  icon: IconType;
-  title: string;
-  desc: string;
-  bullets: string[];
-  link: string;
-  cta: string;
-  sub: string;
+// ─── HELPERS ────────────────────────────────────────────────────────────────
+
+function slugify(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
 
-// ─── 2. DATA ARRAY ──────────────────────────────────────────────────────────
-const solutions: Solution[] = [
-  {
-    num: "01",
-    icon: MdLayers,
-    title: "Digital Transformation",
-    desc: "Digital transformation programs for Cape Town and South African organizations modernizing service delivery.",
-    bullets: ["Strategy workshops", "Legacy modernisation"],
-    link: "/services/web",
-    cta: "OUR APPROACH",
-    sub: "MODERNIZE",
-  },
-  {
-    num: "02",
-    icon: MdCloud,
-    title: "Cloud & Infrastructure",
-    desc: "Cloud and infrastructure implementation focused on resilient enterprise software operations in South Africa.",
-    bullets: ["Cloud migrations", "Resilient architecture"],
-    link: "/services/web",
-    cta: "EXPLORE CLOUD",
-    sub: "SCALABLE",
-  },
-  {
-    num: "03",
-    icon: MdMonitor,
-    title: "Enterprise Web Apps",
-    desc: "Custom enterprise software platforms designed for secure scale, integrations, and measurable outcomes.",
-    bullets: ["Scale architecture", "Integration-ready"],
-    link: "/services/web",
-    cta: "SEE RESULTS",
-    sub: "ENTERPRISE",
-  },
-  {
-    num: "04",
-    icon: MdBuild,
-    title: "Managed Services",
-    desc: "Managed support and maintenance services that protect uptime and delivery continuity for business-critical systems.",
-    bullets: ["Support cycles", "Maintenance strategy"],
-    link: "/services/web",
-    cta: "GET SUPPORT",
-    sub: "ALWAYS ON",
-  },
-  {
-    num: "05",
-    icon: MdBarChart,
-    title: "Analytics & Data",
-    desc: "Data platforms and analytics pipelines that improve reporting, forecasting, and operational intelligence.",
-    bullets: ["Forecasting models", "Operational intelligence"],
-    link: "/services/web",
-    cta: "VIEW DATA",
-    sub: "INSIGHTS",
-  },
-  {
-    num: "06",
-    icon: MdVerified,
-    title: "Security & Compliance",
-    desc: "POPIA compliance services with security hardening for authentication, data handling, and governance controls.",
-    bullets: ["POPIA assessments", "Security hardening"],
-    link: "/services/security",
-    cta: "STAY SECURE",
-    sub: "COMPLIANT",
-  },
-  {
-    num: "07",
-    icon: MdMemory,
-    title: "Device Management",
-    desc: "End-user device strategy, rollout, and lifecycle management aligned with secure enterprise operations.",
-    bullets: ["Lifecycle management", "Hardware strategy"],
-    link: "/services/web",
-    cta: "MANAGE",
-    sub: "LIFECYCLE",
-  },
-  {
-    num: "08",
-    icon: MdWifi,
-    title: "Connectivity",
-    desc: "Connectivity and networking capabilities that keep distributed teams and branch operations reliably online.",
-    bullets: ["Branch networking", "Reliable uptime"],
-    link: "/services/web",
-    cta: "CONNECT",
-    sub: "NETWORK",
-  },
-  {
-    num: "09",
-    icon: MdPeople,
-    title: "HR and Payroll",
-    desc: "HR and payroll software workflows with dependable reporting and integration-ready data structures.",
-    bullets: ["Workflow automation", "Dependable reporting"],
-    link: "/services/web",
-    cta: "STREAMLINE",
-    sub: "SYSTEMS",
-  },
-  {
-    num: "10",
-    icon: MdPhoneAndroid,
-    title: "Mobile Solutions",
-    desc: "Cross-platform iOS and Android mobile solutions built for speed, quality, and long-term support.",
-    bullets: ["React Native / Flutter", "Native performance"],
-    link: "/services/mobile",
-    cta: "SEE MOBILE",
-    sub: "MOBILE",
-  },
-  {
-    num: "11",
-    icon: MdAccountBalance,
-    title: "Government Services",
-    desc: "Government digital services designed around procurement realities, compliance needs, and public-sector mandates.",
-    bullets: ["Public-sector focus", "Compliance focus"],
-    link: "/services/government",
-    cta: "GOV CASES",
-    sub: "MANDATE",
-  },
-];
+// ─── CARD ────────────────────────────────────────────────────────────────────
 
-// ─── 3. SOLUTION CARD COMPONENT ──────────────────────────────────────────────
-function SolutionCard({
-  solution,
+function IndustryCard({
+  industry,
+  num,
   isActive,
   onInteraction,
 }: {
-  solution: Solution;
+  industry: (typeof industriesData)[number];
+  num: string;
   isActive: boolean;
   onInteraction: () => void;
 }) {
-  const Icon = solution.icon;
+  const Icon = industry.icon;
+  const slug = slugify(industry.title);
 
   return (
     <motion.div
-      // Use onClick for mobile and onMouseEnter for desktop
       onClick={onInteraction}
       onMouseEnter={onInteraction}
-      // Desktop: fixed height & flex-1. Mobile: dynamic height & full width.
       className={`relative border-white/5 cursor-pointer overflow-hidden flex flex-col transition-all duration-500 bg-[#0A0A10]
-        ${isActive ? "min-h-[450px] md:h-full" : "min-h-[100px] md:h-full"} 
+        ${isActive ? "min-h-[450px] md:h-full" : "min-h-[100px] md:h-full"}
         w-full md:w-[300px] md:flex-1 md:border-r md:min-w-[280px] border-b md:border-b-0`}
     >
       <AnimatePresence>
@@ -189,13 +59,14 @@ function SolutionCard({
               <span
                 className={`block font-mono text-[11px] tracking-[0.3em] mb-3 transition-colors duration-500 ${isActive ? "text-white" : "text-white/20"}`}
               >
-                {solution.num}
+                {num}
               </span>
               <div
                 className={`h-[1px] w-12 transition-all duration-500 ${isActive ? "bg-purple-500 w-16" : "bg-white/10"}`}
               />
             </div>
-            {/* Icon visible on mobile right-side when collapsed */}
+
+            {/* Mobile icon */}
             <div
               className={`w-12 h-12 md:w-16 md:h-16 rounded-full border flex items-center justify-center md:mb-16 transition-all duration-700 md:hidden flex ${isActive ? "border-purple-400 bg-purple-500/20 text-white" : "border-white/10 text-white/20"}`}
             >
@@ -203,6 +74,7 @@ function SolutionCard({
             </div>
           </div>
 
+          {/* Desktop icon */}
           <div
             className={`w-16 h-16 rounded-full border md:flex items-center justify-center mb-16 transition-all duration-700 hidden ${isActive ? "border-purple-400 bg-purple-500/20 text-white shadow-[0_0_30px_rgba(138,43,226,0.4)]" : "border-white/10 text-white/20"}`}
           >
@@ -213,7 +85,7 @@ function SolutionCard({
             className={`font-bold leading-tight tracking-tight transition-all duration-700 ${isActive ? "text-2xl md:text-3xl text-white" : "text-lg md:text-xl text-white/40"}`}
             style={{ fontFamily: "'Syne', sans-serif" }}
           >
-            {solution.title}
+            {industry.title}
           </h3>
         </div>
 
@@ -228,24 +100,19 @@ function SolutionCard({
                 className="space-y-6 md:space-y-8"
               >
                 <p className="text-white/60 text-sm leading-relaxed max-w-[240px]">
-                  {solution.desc}
+                  {industry.description}
                 </p>
                 <div className="space-y-3">
-                  {solution.bullets.map((bullet, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-3 text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase"
-                    >
-                      <span className="text-purple-500 text-lg">/</span>{" "}
-                      {bullet}
-                    </div>
-                  ))}
+                  <div className="flex items-center gap-3 text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">
+                    <span className="text-purple-500 text-lg">/</span>
+                    {industry.evidence}
+                  </div>
                 </div>
                 <Link
-                  to={solution.link}
+                  to={`/industries/${slug}`}
                   className="inline-flex items-center gap-6 text-[10px] font-bold tracking-[0.3em] text-white border border-purple-500/50 bg-purple-900/20 px-8 py-4 rounded-sm uppercase group hover:bg-purple-600 transition-all"
                 >
-                  {solution.cta} <MdArrowForward />
+                  EXPLORE SECTOR <MdArrowForward />
                 </Link>
               </motion.div>
             ) : (
@@ -256,7 +123,7 @@ function SolutionCard({
                 className="flex items-center gap-4 text-white/20"
               >
                 <span className="text-[10px] font-bold tracking-widest uppercase">
-                  {solution.sub}
+                  {industry.projectType}
                 </span>
                 <MdArrowForward size={18} />
               </motion.div>
@@ -268,6 +135,8 @@ function SolutionCard({
   );
 }
 
+// ─── MAIN ────────────────────────────────────────────────────────────────────
+
 export default function SolutionsOverview() {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
   const [offset, setOffset] = useState(0);
@@ -275,7 +144,7 @@ export default function SolutionsOverview() {
 
   const CARD_WIDTH = 300;
   const visibleInTrack = 4;
-  const maxOffset = Math.max(0, solutions.length - visibleInTrack);
+  const maxOffset = Math.max(0, industriesData.length - visibleInTrack);
 
   return (
     <section
@@ -283,7 +152,7 @@ export default function SolutionsOverview() {
       className="bg-[#05050A] py-20 md:py-32 px-4 md:px-6 overflow-hidden"
     >
       <div className="max-w-[1500px] mx-auto">
-        {/* Header Section */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -294,24 +163,31 @@ export default function SolutionsOverview() {
               Our Expertise
             </h4>
             <h2
-              className="text-white text-4xl md:text-7xl font-bold tracking-tighter"
+              className="text-white text-4xl md:text-7xl font-bold tracking-tighter mb-6"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
-              Enterprise Solutions.
+              Industry Focus.
             </h2>
+            <Link
+              to="/industries"
+              className="inline-flex items-center gap-3 text-[10px] font-bold tracking-[0.25em] text-purple-400 border border-purple-500/30 bg-purple-500/5 px-6 py-3 rounded-sm uppercase hover:bg-purple-600 hover:text-white transition-all"
+            >
+              Explore All Industries <MdArrowForward size={14} />
+            </Link>
           </div>
+
           <p className="text-white/40 max-w-sm text-sm leading-relaxed border-l border-white/10 pl-6 hidden md:block">
-            From digital transformation to secure mobile platforms, we build the
-            infrastructure that moves South African business forward.
+            From government procurement to retail commerce, we build solutions
+            tuned to the regulatory and operational realities of each sector.
           </p>
         </motion.div>
 
-        {/* Main Interface Container */}
+        {/* Main Interface */}
         <div
           className="relative border border-white/5 rounded-[30px] md:rounded-[40px] overflow-hidden bg-[#08080c] flex flex-col md:flex-row h-auto md:h-[720px] shadow-2xl"
           onMouseLeave={() => setActiveIndex(null)}
         >
-          {/* Static Sidebar */}
+          {/* Sidebar */}
           <div className="w-full md:w-[300px] flex-shrink-0 border-b md:border-b-0 md:border-r border-white/5 p-8 md:p-12 flex md:flex-col justify-between items-center md:items-start bg-[#08080c] z-30">
             <div>
               <div className="w-12 h-[1px] bg-purple-600 mb-6 hidden md:block" />
@@ -319,7 +195,7 @@ export default function SolutionsOverview() {
                 className="text-3xl md:text-5xl font-bold text-white leading-tight md:leading-[0.9] tracking-tighter"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
-                Service
+                Sector
                 <br className="hidden md:block" /> Catalog
               </h3>
             </div>
@@ -342,10 +218,9 @@ export default function SolutionsOverview() {
             </div>
           </div>
 
-          {/* The Track */}
+          {/* Track */}
           <div className="flex-1 overflow-hidden relative bg-[#05050A]">
             <motion.div
-              // Disable horizontal X offset on mobile (screen < 768px)
               animate={{
                 x:
                   typeof window !== "undefined" && window.innerWidth > 768
@@ -355,18 +230,18 @@ export default function SolutionsOverview() {
               transition={{ type: "spring", stiffness: 60, damping: 20 }}
               className="flex flex-col md:flex-row h-full"
             >
-              {solutions.map((s, idx) => (
+              {industriesData.map((industry, idx) => (
                 <div
-                  key={s.num}
+                  key={industry.title}
                   className="flex-shrink-0 w-full md:w-[300px] h-full"
                 >
-                  <SolutionCard
-                    solution={s}
+                  <IndustryCard
+                    industry={industry}
+                    num={String(idx + 1).padStart(2, "0")}
                     isActive={activeIndex === idx}
-                    onInteraction={() => {
-                      // Toggle logic: if already active, set to null (close); otherwise, open it.
-                      setActiveIndex(activeIndex === idx ? null : idx);
-                    }}
+                    onInteraction={() =>
+                      setActiveIndex(activeIndex === idx ? null : idx)
+                    }
                   />
                 </div>
               ))}

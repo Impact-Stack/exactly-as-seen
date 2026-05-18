@@ -21,6 +21,7 @@ const InsightArticle = lazy(() => import("./pages/InsightsArticle"));
 const LegalPage = lazy(() => import("./pages/Legal"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const IndustriesPage = lazy(() => import("./pages/Industries"));
+const IndustryPage = lazy(() => import("./pages/IndustryPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -183,12 +184,12 @@ const AppRoutes = () => (
         <Route path="/about" element={<About />} />
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/industries" element={<IndustriesPage />} />
+        <Route path="/industries/:slug" element={<IndustryPage />} />
+        <Route path="/insights" element={<InsightsPage />} />
         <Route path="/insights/:slug" element={<InsightArticle />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/investswipe" element={<InvestSwipe />} />
-        <Route path="/insights" element={<InsightsPage />} />
-        <Route path="/services/:slug" element={<ServicePage />} />
         <Route path="/legal/:slug" element={<LegalPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
