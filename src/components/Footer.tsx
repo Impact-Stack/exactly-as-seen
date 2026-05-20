@@ -4,15 +4,15 @@ import { MdAccessTime, MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
 
 const footerLinks = {
   solutions: [
-    { label: "Web Applications", href: "/services/web" },
-    { label: "Mobile Development", href: "/services/mobile" },
-    { label: "Security and Compliance", href: "/services/security" },
-    { label: "Government Services", href: "/services/government" },
+    { label: "Government and Public Sector", href: "/industries/government-and-public-sector" },
+    { label: "Financial Services", href: "/industries/financial-services" },
+    { label: "Healthcare", href: "/industries/healthcare" },
+    { label: "Mining and Energy", href: "/industries/mining-and-energy" },
+    { label: "Retail and Commerce", href: "/industries/retail-and-commerce" },
     { label: "InvestSwipe", href: "/investswipe" },
   ],
   company: [
     { label: "About Us", href: "/about" },
-    { label: "Industries", href: "/industries" },
     { label: "Pricing", href: "/pricing" },
     { label: "Case Studies", href: "/portfolio" },
     { label: "News and Insights", href: "/insights" },
