@@ -14,9 +14,10 @@ import SEO from "@/components/SEO";
 import { absoluteUrl } from "@/lib/site";
 import {
   customQuoteServiceNames,
-  flagshipPricingOffers,
   formatZar,
 } from "@/lib/pricing";
+import { industriesData } from "@/lib/industries";
+import type { IndustryItem, IndustryTier } from "@/lib/industries";
 import footerBg from "/footer-bg.webp";
 
 // Move styles outside to prevent re-creation on render
@@ -45,6 +46,108 @@ const FLOATING_DOTS = [
   { bottom: "15%", right: "40%", size: 4, opacity: 20, delay: "0.5s" },
   { top: "80%", left: "50%", size: 4, opacity: 10, delay: "7s" },
 ];
+
+const TIER_ACCENTS = [
+  "from-amber-500/20 to-yellow-600/10 border-amber-500/30",
+  "from-blue-500/20 to-indigo-600/10 border-blue-500/30",
+  "from-purple-500/20 to-violet-600/10 border-purple-500/30",
+] as const;
+
+const TIER_CHECK_COLORS = [
+  "text-amber-400",
+  "text-blue-400",
+  "text-purple-400",
+] as const;
+
+const TIER_LABEL_COLORS = [
+  "text-amber-400",
+  "text-blue-400",
+  "text-purple-400",
+] as const;
+
+const TIER_LABELS = ["Tier 1", "Tier 2", "Tier 3"] as const;
+
+interface TierCardProps {
+  tier: IndustryTier;
+  industry: IndustryItem;
+  index: number;
+}
+
+function TierCard({ tier, industry, index }: TierCardProps) {
+  const accent = TIER_ACCENTS[index];
+  const checkColor = TIER_CHECK_COLORS[index];
+  const labelColor = TIER_LABEL_COLORS[index];
+  const label = TIER_LABELS[index];
+
+  return (
+    <div
+      className={`relative flex flex-col rounded-[32px] border bg-gradient-to-b ${accent} bg-white/[0.02] backdrop-blur-[80px] p-8 md:p-10 gap-6 overflow-hidden transition-all duration-300 hover:bg-white/[0.04]`}
+    >
+      <div className="flex flex-col gap-1">
+        <p className={`text-[10px] font-black uppercase tracking-[0.4em] ${labelColor}`}>
+          {label}
+        </p>
+        <h3 className="text-2xl font-bold text-white tracking-tight">{tier.name}</h3>
+      </div>
+
+      <div className="flex flex-col gap-1 border-t border-white/5 pt-5">
+        {tier.price ? (
+          <>
+            <span className="text-3xl font-black text-white tracking-tight">
+              {tier.price}
+            </span>
+            <p className="text-[10px] text-white/20 uppercase tracking-[0.2em] font-bold">
+              Starting excl. VAT
+            </p>
+          </>
+        ) : (
+          <>
+            <span className="text-xl font-bold text-white/60">Custom Quote</span>
+            <p className="text-[10px] text-white/20 uppercase tracking-[0.2em] font-bold">
+              Contact sales
+            </p>
+          </>
+        )}
+      </div>
+
+      <p className="text-sm text-white/40 leading-relaxed font-medium border-t border-white/5 pt-5">
+        {tier.description}
+      </p>
+
+      <div className="flex flex-col gap-3 border-t border-white/5 pt-5">
+        <p className="text-[10px] text-white/20 uppercase tracking-widest font-black">
+          Core Deliverables
+        </p>
+        <div className="flex flex-col gap-3">
+          {tier.deliverables.slice(0, 4).map((item) => (
+            <div
+              key={item}
+              className={`flex items-start gap-3 text-[13px] font-semibold leading-relaxed ${
+                item.startsWith("All ") ? "text-white/25" : "text-white/60"
+              }`}
+            >
+              <span
+                className={`mt-0.5 flex-shrink-0 w-4 h-4 rounded-full border border-white/10 flex items-center justify-center text-[8px] bg-white/5 ${checkColor}`}
+              >
+                ✓
+              </span>
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Button
+        component={Link}
+        to={`/industries/${industry.slug}`}
+        fullWidth
+        className="!border-white/20 !text-white !py-4 !rounded-full !normal-case !font-bold !text-sm border !backdrop-blur-md hover:!bg-white/5 transition-colors"
+      >
+        View Details
+      </Button>
+    </div>
+  );
+}
 
 export default function Pricing() {
   return (
@@ -111,116 +214,31 @@ export default function Pricing() {
               </p>
             </header>
 
-            {/* 4-COLUMN PRICING GRID */}
+            {/* INDUSTRIES & TIERS SECTION */}
             <main className="w-full max-w-[1600px] mx-auto mb-24">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 xl:gap-6">
-                {flagshipPricingOffers.map((offer) => (
-                  <div key={offer.id} className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-[38px] blur-3xl opacity-0 group-hover:opacity-100 transition duration-500" />
-                    <Card className="relative h-full !bg-white/[0.03] !backdrop-blur-[100px] !rounded-[36px] !border !border-white/10 !text-white overflow-hidden shadow-2xl transition-all duration-500 group-hover:!border-white/20 group-hover:-translate-y-2">
-                      <CardContent className="p-7 xl:p-9 flex flex-col h-full">
-                        <div className="mb-8">
-                          <h2 className="text-2xl font-bold mb-3 tracking-tight">
-                            {offer.title}
-                          </h2>
-                          <p className="text-xs text-white/30 leading-relaxed font-medium min-h-[40px]">
-                            {offer.description}
-                          </p>
-                        </div>
-
-                        <div className="mb-8 pt-6 border-t border-white/5">
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-4xl font-black tracking-tight">
-                              {formatZar(offer.startingPrice)}
-                            </span>
-                          </div>
-                          <p className="text-[9px] text-white/20 mt-2 uppercase tracking-[0.2em] font-bold">
-                            Starting Price • Excl. VAT
-                          </p>
-                        </div>
-
-                        <div className="space-y-4 mb-10 flex-grow">
-                          {offer.deliverables.map((item) => (
-                            <div
-                              key={item}
-                              className="flex items-start gap-3 text-[13px] text-white/50 font-medium"
-                            >
-                              <span className="mt-1 flex-shrink-0 w-3.5 h-3.5 rounded-full border border-white/20 flex items-center justify-center text-[7px] bg-white/5 text-blue-400">
-                                ✓
-                              </span>
-                              {item}
-                            </div>
-                          ))}
-                        </div>
-
-                        <Button
-                          component={Link}
-                          to={offer.destination}
-                          fullWidth
-                          className="!border-white/20 !text-white !py-4 !rounded-full !normal-case !font-bold !text-sm border !backdrop-blur-md hover:!bg-white/5 transition-colors"
-                        >
-                          View Tiers
-                        </Button>
-                      </CardContent>
-                    </Card>
+              {industriesData.map((industry) => (
+                <div key={industry.slug} className="mb-20">
+                  <div className="mb-8">
+                    <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl mb-4">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-purple-400">
+                        {industry.projectType}
+                      </p>
+                    </div>
+                    <h2 className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-2">
+                      {industry.title}
+                    </h2>
+                    <p className="text-white/40 text-sm md:text-base max-w-3xl">
+                      {industry.description}
+                    </p>
                   </div>
-                ))}
 
-                {/* Hardware Card */}
-                <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-[38px] blur-3xl opacity-0 group-hover:opacity-100 transition duration-500" />
-                  <Card className="relative h-full !bg-white/[0.05] !backdrop-blur-[100px] !rounded-[36px] !border !border-white/20 !text-white overflow-hidden shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
-                    <CardContent className="p-7 xl:p-9 flex flex-col h-full bg-gradient-to-br from-indigo-500/5 to-transparent">
-                      <div className="mb-8">
-                        <Chip
-                          label="Bulk Only"
-                          sx={{ 
-                            bgcolor: '#2563eb', 
-                            color: 'white', 
-                            fontSize: '9px', 
-                            fontWeight: 'bold', 
-                            mb: 2, 
-                            height: 24 
-                          }}
-                        />
-                        <h2 className="text-2xl font-bold mb-3 tracking-tight">
-                          Hardware & Gov
-                        </h2>
-                        <p className="text-xs text-white/30 leading-relaxed font-medium">
-                          Device reselling and infrastructure for large-scale
-                          government contracts.
-                        </p>
-                      </div>
-
-                      <div className="mb-8 pt-6 border-t border-white/10">
-                        <span className="text-xl font-bold tracking-tight text-white/80">
-                          Bulk Discounting
-                        </span>
-                        <p className="text-[9px] text-white/20 mt-2 uppercase tracking-[0.2em] font-bold">
-                          RFP / Tender Support
-                        </p>
-                      </div>
-
-                      <div className="space-y-4 mb-10 flex-grow">
-                        {['Tiered bulk pricing models', 'Secure device logistics', 'Maintenance & support'].map((text) => (
-                          <div key={text} className="flex items-start gap-3 text-[13px] text-white/50 font-medium">
-                            ✓ {text}
-                          </div>
-                        ))}
-                      </div>
-
-                      <Button
-                        component={Link}
-                        to="/contact"
-                        fullWidth
-                        className="!border-white/20 !text-white !py-4 !rounded-full !normal-case !font-bold !text-sm border !backdrop-blur-md hover:!bg-white/5 transition-colors"
-                      >
-                        Request Quote
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {industry.tiers.map((tier, i) => (
+                      <TierCard key={tier.name} tier={tier} industry={industry} index={i} />
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ))}
             </main>
 
             {/* POLICY SECTION */}
