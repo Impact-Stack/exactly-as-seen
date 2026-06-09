@@ -288,15 +288,6 @@ export default function InvestSwipePage() {
               Making wealth creation accessible to 18 million young South
               Africans
             </p>
-            <Button
-              component={Link}
-              to={CONTACT_INVESTSWIPE_HREF}
-              variant="outlined"
-              className="px-10 py-3 text-sm border border-gray-500 rounded-full hover:border-white transition-colors"
-              sx={{ textTransform: "none", color: "white" }}
-            >
-              Join Waitlist
-            </Button>
           </div>
         </section>
 

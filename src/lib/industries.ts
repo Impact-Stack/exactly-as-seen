@@ -51,3 +51,4 @@ export const industriesData: IndustryItem[] = [
     evidence: "Commerce and price-comparison systems delivered for local markets.",
   },
 ];
+ 
