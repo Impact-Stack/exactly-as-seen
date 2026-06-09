@@ -1,7 +1,7 @@
 export interface PricingOffer {
   id: string;
   title: string;
-  startingPrice: number;
+  startingPrice: number | null; // null = custom quote
   description: string;
   deliverables: string[];
   destination: string;
@@ -9,56 +9,79 @@ export interface PricingOffer {
 
 export const flagshipPricingOffers: PricingOffer[] = [
   {
-    id: "enterprise-web-applications",
-    title: "Enterprise Web Applications",
-    startingPrice: 65000,
-    description: "Secure web platforms for South African organizations that need scalable enterprise software delivery.",
+    id: "government-and-public-sector",
+    title: "Government and Public Sector",
+    startingPrice: null,
+    description:
+      "Procurement-ready delivery for municipalities and state-owned entities. CSD-registered supplier with 80/20 preference-point eligibility.",
     deliverables: [
-      "Discovery and implementation plan",
-      "Responsive UX and frontend architecture",
-      "Backend APIs and integration foundations",
-      "Security baseline aligned with POPIA expectations",
+      "Citizen-facing portals and e-services",
+      "Workflow automation and case management",
+      "Data dashboards and operational reporting",
+      "Legacy system modernisation",
+      "POPIA and governance compliance alignment",
     ],
-    destination: "/services/web",
+    destination: "/industries/government-and-public-sector",
   },
   {
-    id: "mobile-solutions",
-    title: "Mobile Solutions",
-    startingPrice: 85000,
-    description: "Cross-platform mobile products for iOS and Android with practical release governance.",
-    deliverables: [
-      "Product scope and user-flow mapping",
-      "Cross-platform mobile app build",
-      "Secure API and authentication integration",
-      "App store readiness checklist",
-    ],
-    destination: "/services/mobile",
-  },
-  {
-    id: "security-and-compliance",
-    title: "Security and Compliance",
-    startingPrice: 45000,
-    description: "Security hardening and POPIA compliance support for enterprise teams and regulated workflows.",
+    id: "financial-services",
+    title: "Financial Services",
+    startingPrice: 75000,
+    description:
+      "Secure platforms, compliance workflows, and risk-aware architecture for financial institutions. Google Cybersecurity certified engineers.",
     deliverables: [
       "Security and compliance gap assessment",
-      "POPIA-focused remediation roadmap",
+      "POPIA and FSCA remediation roadmap",
       "Authentication and data protection hardening",
+      "SIEM correlation and ATT&CK mapping",
       "Stakeholder-ready findings report",
     ],
-    destination: "/services/security",
+    destination: "/industries/financial-services",
   },
   {
-    id: "government-services",
-    title: "Government Services",
-    startingPrice: 120000,
-    description: "Government digital services delivery for public-sector teams with mandate and governance constraints.",
+    id: "healthcare",
+    title: "Healthcare",
+    startingPrice: 65000,
+    description:
+      "Reliable data workflows, patient systems, and protected access for healthcare providers. RBAC delivery patterns applied to clinical environments.",
     deliverables: [
-      "Public-sector requirement alignment",
-      "Citizen or internal workflow implementation",
-      "Reporting and auditability foundations",
-      "Delivery governance and handover package",
+      "Patient-facing portal and appointment systems",
+      "Role-based access control (RBAC) implementation",
+      "Secure data handling and audit trails",
+      "Integration with existing clinical or admin systems",
+      "Compliance baseline documentation",
     ],
-    destination: "/services/government",
+    destination: "/industries/healthcare",
+  },
+  {
+    id: "mining-and-energy",
+    title: "Mining and Energy",
+    startingPrice: 70000,
+    description:
+      "Operational systems, field workflows, and rugged device support for mining and energy operators across distributed environments.",
+    deliverables: [
+      "Field operations and job-card management systems",
+      "Rugged device provisioning and lifecycle management",
+      "Offline-capable mobile applications",
+      "Asset tracking and reporting dashboards",
+      "Remote infrastructure monitoring",
+    ],
+    destination: "/industries/mining-and-energy",
+  },
+  {
+    id: "retail-and-commerce",
+    title: "Retail and Commerce",
+    startingPrice: 55000,
+    description:
+      "E-commerce, pricing intelligence, and customer experience platforms for retail operators in local South African markets.",
+    deliverables: [
+      "E-commerce platform build or migration",
+      "Pricing intelligence and comparison tooling",
+      "Customer experience and loyalty features",
+      "Inventory and order management integrations",
+      "Analytics and conversion reporting",
+    ],
+    destination: "/industries/retail-and-commerce",
   },
 ];
 
@@ -73,4 +96,8 @@ export const customQuoteServiceNames = [
 ];
 
 export const formatZar = (value: number) =>
-  new Intl.NumberFormat("en-ZA", { style: "currency", currency: "ZAR", maximumFractionDigits: 0 }).format(value);
+  new Intl.NumberFormat("en-ZA", {
+    style: "currency",
+    currency: "ZAR",
+    maximumFractionDigits: 0,
+  }).format(value);

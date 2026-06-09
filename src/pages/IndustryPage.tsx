@@ -1,286 +1,237 @@
 import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Chip from "@mui/material/Chip";
-import Typography from "@mui/material/Typography";
-
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
+import { industriesData } from "@/lib/industries";
 import { absoluteUrl } from "@/lib/site";
-
-// ─── STYLES ──────────────────────────────────────────────────────────────────
+import type { IndustryTier } from "@/lib/industries";
 
 const PAGE_STYLES = `
-  @keyframes dot-float {
-    0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.2; }
-    50% { transform: translateY(-25px) translateX(10px); opacity: 0.5; }
-  }
-  .animate-dot-float {
-    animation: dot-float 10s ease-in-out infinite;
-    will-change: transform;
-  }
   @keyframes pulse-soft {
-    0%, 100% { transform: scale(1); opacity: 0.2; }
-    50% { transform: scale(1.1); opacity: 0.3; }
+    0%, 100% { transform: scale(1); opacity: 0.15; }
+    50% { transform: scale(1.12); opacity: 0.25; }
   }
   .animate-pulse-soft {
-    animation: pulse-soft 8s ease-in-out infinite;
+    animation: pulse-soft 9s ease-in-out infinite;
+  }
+  .tier-card {
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+  .tier-card:hover {
+    transform: translateY(-4px);
+  }
+  .tier-card-featured {
+    border-color: rgba(168, 85, 247, 0.5) !important;
+    background: linear-gradient(160deg, rgba(139,92,246,0.08) 0%, rgba(99,102,241,0.04) 100%) !important;
   }
 `;
 
-// ─── DATA ────────────────────────────────────────────────────────────────────
+const SLUG_ALIASES: Record<string, string> = {
+  "government-and-public-sector": "government",
+  "mining-and-energy": "mining-energy",
+  "retail-and-commerce": "retail-commerce",
+};
 
-const INDUSTRY_DATA = {
-  "government-and-public-sector": {
-    title: "Government and Public Sector",
-    priceStart: null,
-    overview:
-      "Procurement-ready delivery for municipalities and state-owned entities. CSD-registered supplier with 80/20 preference-point eligibility, aligned to public-sector compliance and mandate requirements.",
-    deliverables: [
-      "Citizen-facing portals and e-services",
-      "Workflow automation and case management",
-      "Data dashboards and operational reporting",
-      "Legacy system modernisation",
-      "POPIA and governance compliance alignment",
-    ],
-    evidence: "CSD-registered supplier with 80/20 preference-point eligibility.",
-    projects: ["Municipal Workflow Automation", "SOE Portal Delivery"],
-    cta: { label: "Contact Sales", to: "/contact" },
-  },
-  "financial-services": {
-    title: "Financial Services",
-    priceStart: "R 75 000",
-    overview:
-      "Secure platforms, compliance workflows, and risk-aware architecture for financial institutions. Led by Google Cybersecurity certified engineers with SOC lab delivery evidence.",
-    deliverables: [
-      "Security and compliance gap assessment",
-      "POPIA and FSCA remediation roadmap",
-      "Authentication and data protection hardening",
-      "SIEM correlation and ATT&CK mapping",
-      "Stakeholder-ready findings report",
-    ],
-    evidence: "SOC lab delivery evidence with SIEM correlation and ATT&CK mapping.",
-    projects: ["Bluewatch SOC Lab", "Findr Community Map"],
-    cta: { label: "Get Started", to: "/contact" },
-  },
-  healthcare: {
-    title: "Healthcare",
-    priceStart: "R 65 000",
-    overview:
-      "Reliable data workflows, patient systems, and protected access for healthcare providers. RBAC and secure workflow delivery patterns from HR platform work applied to clinical environments.",
-    deliverables: [
-      "Patient-facing portal and appointment systems",
-      "Role-based access control (RBAC) implementation",
-      "Secure data handling and audit trails",
-      "Integration with existing clinical or admin systems",
-      "Compliance baseline documentation",
-    ],
-    evidence: "RBAC and secure workflow delivery patterns from HR platform work.",
-    projects: ["Moderntech HR Platform"],
-    cta: { label: "Get Started", to: "/contact" },
-  },
-  "mining-and-energy": {
-    title: "Mining and Energy",
-    priceStart: "R 70 000",
-    overview:
-      "Operational systems, field workflows, and rugged device support for mining and energy operators. Infrastructure and device delivery support across distributed and remote environments.",
-    deliverables: [
-      "Field operations and job-card management systems",
-      "Rugged device provisioning and lifecycle management",
-      "Offline-capable mobile applications",
-      "Asset tracking and reporting dashboards",
-      "Remote infrastructure monitoring",
-    ],
-    evidence: "Rugged device and infrastructure delivery support in service portfolio.",
-    projects: ["Field Operations Platform"],
-    cta: { label: "Get Started", to: "/contact" },
-  },
-  "retail-and-commerce": {
-    title: "Retail and Commerce",
-    priceStart: "R 55 000",
-    overview:
-      "E-commerce, pricing intelligence, and customer experience platforms for retail operators. Commerce and price-comparison systems delivered for local South African markets.",
-    deliverables: [
-      "E-commerce platform build or migration",
-      "Pricing intelligence and comparison tooling",
-      "Customer experience and loyalty features",
-      "Inventory and order management integrations",
-      "Analytics and conversion reporting",
-    ],
-    evidence: "Commerce and price-comparison systems delivered for local markets.",
-    projects: ["Shopwise Price Comparison", "Biofuel Ecommerce Platform"],
-    cta: { label: "Get Started", to: "/contact" },
-  },
-} as const;
+const ACCENT_COLORS = [
+  { check: "#94a3b8", label: "rgba(148,163,184,0.7)", border: "rgba(255,255,255,0.08)" },
+  { check: "#a78bfa", label: "#a78bfa", border: "rgba(168,85,247,0.5)" },
+  { check: "#818cf8", label: "rgba(129,140,248,0.7)", border: "rgba(255,255,255,0.08)" },
+];
 
-type IndustrySlug = keyof typeof INDUSTRY_DATA;
+interface TierCardProps {
+  tier: IndustryTier;
+  index: number;
+  isFeatured: boolean;
+  contactHref: string;
+}
 
-// ─── PAGE ─────────────────────────────────────────────────────────────────────
+function TierCard({ tier, index, isFeatured, contactHref }: TierCardProps) {
+  const accent = ACCENT_COLORS[index];
+
+  return (
+    <div
+      className={`tier-card flex flex-col rounded-3xl border bg-white/[0.02] backdrop-blur-xl overflow-hidden ${isFeatured ? "tier-card-featured" : ""}`}
+      style={{ borderColor: accent.border }}
+    >
+      {/* Top badge row */}
+      <div className="flex items-center justify-between px-7 pt-7 pb-0">
+        <span
+          className="text-[9px] font-black uppercase tracking-[0.5em]"
+          style={{ color: accent.label }}
+        >
+          {tier.name}
+        </span>
+        {isFeatured && (
+          <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+            Recommended
+          </span>
+        )}
+      </div>
+
+      {/* Price */}
+      <div className="px-7 pt-5 pb-6 border-b border-white/[0.06]">
+        {tier.price ? (
+          <>
+            <p className="text-4xl font-black text-white tracking-tight leading-none">
+              {tier.price}
+            </p>
+            <p className="text-[10px] text-white/20 mt-2 uppercase tracking-[0.25em] font-bold">
+              Starting excl. VAT
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-2xl font-bold text-white/50 leading-none">Custom Quote</p>
+            <p className="text-[10px] text-white/20 mt-2 uppercase tracking-[0.25em] font-bold">
+              Contact sales
+            </p>
+          </>
+        )}
+      </div>
+
+      {/* Description */}
+      <div className="px-7 pt-6 pb-0">
+        <p className="text-[13px] text-white/35 leading-relaxed font-medium">
+          {tier.description}
+        </p>
+      </div>
+
+      {/* Deliverables */}
+      <div className="px-7 pt-6 pb-0 flex-1">
+        <p className="text-[9px] text-white/20 uppercase tracking-[0.4em] font-black mb-4">
+          Core Deliverables
+        </p>
+        <div className="flex flex-col gap-3">
+          {tier.deliverables.map((item) => (
+            <div
+              key={item}
+              className={`flex items-start gap-3 text-[13px] font-semibold leading-relaxed ${
+                item.startsWith("All ") ? "text-white/20" : "text-white/55"
+              }`}
+            >
+              <span
+                className="mt-[3px] flex-shrink-0 w-[18px] h-[18px] rounded-full flex items-center justify-center text-[8px] border border-white/10 bg-white/[0.04]"
+                style={{ color: accent.check }}
+              >
+                ✓
+              </span>
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="px-7 py-7 mt-6">
+        <Link
+          to={contactHref}
+          className={`block w-full text-center py-3.5 rounded-xl text-[13px] font-bold transition-all duration-200 ${
+            isFeatured
+              ? "bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-900/40"
+              : "bg-white/[0.06] hover:bg-white/[0.1] text-white/70 hover:text-white border border-white/10"
+          }`}
+        >
+          Get Started
+        </Link>
+      </div>
+    </div>
+  );
+}
 
 export default function IndustryPage() {
   const { slug } = useParams<{ slug: string }>();
 
-  const { data, safeSlug } = useMemo(() => {
-    const safe = (
-      slug && slug in INDUSTRY_DATA ? slug : "retail-and-commerce"
-    ) as IndustrySlug;
-    return { safeSlug: safe, data: INDUSTRY_DATA[safe] };
+  const industry = useMemo(() => {
+    const resolvedSlug = slug ? SLUG_ALIASES[slug] ?? slug : undefined;
+    return (
+      industriesData.find((item) => item.slug === resolvedSlug) ??
+      industriesData[0]
+    );
   }, [slug]);
+
+  // Build contact href with projectType pre-filled
+  const contactHref = `/contact?projectType=${encodeURIComponent(industry.projectType)}`;
 
   return (
     <>
       <style>{PAGE_STYLES}</style>
       <SEO
-        title={`${data.title} | ImpactStack Africa`}
-        description={data.overview}
-        url={absoluteUrl(`/industries/${safeSlug}`)}
+        title={`${industry.title} | ImpactStack Africa`}
+        description={industry.description}
+        url={absoluteUrl(`/industries/${industry.slug}`)}
       />
       <PageShell>
         <div className="relative min-h-screen bg-[#020205] overflow-hidden">
-
-          {/* Background */}
+          {/* Background glow */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <img
               src="/footer-bg.webp"
               alt=""
-              className="w-full h-full object-cover scale-150 blur-[140px] opacity-40"
+              className="w-full h-full object-cover scale-150 blur-[140px] opacity-35"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#020205]/90 via-[#020205]/40 to-[#020205]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#020205]/90 via-[#020205]/50 to-[#020205]" />
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-purple-700/10 rounded-full blur-3xl animate-pulse-soft" />
           </div>
 
-          <div className="relative z-10 flex flex-col items-center pt-24 pb-32 px-4">
+          <div className="relative z-10 flex flex-col items-center pt-28 pb-32 px-4">
 
-            {/* Header */}
-            <header className="w-full max-w-[1200px] text-center mb-16 md:mb-24">
-              <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl mb-6">
+            {/* ── HEADER ── */}
+            <header className="w-full max-w-[760px] text-center mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-xl mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 opacity-80" />
                 <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-purple-400">
-                  Industry Breakdown
+                  {industry.projectType}
                 </p>
               </div>
-              <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
-                Sector{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-400 to-blue-500">
-                  Deliverables
+
+              <h1 className="text-5xl md:text-[4.5rem] font-black text-white tracking-tighter leading-[1.05] mb-6">
+                {industry.title.split(" ").slice(0, -1).join(" ")}{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-400 to-blue-400">
+                  {industry.title.split(" ").slice(-1)[0]}
                 </span>
               </h1>
+
+              <p className="text-base text-white/35 leading-relaxed max-w-[580px] mx-auto font-medium">
+                {industry.description}
+              </p>
             </header>
 
-            {/* Main Card */}
-            <main className="w-full max-w-[1100px] mb-24">
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-b from-purple-500/10 to-blue-600/10 rounded-[45px] blur-3xl opacity-50 transition duration-700" />
-
-                <Card className="relative h-full !bg-white/[0.005] !backdrop-blur-[120px] !rounded-[40px] !border !border-white/10 !text-white overflow-hidden shadow-2xl flex flex-col">
-
-                  {/* Card Hero */}
-                  <div className="p-12 flex items-center justify-center relative z-10 bg-gradient-to-b from-white/3 to-transparent min-h-[220px] border-b border-white/5 overflow-hidden">
-                    <div className="absolute w-64 h-64 bg-gradient-to-tr from-purple-600/20 to-blue-600/20 rounded-full blur-3xl animate-pulse-soft" />
-                    <div className="absolute w-32 h-32 bg-purple-400/10 rounded-full blur-2xl animate-dot-float" />
-                    <div className="relative z-20 flex flex-col items-center">
-                      <div className="w-16 h-1 bg-gradient-to-r from-transparent via-purple-400 to-transparent mb-4 opacity-50" />
-                      <Typography className="!text-[10px] !font-black !uppercase !tracking-[0.8em] !text-white/20">
-                        ImpactStack Sector
-                      </Typography>
-                    </div>
-                  </div>
-
-                  <CardContent className="p-10 md:p-16 flex flex-col h-full bg-black/60">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
-
-                      {/* Left: Scope */}
-                      <div className="md:col-span-1">
-                        <p className="text-[11px] text-white/20 uppercase tracking-widest font-black mb-4">
-                          Sector Scope
-                        </p>
-                        <h2 className="text-3xl font-bold tracking-tight mb-4">
-                          {data.title}
-                        </h2>
-                        <p className="text-sm text-white/40 leading-relaxed font-medium">
-                          {data.overview}
-                        </p>
-                      </div>
-
-                      {/* Centre: Deliverables */}
-                      <div className="md:col-span-1">
-                        <p className="text-[11px] text-white/20 uppercase tracking-widest font-black mb-4">
-                          Core Deliverables
-                        </p>
-                        <div className="space-y-4">
-                          {data.deliverables.map((item) => (
-                            <div
-                              key={item}
-                              className="flex items-start gap-3 text-[13px] text-white/60 font-semibold"
-                            >
-                              <span className="mt-1 flex-shrink-0 w-4 h-4 rounded-full border border-white/10 flex items-center justify-center text-[8px] bg-white/5 text-purple-400">
-                                ✓
-                              </span>
-                              {item}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Right: Pricing */}
-                      <div className="md:col-span-1">
-                        <p className="text-[11px] text-white/20 uppercase tracking-widest font-black mb-4">
-                          Benchmark Price
-                        </p>
-                        {data.priceStart ? (
-                          <div className="flex flex-col">
-                            <span className="text-4xl font-black tracking-tight text-white">
-                              {data.priceStart}
-                            </span>
-                            <p className="text-[10px] text-white/20 mt-2 uppercase tracking-[0.2em] font-bold">
-                              Starting Excl. VAT
-                            </p>
-                          </div>
-                        ) : (
-                          <span className="text-2xl font-bold text-white/70">
-                            Custom Quote Required
-                          </span>
-                        )}
-
-                        <Button
-                          component={Link}
-                          to={data.cta.to}
-                          fullWidth
-                          variant="outlined"
-                          className="button-secondary mt-8 py-4 text-sm inline-block border border-gray-500 rounded hover:border-white transition-colors disabled:opacity-50"
-                          style={{ textTransform: "none" }}
-                        >
-                          {data.cta.label}
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* Evidence / Projects */}
-                    {data.projects.length > 0 && (
-                      <div className="mt-16 pt-10 border-t border-white/5">
-                        <p className="text-[10px] text-white/20 uppercase tracking-widest font-black mb-6">
-                          Proven Delivery
-                        </p>
-                        <div className="flex flex-wrap gap-2.5">
-                          {data.projects.map((project) => (
-                            <Chip
-                              key={project}
-                              label={project}
-                              className="!bg-white/5 !text-white/30 !border-white/10 !text-[11px] !font-bold !rounded-lg"
-                              variant="outlined"
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+            {/* ── TIER CARDS ── */}
+            <section className="w-full max-w-[1160px] mb-16">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {industry.tiers.map((tier, i) => (
+                  <TierCard
+                    key={tier.name}
+                    tier={tier}
+                    index={i}
+                    isFeatured={i === 1}
+                    contactHref={contactHref}
+                  />
+                ))}
               </div>
-            </main>
+            </section>
 
-            {/* Engagement Terms */}
-            <section className="w-full max-w-[1100px] grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* ── DELIVERY EVIDENCE + CTA ── */}
+            <div className="w-full max-w-[1160px] mb-20">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 py-8 border-t border-b border-white/[0.06]">
+                <div>
+                  <p className="text-[9px] text-white/20 uppercase tracking-[0.4em] font-black mb-2">
+                    Delivery Evidence
+                  </p>
+                  <p className="text-sm text-white/40 font-semibold">{industry.evidence}</p>
+                </div>
+                <Link
+                  to={contactHref}
+                  className="flex-shrink-0 px-8 py-3.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 hover:border-white/20 text-white text-[13px] font-bold transition-all duration-200"
+                >
+                  Get Started →
+                </Link>
+              </div>
+            </div>
+
+            {/* ── TERMS CARDS ── */}
+            <section className="w-full max-w-[1160px] grid grid-cols-1 md:grid-cols-3 gap-5">
               {[
                 {
                   label: "Payment Structure",
@@ -300,17 +251,17 @@ export default function IndustryPage() {
               ].map((term, i) => (
                 <div
                   key={i}
-                  className="p-10 rounded-[40px] border border-white/5 bg-white/[0.005] backdrop-blur-[120px] transition-all hover:border-white/15 group"
+                  className="p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-xl hover:border-white/[0.12] transition-all duration-200"
                 >
-                  <Typography className="!text-purple-400 group-hover:!text-purple-300 !font-bold !text-[10px] !uppercase !tracking-widest !mb-5">
+                  <p className="text-[9px] text-purple-400/70 uppercase tracking-[0.4em] font-black mb-4">
                     {term.label}
-                  </Typography>
-                  <Typography className="!text-white !text-xl !font-bold !mb-4 tracking-tight">
+                  </p>
+                  <p className="text-white text-[17px] font-bold mb-3 tracking-tight">
                     {term.title}
-                  </Typography>
-                  <Typography className="!text-white/30 !leading-relaxed text-[13px] font-medium">
+                  </p>
+                  <p className="text-white/30 text-[13px] leading-relaxed font-medium">
                     {term.desc}
-                  </Typography>
+                  </p>
                 </div>
               ))}
             </section>
