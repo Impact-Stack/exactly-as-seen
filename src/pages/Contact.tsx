@@ -11,9 +11,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
 const PROJECT_TYPE_OPTIONS = [
-  { value: "Web Application", label: "Web Application" },
-  { value: "Mobile App", label: "Mobile App" },
-  { value: "Security and Compliance", label: "Security & Compliance" },
+  { value: "Retail and Commerce", label: "Retail and Commerce" },
+  { value: "Healthcare", label: "Healthcare" },
+  { value: "Finance Services", label: "Finance Services" },
+  { value: "Mining and Energy", label: "Mining and Energy" },
   { value: "Government Project", label: "Government Project" },
   { value: "InvestSwipe Partnership", label: "InvestSwipe Partnership" },
   { value: "Other", label: "Other" },
