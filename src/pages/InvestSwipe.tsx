@@ -91,12 +91,24 @@ const clerkWaitlistAppearance = {
     fontSize: "0.875rem",
   },
   elements: {
-    // Root card — transparent so our glassmorphism wrapper shows through
+    // 1. Added cardBox to completely dissolve the outer wrapper's background and shadow
+    cardBox: {
+      background: "transparent",
+      boxShadow: "none",
+      border: "none",
+      width: "100%",
+      maxWidth: "100%",
+    },
+    // 2. Stripped down internal padding to 0 so it relies fully on your responsive Tailwind wrapper
     card: {
       background: "transparent",
       boxShadow: "none",
-      padding: "2rem",
-      gap: "1rem",
+      border: "none",
+      padding: "0px",
+      margin: "0px",
+      width: "100%",
+      maxWidth: "100%",
+      gap: "1.5rem", // Kept a healthy vertical layout rhythm inside the form elements
     },
     // Header / title
     headerTitle: {
@@ -342,37 +354,41 @@ export default function InvestSwipePage() {
               </div>
 
               {/* RIGHT COLUMN: Clerk Waitlist */}
-              <div className="lg:col-span-7 flex justify-center lg:justify-end px-4 sm:px-0">
-                <div className="w-full max-w-lg p-6 sm:p-8 md:p-12 rounded-[24px] sm:rounded-[32px] border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-2xl">
-                  {/* Top Badge */}
-                  <div className="flex justify-center mb-6">
-                    <span className="px-3 py-1 text-[10px] tracking-widest text-blue-400 uppercase bg-blue-500/10 border border-blue-500/20 rounded-full">
-                      Launching Q3 2026
-                    </span>
-                  </div>
+<div className="lg:col-span-7 flex justify-center lg:justify-end w-full min-w-0 px-0 sm:px-4 lg:px-0">
+  {/* 1. Removed overflow-hidden so components don't clip.
+    2. Changed padding to px-4 py-6 (xs:px-6 sm:px-10) to give the form horizontal breathing room while preserving vertical spacing.
+  */}
+  <div className="w-full min-w-0 max-w-lg px-4 py-6 xs:px-6 xs:py-8 sm:px-10 sm:py-12 md:p-12 rounded-[20px] sm:rounded-[32px] border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-2xl flex flex-col items-stretch gap-6 sm:gap-8">
+    
+    {/* Top Badge */}
+    <div className="flex justify-center">
+      <span className="px-3 py-1 text-[10px] tracking-widest text-blue-400 uppercase bg-blue-500/10 border border-blue-500/20 rounded-full whitespace-nowrap">
+        Launching Q3 2026
+      </span>
+    </div>
 
-                  {/* Clerk Waitlist Component */}
-                  <div className="w-full overflow-hidden [&_.cl-card]:w-full [&_.cl-card]:max-w-full [&_.cl-card]:rounded-none [&_.cl-card]:shadow-none [&_.cl-card]:border-0">
-                    <Waitlist appearance={clerkWaitlistAppearance} />
-                  </div>
+    {/* Clerk Waitlist Component — Removed overflow-hidden here as well */}
+    <div className="w-full min-w-0">
+      <Waitlist appearance={clerkWaitlistAppearance} />
+    </div>
 
-                  {/* Secondary Link */}
-                  <div className="mt-6 sm:mt-8 text-center">
-                    <Link
-                      to={CONTACT_INVESTSWIPE_HREF}
-                      className="text-xs font-medium text-white/40 hover:text-white underline underline-offset-4 transition-colors"
-                      onClick={() =>
-                        trackEvent({
-                          action: "investswipe_full_brief_click",
-                          category: "InvestSwipe",
-                        })
-                      }
-                    >
-                      Step 2 is optional for priority access
-                    </Link>
-                  </div>
-                </div>
-              </div>
+    {/* Secondary Link */}
+    <div className="text-center">
+      <Link
+        to={CONTACT_INVESTSWIPE_HREF}
+        className="text-xs font-medium text-white/40 hover:text-white underline underline-offset-4 transition-colors"
+        onClick={() =>
+          trackEvent({
+            action: "investswipe_full_brief_click",
+            category: "InvestSwipe",
+          })
+        }
+      >
+        Step 2 is optional for priority access
+      </Link>
+    </div>
+  </div>
+</div>
             </div>
           </div>
         </section>

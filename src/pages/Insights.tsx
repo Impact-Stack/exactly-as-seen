@@ -77,12 +77,7 @@ export default function InsightsPage() {
                     <div className="h-full min-h-[480px] p-10 rounded-[40px] border border-white/10 bg-white/[0.03] backdrop-blur-md flex flex-col transition-all duration-500 hover:bg-white/[0.08] hover:border-white/20">
                       <div className="flex justify-between items-start mb-12">
                         <span className="text-[10px] font-mono font-bold text-white/30 tracking-widest">
-                          {article.id} <span className="mx-1">/</span>{" "}
-                          {String(allArticles.length).padStart(2, "0")}
                         </span>
-                        <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/20 group-hover:text-white group-hover:border-white transition-all">
-                          <span className="text-xl">↗</span>
-                        </div>
                       </div>
 
                       <div className="mb-6">

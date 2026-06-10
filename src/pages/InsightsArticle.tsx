@@ -1,71 +1,146 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import { getArticleBySlug, type ArticleContentBlock } from "@/lib/articles";
 
-const categoryColors: Record<string, { bg: string; text: string; dot: string }> = {
-  "Digital Transformation": { bg: "#E1F5EE", text: "#0F6E56", dot: "#1D9E75" },
-  "Cybersecurity": { bg: "#E6F1FB", text: "#185FA5", dot: "#378ADD" },
-  "Cloud & Infrastructure": { bg: "#FAEEDA", text: "#854F0B", dot: "#EF9F27" },
+// High-end dark editorial colors
+const categoryColors: Record<string, { bg: string; text: string; border: string }> = {
+  "Digital Transformation": { bg: "rgba(29, 158, 117, 0.1)", text: "#22C55E", border: "#1D9E75" },
+  "Cybersecurity": { bg: "rgba(55, 138, 221, 0.1)", text: "#60A5FA", border: "#378ADD" },
+  "Cloud & Infrastructure": { bg: "rgba(239, 159, 39, 0.1)", text: "#FBBF24", border: "#EF9F27" },
 };
 
-function renderBlock(block: ArticleContentBlock, i: number, dotColor: string) {
+// ─── Reading progress bar ─────────────────────────────────────────────────────
+function ReadingProgress({ accent }: { accent: string }) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.documentElement;
+      const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+      setProgress(Math.min(pct, 100));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 right-0 z-50 h-[3px] bg-neutral-900">
+      <div
+        className="h-full transition-all duration-100 ease-out"
+        style={{ width: `${progress}%`, background: accent }}
+      />
+    </div>
+  );
+}
+
+// ─── Scroll-triggered Fade In ─────────────────────────────────────────────────
+function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        setVisible(true);
+        obs.disconnect();
+      }
+    }, { threshold: 0.05 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(16px)" : "translateY(0)",
+        transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function renderBlock(block: ArticleContentBlock, i: number, themeColor: string) {
   switch (block.type) {
     case "intro":
       return (
-        <p key={i} className="text-base md:text-lg leading-relaxed text-white/80 mb-8 font-medium">
-          {block.text}
-        </p>
+        <FadeIn key={i} delay={i * 30}>
+          <p className="text-xl md:text-2xl font-serif text-neutral-100 leading-relaxed mb-10 antialiased">
+            {block.text}
+          </p>
+        </FadeIn>
       );
+
     case "heading":
       return (
-        <h2 key={i} className="text-2xl font-black text-white tracking-tight mt-12 mb-4">
-          {block.text}
-        </h2>
+        <FadeIn key={i} delay={i * 30}>
+          <h2 className="text-2xl md:text-3xl font-sans font-black tracking-tight text-white mt-14 mb-6 pt-6 border-t border-neutral-900">
+            {block.text}
+          </h2>
+        </FadeIn>
       );
+
     case "body":
       return (
-        <div key={i} className="mb-6">
-          <p className="text-base leading-[1.85] text-white/70">{block.text}</p>
-          {block.source && (
-            <p className="text-xs text-white/30 mt-2 italic">Source: {block.source}</p>
-          )}
-        </div>
+        <FadeIn key={i} delay={i * 30}>
+          <div className="mb-6 font-serif">
+            <p className="text-base md:text-lg leading-loose text-neutral-400 antialiased selection:bg-neutral-800 selection:text-white">
+              {block.text}
+            </p>
+            {block.source && (
+              <p className="text-xs text-neutral-600 mt-2 font-sans italic">
+                — Source: {block.source}
+              </p>
+            )}
+          </div>
+        </FadeIn>
       );
+
     case "closing":
       return (
-        <div
-          key={i}
-          className="mt-12 mb-8 rounded-2xl p-6"
-          style={{
-            background: "rgba(255,255,255,0.04)",
-            borderLeft: `3px solid ${dotColor}`,
-          }}
-        >
-          <p className="text-base leading-[1.8] text-white/80">{block.text}</p>
-        </div>
+        <FadeIn key={i} delay={i * 30}>
+          {/* Elegant dark pull-quote option mimicking image structural blocks */}
+          <div
+            className="my-12 py-4 pl-6 md:pl-8 border-l-[3px]"
+            style={{ borderColor: themeColor }}
+          >
+            <p className="text-xl md:text-2xl font-serif italic text-white leading-relaxed tracking-tight">
+              “{block.text}”
+            </p>
+          </div>
+        </FadeIn>
       );
+
     case "sources":
       return (
-        <div key={i} className="mt-12 pt-8 border-t border-white/10">
-          <p className="text-[10px] uppercase tracking-[0.2em] font-black text-white/30 mb-4">
-            Sources &amp; Further Reading
-          </p>
-          <div className="flex flex-col gap-3">
-            {block.links.map((l, j) => (
-              <a
-                key={j}
-                href={l.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm flex items-center gap-2 hover:opacity-80 transition-opacity"
-                style={{ color: dotColor }}
-              >
-                <span>↗</span>
-                {l.label}
-              </a>
-            ))}
+        <FadeIn key={i} delay={i * 30}>
+          <div className="mt-16 pt-8 border-t border-neutral-800">
+            <p className="text-xs font-sans uppercase tracking-[0.2em] font-bold text-neutral-600 mb-4">
+              References & Literature
+            </p>
+            <div className="flex flex-col gap-2.5 font-sans">
+              {block.links.map((l, j) => (
+                <a
+                  key={j}
+                  href={l.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-all w-fit"
+                  style={{ color: themeColor }}
+                >
+                  <span className="text-xs">↗</span>
+                  <span className="decoration-neutral-800 hover:decoration-current">{l.label}</span>
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
+        </FadeIn>
       );
+
     default:
       return null;
   }
@@ -73,74 +148,116 @@ function renderBlock(block: ArticleContentBlock, i: number, dotColor: string) {
 
 export default function InsightArticlePage() {
   const { slug } = useParams<{ slug: string }>();
-  const article = slug ? getArticleBySlug(slug) : undefined;
+  
+  const relatedArticles = [
+    { title: "The Disparate Impact of Modern Cloud Infrastructures", date: "Jan 12, 2026", url: "#" },
+    { title: "Building Resilient Frameworks Against Cyber Ecosystems", date: "Feb 05, 2026", url: "#" }
+  ];
 
+  const article = slug ? getArticleBySlug(slug) : undefined;
   if (!article) return <Navigate to="/insights" replace />;
 
-  const c = categoryColors[article.category] ?? { bg: "#f0f0f0", text: "#333", dot: "#999" };
+  const c = categoryColors[article.category] ?? {
+    bg: "rgba(255,255,255,0.05)",
+    text: "#ffffff",
+    border: "#a3a3a3",
+  };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] relative overflow-hidden">
-      {/* Background */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-30"
-        style={{ backgroundImage: `url('/gradient.webp')` }}
-      />
-      <div className="absolute inset-0 z-10 bg-black/70 backdrop-blur-2xl" />
+    <div className="min-h-screen bg-[#0B0B0C] text-neutral-400 selection:bg-neutral-800 selection:text-white">
+      <ReadingProgress accent={c.border} />
 
-      <div className="relative z-20 max-w-3xl mx-auto px-6 py-16">
-        {/* Back link */}
-        <Link
-          to="/insights"
-          className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors mb-12"
-        >
-          <span>←</span> All Insights
-        </Link>
-
-        {/* Meta row */}
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          <span
-            className="text-[11px] font-bold px-3 py-1 rounded-full"
-            style={{ background: c.bg + "22", color: c.dot }}
-          >
-            {article.category}
-          </span>
-          <span className="text-[11px] text-white/30">{article.tag}</span>
-          <span className="text-white/20">·</span>
-          <span className="text-[11px] text-white/30">{article.date}</span>
-          <span className="text-white/20">·</span>
-          <span className="text-[11px] text-white/30">{article.readTime}</span>
-        </div>
-
-        {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-tight mb-6">
-          {article.title}
-        </h1>
-
-        {/* Subtitle */}
-        <p
-          className="text-lg text-white/60 leading-relaxed mb-10 pl-4"
-          style={{ borderLeft: `3px solid ${c.dot}` }}
-        >
-          {article.subtitle}
-        </p>
-
-        <div className="h-px bg-white/10 mb-10" />
-
-        {/* Content */}
-        <div>
-          {article.content.map((block, i) => renderBlock(block, i, c.dot))}
-        </div>
-
-        {/* Footer nav */}
-        <div className="mt-16 pt-8 border-t border-white/10 flex justify-between items-center">
+      {/* Main Container Grid */}
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pt-12 pb-24">
+        
+        {/* Navigation Header */}
+        <header className="mb-16 border-b border-neutral-900 pb-6 flex justify-between items-center font-sans">
           <Link
             to="/insights"
-            className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors"
+            className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-neutral-600 hover:text-neutral-200 transition-colors"
           >
-            <span>←</span> All Insights
+            <span className="transition-transform group-hover:-translate-x-1">←</span> Back to Insights
           </Link>
-          <span className="text-[11px] text-white/20 font-mono">{article.id}</span>
+          <div className="text-xs uppercase tracking-widest font-black text-white">
+            ImpactStack Africa
+          </div>
+        </header>
+
+        {/* Dynamic Editorial Layout Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16 items-start">
+          
+          {/* 1. LEFT SIDEBAR: Article Meta */}
+          <aside className="lg:col-span-3 lg:sticky lg:top-12 space-y-8 font-sans lg:border-r lg:border-neutral-900 lg:pr-8">
+            <div className="space-y-2">
+              <span 
+                className="inline-block text-xs font-bold px-2.5 py-0.5 rounded backdrop-blur-md"
+                style={{ backgroundColor: c.bg, color: c.text }}
+              >
+                {article.category}
+              </span>
+              <p className="text-xs text-neutral-500 font-medium tracking-wide pt-1">{article.tag}</p>
+            </div>
+
+            <div className="h-px bg-neutral-900 w-12 lg:w-full" />
+
+            <div className="text-xs space-y-4">
+              <div>
+                <span className="uppercase tracking-wider text-[10px] text-neutral-600 block font-bold">Published</span>
+                <span className="font-medium text-neutral-300">{article.date}</span>
+              </div>
+              <div>
+                <span className="uppercase tracking-wider text-[10px] text-neutral-600 block font-bold">Reading Time</span>
+                <span className="font-medium text-neutral-300">{article.readTime}</span>
+              </div>
+            </div>
+          </aside>
+
+          {/* 2. CENTER COLUMN: Main Text Component */}
+          <main className="lg:col-span-6 space-y-6">
+            {/* Massive modern typography title */}
+            <FadeIn>
+              <h1 className="text-4xl md:text-5xl xl:text-6xl font-sans font-black tracking-tighter text-white leading-[1.08] mb-6">
+                {article.title}
+              </h1>
+            </FadeIn>
+
+            {/* Subtitle / Deck */}
+            <FadeIn delay={60}>
+              <p className="text-lg md:text-xl font-serif text-neutral-400 leading-relaxed mb-10 antialiased">
+                {article.subtitle}
+              </p>
+            </FadeIn>
+
+            <div className="w-full h-px bg-neutral-900 mb-10" />
+
+            {/* Rendered Body Content */}
+            <article className="prose prose-invert max-w-none">
+              {article.content.map((block, i) =>
+                renderBlock(block, i, c.border)
+              )}
+            </article>
+          </main>
+
+          {/* 3. RIGHT SIDEBAR: Related Materials (Image 2/3 Sidebar Feed) */}
+          <aside className="lg:col-span-3 lg:sticky lg:top-12 space-y-6 font-sans bg-neutral-950/40 p-6 rounded-xl border border-neutral-900">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-600 border-b border-neutral-900 pb-2">
+              Related Entries
+            </h3>
+            <div className="space-y-5">
+              {relatedArticles.map((rel, index) => (
+                <div key={index} className="group space-y-1">
+                  <span className="text-[10px] text-neutral-600 font-medium">{rel.date}</span>
+                  <a 
+                    href={rel.url} 
+                    className="block text-sm font-bold text-neutral-300 leading-snug group-hover:text-white group-hover:underline transition-all"
+                  >
+                    {rel.title}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </aside>
+
         </div>
       </div>
     </div>
