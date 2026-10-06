@@ -253,3 +253,11 @@ body::-webkit-scrollbar { display: none; }
   content: none !important;
 }
 
+
+/* A restrained constellation on desktop; stable logo grid on smaller screens. */
+@keyframes tech-drift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@media (min-width: 1024px) { .tech-tile { animation: tech-drift 8s ease-in-out infinite; } }
+@media (prefers-reduced-motion: reduce) {
+  .tech-tile, .animate-dot-float, .animate-pulse-soft { animation: none !important; }
+  .port-card:hover, .button-primary:hover { transform: none; }
+}

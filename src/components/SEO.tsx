@@ -14,10 +14,10 @@ interface SEOProps {
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const DEFAULT_TITLE = "ImpactStack Africa | Enterprise Software Development Cape Town";
+const DEFAULT_TITLE = "ImpactStack Africa | Websites, Web Apps & Business Systems";
 const DEFAULT_DESCRIPTION =
-  "Enterprise technology delivery partner in Cape Town. Secure software, mobile platforms, and compliance-focused implementation for South African organizations.";
-const DEFAULT_IMAGE = "/placeholder.svg";
+  "Websites, web applications and business systems from a Cape Town team. Design, development, deployment and ongoing support.";
+const DEFAULT_IMAGE = "/fav-logo.webp";
 const DEFAULT_SITE_NAME = "ImpactStack Africa";
 const DEFAULT_LOCALE = "en_ZA";
 

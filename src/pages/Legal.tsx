@@ -114,7 +114,6 @@ export default function LegalPage() {
               src={heroBg}
               alt=""
               className="w-full h-full object-cover grayscale"
-              {...({ fetchpriority: "high" } as any)}
             />
             {/* Radial gradient mask to focus light on the top-left */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,transparent_0%,#05050A_70%)]" />

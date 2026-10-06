@@ -1,13 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { MdOpenInNew } from "react-icons/md";
-import { motion, AnimatePresence } from "framer-motion";
-
-// --- PERFORMANCE OPTIMIZED IMPORTS ---
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
-
+import { ArrowUpRight } from "lucide-react";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import { event as trackEvent } from "@/lib/analytics";
@@ -18,331 +11,193 @@ import {
   type ProjectFilter,
 } from "@/lib/projects";
 import { absoluteUrl } from "@/lib/site";
-// import footerBg from "/footer-bg.webp";
-
-// ─── Constants ──────────────────────────────────────────────────────────────
-const PROJECT_GRADIENTS = [
-  "linear-gradient(135deg, #1a0533 0%, #3b1278 50%, #6d28d9 100%)",
-  "linear-gradient(135deg, #0f0724 0%, #4c1d95 45%, #7c3aed 100%)",
-  "linear-gradient(135deg, #160b2e 0%, #5b21b6 55%, #8b5cf6 100%)",
-];
-
-const gradientForIndex = (i: number) =>
-  PROJECT_GRADIENTS[i % PROJECT_GRADIENTS.length];
+import { buildProjectItemListSchema } from "@/lib/schema-projects";
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState<ProjectFilter>("All");
-
-  // Memoize filtered results to prevent heavy recalculation on every render
-  const filteredProjects = useMemo(() => {
-    if (activeFilter === "All") return portfolioProjects;
-    return portfolioProjects.filter((p) => p.filterTags.includes(activeFilter));
-  }, [activeFilter]);
-
-  const changeFilter = (value: ProjectFilter) => {
-    setActiveFilter(value);
-    trackEvent({
-      action: "portfolio_filter_change",
-      category: "Portfolio",
-      label: value,
-    });
-  };
-
+  const filteredProjects = useMemo(
+    () =>
+      activeFilter === "All"
+        ? portfolioProjects
+        : portfolioProjects.filter((project) =>
+            project.filterTags.includes(activeFilter),
+          ),
+    [activeFilter],
+  );
   return (
     <>
       <SEO
-        title="Portfolio | ImpactStack Africa"
-        description="Verified implementation evidence across security labs and web products."
+        title="Case Studies & Project Portfolio | ImpactStack Africa"
+        description="Explore Urban Anarchy, community platforms, business systems and security labs. See the brief, approach, technologies and delivered work."
         url={absoluteUrl("/portfolio")}
+        structuredData={buildProjectItemListSchema(portfolioProjects)}
       />
-
-      <style>{`
-        /* HW Acceleration for smooth transitions */
-        .port-card {
-          position: relative;
-          overflow: hidden;
-          border-radius: 16px;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          min-height: 400px;
-          will-change: transform; 
-          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @media (max-width: 768px) {
-          .port-card { min-height: auto; }
-        }
-
-        .port-card:hover { transform: translateY(-4px); }
-
-        .port-card-scrim {
-          position: absolute;
-          inset: 0;
-          z-index: 1;
-          background: linear-gradient(
-            to bottom,
-            rgba(10,0,20,0.08) 0%,
-            rgba(10,0,20,0.4) 30%,
-            rgba(10,0,20,0.95) 100%
-          );
-        }
-
-        @keyframes dot-float {
-          0%, 100% { transform: translate3d(0, 0, 0); }
-          50% { transform: translate3d(5px, -10px, 0); }
-        }
-        .animate-dot-float {
-          animation: dot-float 10s ease-in-out infinite;
-          will-change: transform;
-        }
-
-        .port-card-tags { position: absolute; top: 16px; right: 16px; z-index: 3; display: flex; gap: 6px; }
-        .port-card-content { position: relative; z-index: 2; padding: 28px; }
-        
-        @media (max-width: 640px) {
-          .port-card-content { padding: 20px; }
-        }
-
-        .port-card-title { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
-        .port-card-subtitle { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; color: rgba(196,181,253,0.8); margin-bottom: 12px; }
-        .port-card-summary { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 20px; }
-        
-        .port-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
-        @media (max-width: 1024px) { .port-detail-grid { grid-template-columns: 1fr; gap: 12px; } }
-        
-        .port-detail-label { font-size: 0.65rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; margin-bottom: 2px; }
-        .port-detail-text { font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
-        
-        .port-evidence-list { list-style: none; padding: 0; margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
-        .port-evidence-item { font-size: 0.75rem; color: rgba(255,255,255,0.5); display: flex; gap: 8px; }
-        .port-evidence-bullet { color: #8b5cf6; flex-shrink: 0; }
-
-        .port-collab-text {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.65rem;
-          color: rgba(255, 255, 255, 0.35);
-          letter-spacing: 0.02em;
-          text-align: center;
-        }
-
-        .port-collab-highlight {
-          color: rgba(196, 181, 253, 0.6);
-          font-weight: 500;
-        }
-
-        .port-card-tags { 
-          position: absolute; 
-          top: 16px; 
-          right: 16px; 
-          z-index: 3; 
-          display: flex; 
-          gap: 6px; 
-        }
-
-        /* Fix for Mobile Overlap */
-        @media (max-width: 640px) {
-          .port-card-tags {
-            position: relative; /* Change from absolute to relative */
-            top: auto;
-            right: auto;
-            margin-bottom: 12px; /* Add spacing between chip and title */
-            padding: 20px 20px 0 20px; /* Match content padding */
-          }
-          
-          .port-card-content {
-            padding-top: 10px; /* Reduce top padding since tags are now above */
-          }
-        }
-        
-        .filter-container::-webkit-scrollbar { display: none; }
-        .filter-container { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
-
       <PageShell>
-        <div className="relative bg-[#020205] min-h-screen overflow-hidden">
-          {/* Ambient Background - Lazy loaded & Blur Optimized */}
-          {/* <div className="absolute inset-0 pointer-events-none">
-            <img
-              src={footerBg}
-              alt=""
-              loading="lazy"
-              className="w-full h-full object-cover scale-125 blur-[120px] opacity-25"
-            />
-          </div> */}
-
-          {/* Low-CPU Floating Elements */}
-          <div className="absolute inset-0 pointer-events-none opacity-20">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-white rounded-full animate-dot-float"
-                style={{
-                  top: `${15 + i * 12}%`,
-                  left: `${10 + i * 15}%`,
-                  animationDelay: `${i * 1.5}s`,
+        <div className="container-narrow py-12 md:py-20">
+          <header className="max-w-3xl mb-10">
+            <p className="text-xs text-purple-300 uppercase tracking-[0.25em] mb-5">
+              Our work
+            </p>
+            <h1 className="text-4xl md:text-6xl tracking-tight mb-6">
+              Case studies.
+              <br />
+              From brief to build.
+            </h1>
+            <p className="text-lg leading-relaxed">
+              A closer look at the platforms, websites and systems we’ve worked
+              on, alongside practical training projects and security labs.
+            </p>
+          </header>
+          <div
+            className="flex flex-wrap gap-2 mb-10"
+            role="group"
+            aria-label="Filter case studies"
+          >
+            {projectFilterOptions.map((filter) => (
+              <button
+                key={filter}
+                type="button"
+                aria-pressed={activeFilter === filter}
+                onClick={() => {
+                  setActiveFilter(filter);
+                  trackEvent({
+                    action: "portfolio_filter_change",
+                    category: "Portfolio",
+                    label: filter,
+                  });
                 }}
-              />
+                className={`px-4 py-2 min-h-11 rounded-full border text-sm ${activeFilter === filter ? "border-purple-400 bg-purple-500/20 text-white" : "border-white/15 text-[#b5b7c6] hover:border-purple-400"}`}
+              >
+                {filter}
+              </button>
             ))}
           </div>
-
-          <section className="relative z-10 py-12 md:py-20 px-4 container-narrow">
-            <header className="text-center mb-10 md:mb-16">
-              <motion.h1
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight"
+          <p className="sr-only" aria-live="polite">
+            {filteredProjects.length} case studies shown
+          </p>
+          <div className="space-y-8">
+            {filteredProjects.map((project) => (
+              <article
+                key={project.id}
+                id={project.id}
+                className="surface-card overflow-hidden scroll-mt-28"
               >
-                Project Delivery
-              </motion.h1>
-            </header>
-
-            {/* Performance Optimized Filter Chips - Scrollable on Mobile */}
-            <div className="filter-container flex overflow-x-auto pb-4 mb-8 justify-start md:justify-center">
-              <Stack direction="row" gap={1} px={1}>
-                {projectFilterOptions.map((f) => (
-                  <Chip
-                    key={f}
-                    onClick={() => changeFilter(f)}
-                    label={f}
-                    sx={{
-                      bgcolor:
-                        activeFilter === f
-                          ? "rgba(124, 58, 237, 0.25)"
-                          : "rgba(255,255,255,0.03)",
-                      color: activeFilter === f ? "#fff" : "#71717a",
-                      border: "1px solid",
-                      borderColor:
-                        activeFilter === f
-                          ? "rgba(124, 58, 237, 0.5)"
-                          : "rgba(255,255,255,0.08)",
-                      px: 1,
-                      "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
-                    }}
+                {project.image && (
+                  <img
+                    src={project.image.src}
+                    alt={project.image.alt}
+                    width="1440"
+                    height="1000"
+                    loading="lazy"
+                    className="w-full max-h-[420px] object-cover object-top"
                   />
-                ))}
-              </Stack>
-            </div>
-
-            {/* Layout Animations (Smoother than standard CSS) */}
-            <motion.div layout className="flex flex-col gap-6 md:gap-8">
-              <AnimatePresence mode="popLayout">
-                {filteredProjects.map((project, idx) => (
-                  <motion.article
-                    key={project.id}
-                    id={project.id}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.3 }}
-                    className="port-card"
-                    style={{ background: gradientForIndex(idx) }}
-                  >
-                    <div className="port-card-scrim" />
-
-                    <div className="port-card-tags">
-                      <Chip
-                        label={project.type}
-                        size="small"
-                        sx={{
-                          bgcolor: "rgba(124,58,237,0.4)",
-                          color: "#fff",
-                          fontSize: "10px",
-                          fontWeight: 600,
-                        }}
-                      />
+                )}
+                <div className="p-6 md:p-10">
+                  <div className="flex flex-wrap gap-2 text-xs text-purple-200 mb-5">
+                    <span className="border border-purple-400/30 rounded-full px-3 py-1">
+                      {project.type}
+                    </span>
+                    <span className="border border-white/10 rounded-full px-3 py-1">
+                      {project.role}
+                    </span>
+                  </div>
+                  <h2 className="text-2xl md:text-3xl mb-2">{project.title}</h2>
+                  <p className="text-purple-300 text-sm mb-5">
+                    {project.subtitle}
+                  </p>
+                  <p className="leading-relaxed max-w-3xl mb-8">
+                    {project.summary}
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-7 mb-8">
+                    <div>
+                      <h3 className="text-sm mb-3">The brief</h3>
+                      <p className="text-sm leading-relaxed">
+                        {project.challenge}
+                      </p>
                     </div>
-
-                    <div className="port-card-content">
-                      <h2 className="port-card-title">{project.title}</h2>
-                      <p className="port-card-subtitle">{project.subtitle}</p>
-                      <p className="port-card-summary">{project.summary}</p>
-
-                      <div className="port-detail-grid">
-                        <div>
-                          <p className="port-detail-label">Challenge</p>
-                          <p className="port-detail-text">
-                            {project.challenge}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="port-detail-label">Implementation</p>
-                          <p className="port-detail-text">
-                            {project.implementation}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="port-detail-label">Security</p>
-                          <p className="port-detail-text">{project.security}</p>
-                        </div>
+                    <div>
+                      <h3 className="text-sm mb-3">Our approach</h3>
+                      <p className="text-sm leading-relaxed">
+                        {project.implementation}
+                      </p>
+                    </div>
+                    {project.security && (
+                      <div className="md:col-span-2">
+                        <h3 className="text-sm mb-3">
+                          Security considerations
+                        </h3>
+                        <p className="text-sm leading-relaxed">
+                          {project.security}
+                        </p>
                       </div>
-
-                      <ul className="port-evidence-list">
-                        {project.evidence.map((item) => (
-                          <li key={item.title} className="port-evidence-item">
-                            <span className="port-evidence-bullet">▸</span>
-                            <span>
-                              <strong>{item.title}:</strong> {item.detail}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-6 pt-6 border-t border-white/10">
-                        <Button
-                          component={Link}
-                          to={buildProjectInquiryHref(project, "portfolio")}
-                          variant="contained"
-                          sx={{
-                            bgcolor: "#7c3aed",
-                            textTransform: "none",
-                            borderRadius: "12px",
-                            px: 4,
-                            py: 1,
-                            fontWeight: 600,
-                            minWidth: { xs: "100%", sm: "160px" },
-                            boxShadow: "0 4px 14px 0 rgba(124, 58, 237, 0.3)",
-                          }}
-                        >
-                          Discuss Project
-                        </Button>
-
-                        {/* Collaboration String */}
+                    )}
+                  </div>
+                  <div className="border-y border-white/10 py-6 mb-7">
+                    <h3 className="text-sm mb-4">Delivered work</h3>
+                    <ul className="grid md:grid-cols-3 gap-5">
+                      {project.evidence.map((item) => (
+                        <li key={item.title}>
+                          <h4 className="text-sm mb-2">{item.title}</h4>
+                          <p className="text-sm leading-relaxed">
+                            {item.detail}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <h3 className="text-sm mb-4">Technologies</h3>
+                  <ul className="flex flex-wrap gap-2 mb-8">
+                    {project.technologies.map((technology) => (
+                      <li
+                        key={technology}
+                        className="text-xs border border-white/15 bg-white/5 rounded-full px-3 py-2"
+                      >
+                        {technology}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex flex-wrap items-center gap-4">
+                    <Link
+                      to={buildProjectInquiryHref(project, "portfolio")}
+                      className="button-primary"
+                    >
+                      Discuss a similar project
+                    </Link>
+                    {project.links.map((link) =>
+                      link.external ? (
                         <a
-                          href="https://lifechoices.co.za/life-choices-academy/"
+                          key={link.href}
+                          href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="port-collab-link text-[10px]"
+                          className="inline-flex gap-2 items-center text-sm text-purple-300"
                         >
-                          In collaboration with{" "}
-                          <span className="port-collab-highlight">
-                            Life Choices Academy
-                          </span>
+                          {link.label}
+                          <ArrowUpRight size={16} aria-hidden="true" />
                         </a>
-
-                        {project.links.find((l) => l.kind === "github") ? (
-                          <a
-                            href={
-                              project.links.find((l) => l.kind === "github")
-                                ?.href
-                            }
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center gap-2 text-[11px] font-medium text-white/40 hover:text-white transition-colors"
-                          >
-                            <MdOpenInNew size={14} /> View Source
-                          </a>
-                        ) : (
-                          <div className="hidden sm:block w-[100px]" />
-                        )}
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </AnimatePresence>
-            </motion.div>
-          </section>
+                      ) : (
+                        <Link
+                          key={link.href}
+                          to={link.href}
+                          className="text-sm text-purple-300"
+                        >
+                          {link.label}
+                        </Link>
+                      ),
+                    )}
+                    {project.serviceHref && (
+                      <Link
+                        to={project.serviceHref}
+                        className="text-sm text-purple-300"
+                      >
+                        Related service
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </PageShell>
     </>

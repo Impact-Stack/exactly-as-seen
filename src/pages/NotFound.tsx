@@ -34,7 +34,6 @@ const NotFound = () => {
             src={heroBg} 
             alt="" 
             className="h-full w-full object-cover grayscale" 
-            {...({ fetchpriority: "high" } as any)}
           />
           {/* Subtle vignette for focus */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#05050A_100%)]" />

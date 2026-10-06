@@ -342,7 +342,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-8">
             {navLinks.map((link) => {
               const menuId = `menu-${link.label.toLowerCase()}`;
               const active = isActive(pathname, link.label, link.href);

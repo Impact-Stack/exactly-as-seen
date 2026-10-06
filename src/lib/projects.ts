@@ -2,18 +2,24 @@ export type ProjectType =
   | "Lab"
   | "Product Platform"
   | "Client/Training Delivery"
+  | "Client Delivery"
   | "Mobile MVP"
   | "MVP"
   | "Training";
 
-export type ProjectRole = "Security Engineer" | "Technical Project Manager" | "Project Lead" | "Full-Stack Engineer";
+export type ProjectRole =
+  | "Security Engineer"
+  | "Technical Project Manager"
+  | "Project Lead"
+  | "Full-Stack Engineer";
 
-export type ProjectFilter = "All" | "Client" | "Lab" | "MVP" | "Training" | "Security" | "Mobile" | "Web";
+export type ProjectFilter =
+  "All" | "Client" | "Lab" | "MVP" | "Training" | "Security" | "Mobile" | "Web";
 
 export interface ProjectLink {
   label: string;
   href: string;
-  kind: "github" | "board" | "service";
+  kind: "github" | "board" | "service" | "live";
   external?: boolean;
 }
 
@@ -29,11 +35,17 @@ export interface ProjectCase {
   summary: string;
   type: ProjectType;
   role: ProjectRole;
-  inquiryType: "Web Application" | "Mobile App" | "Security and Compliance" | "Government Project" | "Other";
+  inquiryType:
+    | "Web Application"
+    | "Mobile App"
+    | "Security and Compliance"
+    | "Government Project"
+    | "Other";
   filterTags: Exclude<ProjectFilter, "All">[];
   challenge: string;
   implementation: string;
-  security: string;
+  security?: string;
+  image?: { src: string; alt: string };
   technologies: string[];
   evidence: ProjectEvidence[];
   links: ProjectLink[];
@@ -51,6 +63,52 @@ export interface ProjectInsightSeed {
 
 export const allProjects: ProjectCase[] = [
   {
+    id: "urban-anarchy",
+    title: "Urban Anarchy",
+    subtitle: "Digital magazine & streetwear platform",
+    summary:
+      "An editorial and streetwear experience combining a bold visual identity with product discovery and a cultural archive.",
+    type: "Client Delivery",
+    role: "Full-Stack Engineer",
+    inquiryType: "Web Application",
+    filterTags: ["Client", "Web"],
+    challenge:
+      "Bring a magazine and streetwear identity together in one responsive experience that makes both products and editorial content easy to explore.",
+    implementation:
+      "Built on an existing React publication foundation, using responsive layouts, bold typography and a black, red and white visual direction. The frontend brings product browsing, editorial routes and a shopping cart into one experience.",
+    technologies: ["React", "React Router", "Vite", "Tailwind CSS", "GSAP"],
+    evidence: [
+      {
+        title: "Brand-led design",
+        detail:
+          "High-contrast styling, large typography and collage-inspired visual direction.",
+      },
+      {
+        title: "Editorial discovery",
+        detail:
+          "Magazine, archive and search routes for browsing cultural content.",
+      },
+      {
+        title: "Commerce interface",
+        detail:
+          "Streetwear product discovery and a cart interface alongside editorial content.",
+      },
+    ],
+    image: {
+      src: "/images/urban-anarchy.webp",
+      alt: "Urban Anarchy homepage showing its streetwear and editorial design",
+    },
+    links: [
+      {
+        label: "Visit live website",
+        href: "https://urbananarchy.vercel.app/",
+        kind: "live",
+        external: true,
+      },
+    ],
+    serviceHref: "/services/websites",
+  },
+  {
     id: "bluewatch-soc-lab",
     title: "Insider Threat Detection Lab - BlueWatch SOC Lab",
     subtitle: "Self-built SOC lab | Banking simulation",
@@ -66,13 +124,38 @@ export const allProjects: ProjectCase[] = [
       "Designed and implemented the SOC architecture end-to-end using Wazuh, ELK Stack, and Zeek. Built detection rules, centralized logs, and incident response documentation workflows.",
     security:
       "Implemented SIEM correlation rules for authentication abuse, after-hours access, and high-volume data queries, then mapped detections to MITRE ATT&CK for response consistency.",
-    technologies: ["Wazuh", "ELK Stack", "Zeek", "MITRE ATT&CK", "Threat Detection Engineering"],
-    evidence: [
-      { title: "SIEM Correlation Rules", detail: "Detection coverage for auth abuse, after-hours access, and high-volume queries." },
-      { title: "Centralized Visibility", detail: "ELK logging pipeline and Zeek DNS entropy monitoring integrated into SOC workflow." },
-      { title: "Incident Reporting", detail: "Produced incident reports with remediation guidance and ATT&CK mapping." },
+    technologies: [
+      "Wazuh",
+      "ELK Stack",
+      "Zeek",
+      "MITRE ATT&CK",
+      "Threat Detection Engineering",
     ],
-    links: [{ label: "GitHub Repository", href: "https://github.com/Liso2004/BlueWatch-SOC-Lab/tree/bulk", kind: "github", external: true }],
+    evidence: [
+      {
+        title: "SIEM Correlation Rules",
+        detail:
+          "Detection coverage for auth abuse, after-hours access, and high-volume queries.",
+      },
+      {
+        title: "Centralized Visibility",
+        detail:
+          "ELK logging pipeline and Zeek DNS entropy monitoring integrated into SOC workflow.",
+      },
+      {
+        title: "Incident Reporting",
+        detail:
+          "Produced incident reports with remediation guidance and ATT&CK mapping.",
+      },
+    ],
+    links: [
+      {
+        label: "GitHub Repository",
+        href: "https://github.com/Liso2004/BlueWatch-SOC-Lab/tree/bulk",
+        kind: "github",
+        external: true,
+      },
+    ],
     serviceHref: "/services/security",
   },
   {
@@ -91,13 +174,41 @@ export const allProjects: ProjectCase[] = [
       "Defined architecture and roadmap, managed tickets and sprint timelines, and coordinated cross-functional delivery between product owners and developers.",
     security:
       "Implemented RBAC (guest, user, admin), Google OAuth sign-in, and terms-and-conditions compliance flows for user governance.",
-    technologies: ["React", "Node.js", "Supabase", "MapLibre", "Turf.js", "OpenStreetMap", "RBAC", "Google OAuth"],
-    evidence: [
-      { title: "Delivery Management", detail: "Structured GitHub tickets and sprint cadence for implementation tracking." },
-      { title: "Platform Governance", detail: "Role-based access and moderation pipeline for user-submitted locations." },
-      { title: "Geospatial Stack", detail: "Integrated MapLibre/Turf.js with location submission and admin moderation flow." },
+    technologies: [
+      "React",
+      "Node.js",
+      "Supabase",
+      "MapLibre",
+      "Turf.js",
+      "OpenStreetMap",
+      "RBAC",
+      "Google OAuth",
     ],
-    links: [{ label: "GitHub Repository", href: "https://github.com/bilqeesajam/location-finder-v2", kind: "github", external: true }],
+    evidence: [
+      {
+        title: "Delivery Management",
+        detail:
+          "Structured GitHub tickets and sprint cadence for implementation tracking.",
+      },
+      {
+        title: "Platform Governance",
+        detail:
+          "Role-based access and moderation pipeline for user-submitted locations.",
+      },
+      {
+        title: "Geospatial Stack",
+        detail:
+          "Integrated MapLibre/Turf.js with location submission and admin moderation flow.",
+      },
+    ],
+    links: [
+      {
+        label: "GitHub Repository",
+        href: "https://github.com/bilqeesajam/location-finder-v2",
+        kind: "github",
+        external: true,
+      },
+    ],
     serviceHref: "/services/web",
   },
   {
@@ -116,13 +227,40 @@ export const allProjects: ProjectCase[] = [
       "Built a Vue.js SPA with RESTful APIs, normalized PostgreSQL schema design, and indexed queries for predictable data performance.",
     security:
       "Implemented JWT auth with refresh tokens, granular RBAC, bcrypt hashing, and defensive controls against XSS and SQL-injection vectors.",
-    technologies: ["Node.js", "Express", "PostgreSQL", "Vue.js", "TailwindCSS", "JWT", "RBAC"],
-    evidence: [
-      { title: "Access Control", detail: "Granular role management and token-based authentication with refresh strategy." },
-      { title: "Data Integrity", detail: "Normalized schema and indexed queries for reliable operational reporting." },
-      { title: "Adoption Loop", detail: "Led testing sessions and UX iterations based on user feedback." },
+    technologies: [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Vue.js",
+      "TailwindCSS",
+      "JWT",
+      "RBAC",
     ],
-    links: [{ label: "GitHub Repository", href: "https://github.com/KhadijaManuel/project-1/tree/liso", kind: "github", external: true }],
+    evidence: [
+      {
+        title: "Access Control",
+        detail:
+          "Granular role management and token-based authentication with refresh strategy.",
+      },
+      {
+        title: "Data Integrity",
+        detail:
+          "Normalized schema and indexed queries for reliable operational reporting.",
+      },
+      {
+        title: "Adoption Loop",
+        detail:
+          "Led testing sessions and UX iterations based on user feedback.",
+      },
+    ],
+    links: [
+      {
+        label: "GitHub Repository",
+        href: "https://github.com/KhadijaManuel/project-1/tree/liso",
+        kind: "github",
+        external: true,
+      },
+    ],
     serviceHref: "/services/web",
   },
   {
@@ -143,11 +281,30 @@ export const allProjects: ProjectCase[] = [
       "Applied compliance-aware data handling aligned with POPIA and Cybercrimes Act considerations, plus ethical scraping workflow design.",
     technologies: ["Flutter", "Dart", "Python", "JSON", "Mobile Architecture"],
     evidence: [
-      { title: "Cross-Platform UI", detail: "Single codebase app experience for mobile comparison workflows." },
-      { title: "Retail Integrations", detail: "Integrated four major retailer sources into product search flow." },
-      { title: "Search Performance", detail: "Maintained approximately 3-5 second search response behavior in testing." },
+      {
+        title: "Cross-Platform UI",
+        detail:
+          "Single codebase app experience for mobile comparison workflows.",
+      },
+      {
+        title: "Retail Integrations",
+        detail:
+          "Integrated four major retailer sources into product search flow.",
+      },
+      {
+        title: "Search Performance",
+        detail:
+          "Maintained approximately 3-5 second search response behavior in testing.",
+      },
     ],
-    links: [{ label: "GitHub Repository", href: "https://github.com/Liso2004/price-comparison", kind: "github", external: true }],
+    links: [
+      {
+        label: "GitHub Repository",
+        href: "https://github.com/Liso2004/price-comparison",
+        kind: "github",
+        external: true,
+      },
+    ],
     serviceHref: "/services/mobile",
   },
   {
@@ -168,11 +325,29 @@ export const allProjects: ProjectCase[] = [
       "Implemented payload sanitization and connection validation, and evaluated production trade-offs between raw WebSockets and Socket.io.",
     technologies: ["React", "Node.js", "Express", "WebSockets"],
     evidence: [
-      { title: "Connection Lifecycle", detail: "Handled connect/reconnect/disconnect events for stable messaging behavior." },
-      { title: "Architecture Trade-offs", detail: "Documented raw WebSocket vs Socket.io decisions for future production use." },
-      { title: "Input Safety", detail: "Sanitized message payloads before processing and display." },
+      {
+        title: "Connection Lifecycle",
+        detail:
+          "Handled connect/reconnect/disconnect events for stable messaging behavior.",
+      },
+      {
+        title: "Architecture Trade-offs",
+        detail:
+          "Documented raw WebSocket vs Socket.io decisions for future production use.",
+      },
+      {
+        title: "Input Safety",
+        detail: "Sanitized message payloads before processing and display.",
+      },
     ],
-    links: [{ label: "GitHub Repository", href: "https://github.com/Liso2004/Quick-Simple-Chat-App-MVP-", kind: "github", external: true }],
+    links: [
+      {
+        label: "GitHub Repository",
+        href: "https://github.com/Liso2004/Quick-Simple-Chat-App-MVP-",
+        kind: "github",
+        external: true,
+      },
+    ],
     serviceHref: "/services/web",
   },
   {
@@ -191,13 +366,38 @@ export const allProjects: ProjectCase[] = [
       "Developed a modular PHP backend, customer cart experience, and role-separated admin/customer operations.",
     security:
       "Implemented session hardening, prepared statements, hashed passwords, and defensive validation for common web attack vectors.",
-    technologies: ["PHP", "MySQL", "JavaScript", "HTML/CSS", "Session Authentication"],
-    evidence: [
-      { title: "Commerce Flow", detail: "Implemented catalog browsing, cart persistence, and order operations." },
-      { title: "Role Separation", detail: "Designed admin and customer access boundaries for operational safety." },
-      { title: "Security Baseline", detail: "Applied prepared statements and password hashing for safer data handling." },
+    technologies: [
+      "PHP",
+      "MySQL",
+      "JavaScript",
+      "HTML/CSS",
+      "Session Authentication",
     ],
-    links: [{ label: "GitHub Repository", href: "https://github.com/Liso2004/BioFuel", kind: "github", external: true }],
+    evidence: [
+      {
+        title: "Commerce Flow",
+        detail:
+          "Implemented catalog browsing, cart persistence, and order operations.",
+      },
+      {
+        title: "Role Separation",
+        detail:
+          "Designed admin and customer access boundaries for operational safety.",
+      },
+      {
+        title: "Security Baseline",
+        detail:
+          "Applied prepared statements and password hashing for safer data handling.",
+      },
+    ],
+    links: [
+      {
+        label: "GitHub Repository",
+        href: "https://github.com/Liso2004/BioFuel",
+        kind: "github",
+        external: true,
+      },
+    ],
     serviceHref: "/services/web",
   },
   {
@@ -218,17 +418,39 @@ export const allProjects: ProjectCase[] = [
       "Applied validation and defensive server-side error handling to reduce runtime and data integrity risks.",
     technologies: ["MongoDB", "Express", "React", "Node.js", "REST APIs"],
     evidence: [
-      { title: "API Lifecycle", detail: "Implemented full request-response flow with explicit error states." },
-      { title: "Frontend Structure", detail: "Built reusable components for maintainable UI composition." },
-      { title: "Defensive Handling", detail: "Added validation and error paths for safer API interaction." },
+      {
+        title: "API Lifecycle",
+        detail:
+          "Implemented full request-response flow with explicit error states.",
+      },
+      {
+        title: "Frontend Structure",
+        detail: "Built reusable components for maintainable UI composition.",
+      },
+      {
+        title: "Defensive Handling",
+        detail: "Added validation and error paths for safer API interaction.",
+      },
     ],
-    links: [{ label: "GitHub Repository", href: "https://github.com/Liso2004/MERN-Stack-Training", kind: "github", external: true }],
+    links: [
+      {
+        label: "GitHub Repository",
+        href: "https://github.com/Liso2004/MERN-Stack-Training",
+        kind: "github",
+        external: true,
+      },
+    ],
     serviceHref: "/services/web",
   },
 ];
 
 export const featuredProjects = allProjects.filter((project) =>
-  ["bluewatch-soc-lab", "findr-community-map", "moderntech-hr-platform"].includes(project.id),
+  [
+    "urban-anarchy",
+    "bluewatch-soc-lab",
+    "findr-community-map",
+    "moderntech-hr-platform",
+  ].includes(project.id),
 );
 
 export const portfolioProjects = allProjects;
@@ -263,6 +485,16 @@ export const projectInsightsSeed: ProjectInsightSeed[] = [
   },
 ];
 
-export const projectFilterOptions: ProjectFilter[] = ["All", "Client", "Lab", "MVP", "Training", "Security", "Mobile", "Web"];
+export const projectFilterOptions: ProjectFilter[] = [
+  "All",
+  "Client",
+  "Lab",
+  "MVP",
+  "Training",
+  "Security",
+  "Mobile",
+  "Web",
+];
 
-export const getProjectById = (id: string) => allProjects.find((project) => project.id === id);
+export const getProjectById = (id: string) =>
+  allProjects.find((project) => project.id === id);
