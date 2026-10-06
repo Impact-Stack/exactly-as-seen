@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Waitlist } from "@clerk/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   Bell,
@@ -17,24 +17,39 @@ import {
 } from "lucide-react";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
-import { InvestSwipePhone as PhoneMockup } from "@/components/investswipe/InvestSwipePhone";
+
 import { event as trackEvent } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/site";
 
-const SCREEN_ROOT =
-  "/investswipe-live-app-screenshots-20260702-222616/20260702-222616";
-
+const CONCEPT_ROOT = "/images/investswipe-concepts";
+const conceptBoards = [
+  { file: "01-entry-auth-onboarding", title: "Getting started", description: "Entry, authentication, onboarding and risk awareness." },
+  { file: "02-home-explore-asset-learn", title: "Discover & learn", description: "Home, Explore, asset context and guided lessons." },
+  { file: "03-practice-reel-paper-order", title: "Practice decisions", description: "The practice reel, paper orders, confirmation and receipts." },
+  { file: "04-portfolio-goals-top-up", title: "Track your progress", description: "Paper portfolios, allocation, goal pods and simulated credits." },
+  { file: "05-activity-profile-settings-notifications", title: "Make it yours", description: "Activity, profiles, settings and notifications." },
+  { file: "06-themes-plus-support-practice-sheet", title: "Themes & support", description: "Personalisation, Plus concepts, help and practice actions." },
+  { file: "07-signup-recovery-oauth-waitlist", title: "Account access", description: "Sign-up, account recovery, OAuth and beta waitlist concepts." },
+  { file: "08-empty-offline-recovery-states", title: "Everyday states", description: "Empty screens, slow networks and recovery experiences." },
+];
+type ConceptScreen = { src: string; column: number };
+const boardScreen = (board: number, column: number): ConceptScreen => ({ src: `${CONCEPT_ROOT}/${conceptBoards[board].file}.webp`, column });
 const screens = {
-  home: `${SCREEN_ROOT}/06-home.png`,
-  learn: `${SCREEN_ROOT}/07-learn.png`,
-  markets: `${SCREEN_ROOT}/08-markets.png`,
-  practice: `${SCREEN_ROOT}/09-practice.png`,
-  portfolio: `${SCREEN_ROOT}/11-portfolio.png`,
-  goals: `${SCREEN_ROOT}/14-goals.png`,
-  topUp: `${SCREEN_ROOT}/15-top-up.png`,
-  profile: `${SCREEN_ROOT}/17-profile.png`,
-  asset: `${SCREEN_ROOT}/21-asset-aapl.png`,
+  home: boardScreen(1, 0), learn: boardScreen(1, 3), markets: boardScreen(1, 1),
+  practice: boardScreen(2, 0), portfolio: boardScreen(3, 0), goals: boardScreen(3, 2),
+  topUp: boardScreen(3, 3), profile: boardScreen(4, 1), asset: boardScreen(1, 2),
 };
+
+function PhoneMockup({ src, alt, className = "", loading = "lazy", delay = 0, float = true }: {
+  src: ConceptScreen; alt: string; className?: string; loading?: "lazy" | "eager"; delay?: number; float?: boolean;
+}) {
+  const reducedMotion = useReducedMotion();
+  return <motion.div className={`${/(^|\s)(absolute|relative|fixed|sticky)(\s|$)/.test(className) ? "" : "relative"} aspect-[420/936] shrink-0 overflow-hidden ${/(^|\s)w-/.test(className) ? "" : "w-[min(72vw,270px)]"} ${className}`}
+    animate={float && !reducedMotion ? { y: [0, -8, 0] } : undefined}
+    transition={{ duration: 8, delay, repeat: Infinity, ease: "easeInOut" }}>
+    <img src={src.src} alt={alt} loading={loading} decoding="async" className="absolute top-0 h-full max-w-none" style={{ width: "400%", left: `${src.column * -100}%` }} />
+  </motion.div>;
+}
 
 const CONTACT_INVESTSWIPE_HREF =
   "/contact?projectType=InvestSwipe%20Partnership";
@@ -238,7 +253,7 @@ export default function InvestSwipePage() {
       applicationCategory: "EducationalApplication",
       operatingSystem: "Android, iOS",
       url: absoluteUrl("/investswipe"),
-      image: absoluteUrl(screens.home),
+      image: absoluteUrl(screens.home.src),
       description:
         "InvestSwipe is a mobile-first simulated investing education app for paper trading practice, market learning, and portfolio confidence building.",
       publisher: {
@@ -347,13 +362,13 @@ export default function InvestSwipePage() {
                 <div className="absolute left-1/2 top-20 z-0 h-[320px] w-[320px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(20,120,255,0.2),rgba(5,7,12,0)_68%)] sm:top-24 sm:h-[430px] sm:w-[430px]" />
                 <PhoneMockup
                   src={screens.home}
-                  alt="InvestSwipe simulated account home screen"
+                  alt="InvestSwipe design concept: simulated account home screen"
                   loading="eager"
                   delay={0.2}
                   className="relative z-10 mx-auto w-[min(72vw,310px)] sm:w-[min(86vw,390px)] lg:translate-y-8"
                 />
                 <div className="absolute bottom-2 left-1/2 z-20 w-[min(88%,360px)] -translate-x-1/2 rounded-lg border border-white/10 bg-[#07111f]/78 px-3 py-2.5 text-center text-xs font-medium text-[#c8d4e2] shadow-[0_18px_60px_rgba(0,0,0,0.38)] backdrop-blur sm:bottom-4 sm:w-[min(86%,420px)] sm:px-4 sm:py-3 sm:text-sm">
-                  Live app preview. Simulated balances only.
+                  Design concept preview. Simulated balances only.
                 </div>
               </motion.div>
             </div>
@@ -380,16 +395,16 @@ export default function InvestSwipePage() {
               <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                 <div>
                   <p className="text-sm font-bold uppercase text-[#1478ff]">
-                    Live app screenshots
+                    Product design previews
                   </p>
                   <h2 className="mt-3 max-w-3xl text-4xl font-black leading-tight text-[#111513] md:text-6xl">
-                    A real product preview, not a placeholder promise.
+                    Explore the next InvestSwipe experience.
                   </h2>
                 </div>
                 <p className="max-w-md text-base leading-7 text-[#3c4942]">
-                  The waitlist page now showcases the current InvestSwipe app
-                  state: simulated account value, markets, practice, paper
-                  portfolio, and goal pods.
+                  These design concepts show the direction for learning,
+                  market discovery, paper trading and goal tracking. They are
+                  visual previews of the planned experience.
                 </p>
               </div>
 
@@ -400,19 +415,19 @@ export default function InvestSwipePage() {
                 <div className="relative z-10 flex flex-col items-center justify-center gap-8 lg:flex-row">
                   <PhoneMockup
                     src={screens.learn}
-                    alt="InvestSwipe learn screen"
+                    alt="InvestSwipe design concept: learn screen"
                     delay={0.2}
                     className="lg:mt-28 lg:-rotate-7"
                   />
                   <PhoneMockup
                     src={screens.home}
-                    alt="InvestSwipe home dashboard"
+                    alt="InvestSwipe design concept: home dashboard"
                     delay={0.55}
                     className="w-[min(80vw,340px)] lg:rotate-1"
                   />
                   <PhoneMockup
                     src={screens.goals}
-                    alt="InvestSwipe goal pods screen"
+                    alt="InvestSwipe design concept: goal pods screen"
                     delay={0.9}
                     className="lg:mt-28 lg:rotate-7"
                   />
@@ -470,12 +485,7 @@ export default function InvestSwipePage() {
                       </span>
                     </div>
                     <div className="overflow-hidden rounded-lg border border-white/10 bg-black">
-                      <img
-                        src={moment.screen}
-                        alt={`InvestSwipe ${moment.title} app screen`}
-                        className="h-64 w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]"
-                        loading="lazy"
-                      />
+                      <PhoneMockup src={moment.screen} alt={`InvestSwipe ${moment.title} design concept`} float={false} className="w-full max-w-[240px] mx-auto" />
                     </div>
                     <h3 className="mt-5 text-2xl font-bold text-white">
                       {moment.title}
@@ -489,6 +499,19 @@ export default function InvestSwipePage() {
             </div>
           </section>
 
+          <section id="concept-gallery" aria-labelledby="concept-gallery-heading" className="bg-[#05070c] py-20 border-y border-white/10 scroll-mt-28">
+            <div className="container-narrow">
+              <SectionLabel>Midnight Ledger · design concepts</SectionLabel>
+              <h2 id="concept-gallery-heading" className="text-4xl md:text-5xl font-bold mb-5">See the experience, screen by screen.</h2>
+              <p className="max-w-2xl text-[#9aacbf] leading-7 mb-10">Explore all eight concept boards, from the first sign-in to paper-trading practice. Open any board for a closer look. These are visual design references; screens and features may evolve during development.</p>
+              <div className="grid md:grid-cols-2 gap-6">
+                {conceptBoards.map((board, index) => <a key={board.file} href={`${CONCEPT_ROOT}/${board.file}.webp`} target="_blank" rel="noopener noreferrer" className="group overflow-hidden rounded-xl border border-[#20334b] bg-[#07111f] hover:border-[#21b6ff]/60 transition-colors" aria-label={`Open ${board.title} concept board in a new tab`}>
+                  <img src={`${CONCEPT_ROOT}/${board.file}.webp`} alt={`InvestSwipe design concepts: ${board.description}`} width="1681" height="941" loading="lazy" className="w-full h-auto" />
+                  <div className="p-5"><p className="text-xs text-[#21b6ff] mb-2">CONCEPT {String(index + 1).padStart(2, "0")}</p><h3 className="text-xl mb-2 flex justify-between gap-3">{board.title}<ArrowRight size={20} aria-hidden="true" /></h3><p className="text-sm text-[#9aacbf] leading-6">{board.description}</p></div>
+                </a>)}
+              </div>
+            </div>
+          </section>
           <section className="bg-[#07111f] py-24">
             <div className="container-narrow grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
               <div>
@@ -691,12 +714,12 @@ export default function InvestSwipePage() {
               <div className="relative min-h-[540px]">
                 <PhoneMockup
                   src={screens.profile}
-                  alt="InvestSwipe profile theme picker"
+                  alt="InvestSwipe design concept: profile theme picker"
                   className="absolute left-0 top-10 hidden -rotate-6 lg:block"
                 />
                 <PhoneMockup
                   src={screens.topUp}
-                  alt="InvestSwipe simulated credits top up"
+                  alt="InvestSwipe design concept: simulated credits top up"
                   className="relative z-10 mx-auto w-[min(78vw,310px)] lg:translate-x-20 lg:rotate-3"
                 />
               </div>
