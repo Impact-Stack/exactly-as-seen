@@ -15,6 +15,7 @@ export default function Services() {
         url={absoluteUrl("/services")}
       />
       <PageShell>
+        <div className="restored-content restored-services">
         <section className="section-padding bg-[#020204] border-b border-white/10">
           <div className="container-narrow">
             <p className="text-xs uppercase tracking-[0.25em] text-purple-300 mb-5">
@@ -146,6 +147,7 @@ export default function Services() {
             </div>
           </section>
         </div>
+      </div>
       </PageShell>
     </>
   );

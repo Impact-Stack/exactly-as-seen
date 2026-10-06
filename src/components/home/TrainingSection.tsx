@@ -3,7 +3,7 @@ import { GraduationCap, BadgeCheck } from "lucide-react";
 export default function TrainingSection() {
   return (
     <section
-      className="section-padding bg-[#08080f] border-t border-white/10"
+      className="restored-content section-padding bg-[#08080f] border-t border-white/10"
       aria-labelledby="training-heading"
     >
       <div className="container-narrow">

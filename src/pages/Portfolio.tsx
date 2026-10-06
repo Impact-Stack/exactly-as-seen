@@ -33,6 +33,7 @@ export default function PortfolioPage() {
         structuredData={buildProjectItemListSchema(portfolioProjects)}
       />
       <PageShell>
+        <div className="restored-content restored-portfolio">
         <div className="container-narrow py-12 md:py-20">
           <header className="max-w-3xl mb-10">
             <p className="text-xs text-purple-300 uppercase tracking-[0.25em] mb-5">
@@ -199,6 +200,7 @@ export default function PortfolioPage() {
             ))}
           </div>
         </div>
+      </div>
       </PageShell>
     </>
   );
