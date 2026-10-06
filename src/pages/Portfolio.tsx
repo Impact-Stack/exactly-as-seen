@@ -158,6 +158,7 @@ export default function PortfolioPage() {
                     ))}
                   </ul>
                   <div className="flex flex-wrap items-center gap-4">
+                    {project.caseStudy && <Link to={`/case-studies/${project.id}`} className="button-secondary gap-2">Read full case study <ArrowUpRight size={16} /></Link>}
                     <Link
                       to={buildProjectInquiryHref(project, "portfolio")}
                       className="button-primary"

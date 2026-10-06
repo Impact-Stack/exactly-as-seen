@@ -12,6 +12,7 @@ import { initAnalytics, pageview } from "@/lib/analytics";
 ========================= */
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/About"));
+const CaseStudy = lazy(() => import("./pages/CaseStudy"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
 const Contact = lazy(() => import("./pages/Contact"));
 const InvestSwipe = lazy(() => import("./pages/InvestSwipe"));
@@ -216,6 +217,7 @@ const AppRoutes = () => (
         <Route path="/about" element={<About />} />
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/case-studies" element={<Portfolio />} />
+        <Route path="/case-studies/:slug" element={<CaseStudy />} />
         <Route path="/services" element={<Services />} />
         <Route path="/services/:slug" element={<ServicePage />} />
         <Route path="/industries" element={<IndustriesPage />} />
