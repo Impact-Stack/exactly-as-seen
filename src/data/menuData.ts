@@ -67,9 +67,10 @@ export const megaMenus: Record<
 
 export const navLinks = [
   { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
   { label: "Industries", hasDropdown: true, href: "/industries" },
   { label: "About", hasDropdown: true, href: "/about" },
-  { label: "Portfolio", href: "/portfolio" },
+  { label: "Case Studies", href: "/portfolio" },
   { label: "Insights", href: "/insights" }, 
   { label: "Contact", href: "/contact" },
 ];

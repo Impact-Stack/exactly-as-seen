@@ -15,6 +15,7 @@ const About = lazy(() => import("./pages/About"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
 const Contact = lazy(() => import("./pages/Contact"));
 const InvestSwipe = lazy(() => import("./pages/InvestSwipe"));
+const Services = lazy(() => import("./pages/Services"));
 const ServicePage = lazy(() => import("./pages/ServicePage"));
 const InsightsPage = lazy(() => import("./pages/Insights"));
 const InsightArticle = lazy(() => import("./pages/InsightsArticle"));
@@ -53,7 +54,7 @@ const PageLoader = () => (
         pointerEvents: "none",
       }}
     />
- 
+
     {/* Wordmark */}
     <div
       style={{
@@ -68,9 +69,14 @@ const PageLoader = () => (
       <img
         src="/isa (2).webp"
         alt="ImpactStack Africa"
-        style={{ width: "32px", height: "32px", objectFit: "contain", flexShrink: 0 }}
+        style={{
+          width: "32px",
+          height: "32px",
+          objectFit: "contain",
+          flexShrink: 0,
+        }}
       />
- 
+
       <span
         style={{
           fontFamily: "'Space Grotesk', 'Inter', system-ui, sans-serif",
@@ -84,7 +90,7 @@ const PageLoader = () => (
         <span style={{ color: "#a78bfa" }}> Africa</span>
       </span>
     </div>
- 
+
     {/* Spinner track */}
     <div style={{ position: "relative", width: "40px", height: "40px" }}>
       {/* Static track ring */}
@@ -103,7 +109,7 @@ const PageLoader = () => (
           strokeWidth="2"
         />
       </svg>
- 
+
       {/* Spinning arc */}
       <svg
         width="40"
@@ -127,14 +133,21 @@ const PageLoader = () => (
           strokeDashoffset="0"
         />
         <defs>
-          <linearGradient id="spinGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <linearGradient
+            id="spinGrad"
+            x1="0"
+            y1="0"
+            x2="40"
+            y2="40"
+            gradientUnits="userSpaceOnUse"
+          >
             <stop offset="0%" stopColor="#a78bfa" />
             <stop offset="100%" stopColor="#6d28d9" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>
     </div>
- 
+
     {/* Keyframes injected inline */}
     <style>{`
       @keyframes impactstack-spin {
@@ -144,17 +157,36 @@ const PageLoader = () => (
     `}</style>
   </div>
 );
- 
+
 /* =========================
    SCROLL RESTORE
 ========================= */
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
- 
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
- 
+    if (!hash) {
+      window.scrollTo(0, 0);
+      return;
+    }
+    let targetId: string;
+    try {
+      targetId = decodeURIComponent(hash.slice(1));
+    } catch {
+      return;
+    }
+    const scroll = () => {
+      const target = document.getElementById(targetId);
+      if (!target) return false;
+      target.scrollIntoView({ block: "start" });
+      return true;
+    };
+    if (scroll()) return;
+    const observer = new MutationObserver(() => {
+      if (scroll()) observer.disconnect();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [pathname, hash]);
   return null;
 };
 
@@ -178,11 +210,14 @@ const AppRoutes = () => (
   <>
     <RouteAnalyticsTracker />
 
-    <Suspense fallback={<PageLoader/>}>
+    <Suspense fallback={<PageLoader />}>
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/about" element={<About />} />
         <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/case-studies" element={<Portfolio />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/:slug" element={<ServicePage />} />
         <Route path="/industries" element={<IndustriesPage />} />
         <Route path="/industries/:slug" element={<IndustryPage />} />
         <Route path="/insights" element={<InsightsPage />} />

@@ -3,10 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PageShell from "@/components/PageShell";
 import SEO from "@/components/SEO";
 import HeroSection from "@/components/home/HeroSection";
-import ProofStrip from "@/components/home/ProofStrip";
 import ValueProposition from "@/components/home/ValueProposition";
-import SolutionsOverview from "@/components/home/SolutionsOverview";
-import IndustriesSection from "@/components/home/IndustriesSection";
+import ServicesOverview from "@/components/home/ServicesOverview";
+import TechnologySection from "@/components/home/TechnologySection";
+import TrainingSection from "@/components/home/TrainingSection";
 import ProjectsSection from "@/components/home/ProjectsSection";
 import InvestSwipeSection from "@/components/home/InvestSwipeSection";
 import InsightsSection from "@/components/home/InsightsSection";
@@ -23,7 +23,7 @@ const localBusinessStructuredData = {
   "@type": "LocalBusiness",
   name: "ImpactStack Africa",
   description:
-    "Cape Town-based enterprise software delivery partner for South African organizations, including POPIA compliance and government digital services.",
+    "Cape Town-based website, web application and business systems partner offering design, development, deployment and ongoing support.",
   url: absoluteUrl("/"),
   telephone: "+27838947546",
   email: "hello@impactstack.africa",
@@ -90,8 +90,8 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="ImpactStack Africa | Enterprise Software Development Cape Town"
-        description="Enterprise software development in Cape Town for South African organizations, including POPIA compliance, secure mobile platforms, and government digital services."
+        title="ImpactStack Africa | Websites, Web Apps & Business Systems"
+        description="Websites, online stores, booking platforms, dashboards and custom applications for businesses, brands and organisations. Plan, build and launch with ImpactStack Africa."
         url={absoluteUrl("/")}
         keywords={[
           "South Africa enterprise software",
@@ -102,17 +102,23 @@ const Index = () => {
           "mobile app development South Africa",
           "IT infrastructure delivery",
         ]}
-        structuredData={[localBusinessStructuredData, flagshipOfferStructuredData, featuredProjectsStructuredData]}
+        structuredData={[
+          localBusinessStructuredData,
+          flagshipOfferStructuredData,
+          featuredProjectsStructuredData,
+        ]}
       />
       <PageShell>
         <HeroSection />
         <ProcurementBadgeStrip />
-        <SolutionsOverview />
+        <ServicesOverview />
         <ValueProposition />
         <ProjectsSection />
+        <TechnologySection />
         <InsightsSection />
         <InvestSwipeSection />
         <FaqSection />
+        <TrainingSection />
         <SpeakToExpertCTA />
       </PageShell>
     </>

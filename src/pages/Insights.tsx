@@ -27,7 +27,6 @@ export default function InsightsPage() {
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url('/gradient.webp')` }}
-            {...({ fetchpriority: "high" } as any)}
           />
 
           {/* Frosted Glass Overlay */}

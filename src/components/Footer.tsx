@@ -12,6 +12,7 @@ const footerLinks = {
     { label: "InvestSwipe", href: "/investswipe" },
   ],
   company: [
+    { label: "Services", href: "/services" },
     { label: "About Us", href: "/about" },
     { label: "Pricing", href: "/pricing" },
     { label: "Case Studies", href: "/portfolio" },
