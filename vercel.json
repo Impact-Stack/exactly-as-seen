@@ -1,6 +1,17 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/investswipe",
+      "destination": "/investswipe/index.html"
+    },
+    {
+      "source": "/investswipe/",
+      "destination": "/investswipe/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
