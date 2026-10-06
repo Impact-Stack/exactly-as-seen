@@ -121,6 +121,15 @@ export const allProjects: ProjectCase[] = [
   },
   {
     id: "bluewatch-soc-lab",
+    caseStudy: {
+ audience: "A controlled educational lab for exploring insider-threat monitoring and authentication abuse in a banking-style application.",
+ designDecisions: [
+ { title: "Centralised visibility", detail: "Application logs flow through Logstash and Elasticsearch to Kibana, while Wazuh handles system events and security alerts." },
+ { title: "Behaviour-focused dashboards", detail: "Panels cover login activity, after-hours access, query volume and sensitive data access." },
+ { title: "Repeatable lab setup", detail: "Docker Compose brings the banking application, database and monitoring services into a repeatable local environment." }
+ ],
+ status: "Self-built security lab and banking simulation. The repository lists alerting rules, MITRE ATT&CK mapping and Wazuh–ELK correlation as future enhancements.",
+},
     title: "Insider Threat Detection Lab - BlueWatch SOC Lab",
     subtitle: "Self-built SOC lab | Banking simulation",
     summary:
@@ -132,31 +141,31 @@ export const allProjects: ProjectCase[] = [
     challenge:
       "Simulate realistic insider abuse patterns and detect them early enough to support security operations decisions in a controlled environment.",
     implementation:
-      "Designed and implemented the SOC architecture end-to-end using Wazuh, ELK Stack, and Zeek. Built detection rules, centralized logs, and incident response documentation workflows.",
+      "Built a banking-style monitoring lab using Wazuh and the ELK Stack to centralise application logs and visualise suspicious activity in SOC-style dashboards.",
     security:
-      "Implemented SIEM correlation rules for authentication abuse, after-hours access, and high-volume data queries, then mapped detections to MITRE ATT&CK for response consistency.",
+      "Explored failed logins, after-hours authentication, high-volume queries and sensitive data access through controlled lab scenarios and monitoring panels.",
     technologies: [
       "Wazuh",
       "ELK Stack",
-      "Zeek",
-      "MITRE ATT&CK",
+      "Docker",
+      "MySQL",
       "Threat Detection Engineering",
     ],
     evidence: [
       {
-        title: "SIEM Correlation Rules",
+        title: "Behaviour Monitoring",
         detail:
-          "Detection coverage for auth abuse, after-hours access, and high-volume queries.",
+          "Dashboard panels for authentication activity, after-hours access and query volumes.",
       },
       {
         title: "Centralized Visibility",
         detail:
-          "ELK logging pipeline and Zeek DNS entropy monitoring integrated into SOC workflow.",
+          "Application log ingestion through Logstash and Elasticsearch, visualised in Kibana.",
       },
       {
-        title: "Incident Reporting",
+        title: "Repeatable Environment",
         detail:
-          "Produced incident reports with remediation guidance and ATT&CK mapping.",
+          "Docker Compose setup for the application, database and monitoring services.",
       },
     ],
     links: [
@@ -171,6 +180,15 @@ export const allProjects: ProjectCase[] = [
   },
   {
     id: "findr-community-map",
+    caseStudy: {
+ audience: "A community platform for people discovering locations, contributors submitting places and administrators reviewing submissions.",
+ designDecisions: [
+ { title: "Map-first discovery", detail: "Interactive mapping supports location discovery, with geospatial tools for working with places and boundaries." },
+ { title: "Moderated contributions", detail: "Location submissions pass through an administrator review workflow to support community governance." },
+ { title: "Coordinated delivery", detail: "Architecture planning, tickets and sprint timelines connect product priorities with implementation work." }
+ ],
+ status: "Product platform project. This case study covers the documented mapping, moderation and technical project management work.",
+},
     title: "Findr - Community Map Web Application",
     subtitle: "Scalable community platform",
     summary:
@@ -224,6 +242,15 @@ export const allProjects: ProjectCase[] = [
   },
   {
     id: "moderntech-hr-platform",
+    caseStudy: {
+ audience: "An HR management training project covering employee records, attendance, leave, payroll and reviews.",
+ designDecisions: [
+ { title: "Connected HR workflows", detail: "Employee records, attendance, leave and payroll are brought together in one application." },
+ { title: "Role-based dashboards", detail: "JWT authentication and role-based access organise the experience around different user responsibilities." },
+ { title: "Useful exports", detail: "CSV and PDF exports support attendance records and payslip workflows." }
+ ],
+ status: "Client/Training Delivery. The repository documents a full-stack HR application and local setup instructions.",
+},
     title: "ModernTech Solutions - Secure HR Management System",
     subtitle: "Unified HR platform",
     summary:
@@ -235,13 +262,13 @@ export const allProjects: ProjectCase[] = [
     challenge:
       "Replace fragmented HR processes with a reliable platform that balances maintainability, security, and team adoption.",
     implementation:
-      "Built a Vue.js SPA with RESTful APIs, normalized PostgreSQL schema design, and indexed queries for predictable data performance.",
+      "Built a Vue.js SPA with RESTful APIs, MySQL-backed employee, attendance, leave, payroll and review workflows.",
     security:
       "Implemented JWT auth with refresh tokens, granular RBAC, bcrypt hashing, and defensive controls against XSS and SQL-injection vectors.",
     technologies: [
       "Node.js",
       "Express",
-      "PostgreSQL",
+      "MySQL",
       "Vue.js",
       "TailwindCSS",
       "JWT",
@@ -256,7 +283,7 @@ export const allProjects: ProjectCase[] = [
       {
         title: "Data Integrity",
         detail:
-          "Normalized schema and indexed queries for reliable operational reporting.",
+          "MySQL-backed records with CSV/PDF exports for attendance and payslips.",
       },
       {
         title: "Adoption Loop",
