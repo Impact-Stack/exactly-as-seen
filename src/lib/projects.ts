@@ -50,6 +50,7 @@ export interface ProjectCase {
   evidence: ProjectEvidence[];
   links: ProjectLink[];
   serviceHref?: string;
+  caseStudy?: { mobileImage?: { src: string; alt: string }; audience: string; designDecisions: ProjectEvidence[]; status: string };
 }
 
 export interface ProjectInsightSeed {
@@ -64,6 +65,16 @@ export interface ProjectInsightSeed {
 export const allProjects: ProjectCase[] = [
   {
     id: "urban-anarchy",
+    caseStudy: {
+      mobileImage: { src: "/images/urban-anarchy-mobile.webp", alt: "Urban Anarchy mobile homepage with its menu, streetwear headline and product artwork" },
+      audience: "An experience for readers exploring culture and visual research, and visitors discovering the streetwear collection.",
+      designDecisions: [
+        { title: "A clear visual identity", detail: "Black, red and white create a high-contrast visual language that connects the publication and streetwear collection." },
+        { title: "Editorial typography", detail: "Bold, expressive headings and collage-inspired imagery give the site the character of an independent magazine." },
+        { title: "One connected experience", detail: "Responsive layouts connect magazine content, the cultural archive and product discovery across desktop and mobile." },
+      ],
+      status: "Live website. Delivered scope: a responsive editorial and streetwear frontend with magazine pages, product browsing and a cart interface.",
+    },
     title: "Urban Anarchy",
     subtitle: "Digital magazine & streetwear platform",
     summary:

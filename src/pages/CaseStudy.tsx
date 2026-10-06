@@ -1,0 +1,48 @@
+import { Link, useParams } from "react-router-dom";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import PageShell from "@/components/PageShell";
+import SEO from "@/components/SEO";
+import NotFound from "./NotFound";
+import { allProjects } from "@/lib/projects";
+import { buildProjectInquiryHref } from "@/lib/lead-routing";
+import { absoluteUrl } from "@/lib/site";
+
+export default function CaseStudy() {
+  const { slug } = useParams();
+  const project = allProjects.find(item => item.id === slug && item.caseStudy);
+  if (!project?.caseStudy) return <NotFound />;
+  const detail = project.caseStudy;
+  return <>
+    <SEO title={`${project.title} Case Study | ImpactStack Africa`} description={project.summary} url={absoluteUrl(`/case-studies/${project.id}`)} />
+    <PageShell>
+      <div className="restored-content restored-portfolio">
+        <div className="container-narrow py-12 md:py-20">
+          <Link to="/case-studies" className="inline-flex items-center gap-2 text-sm text-purple-200 mb-10"><ArrowLeft size={16} /> All case studies</Link>
+          <header className="max-w-3xl mb-12">
+            <p className="tag-label mb-5">{project.type}</p>
+            <h1 className="text-4xl md:text-6xl mb-5 tracking-tight">{project.title}</h1>
+            <p className="text-purple-200 text-lg mb-4">{project.subtitle}</p>
+            <p className="leading-relaxed mb-6">{project.summary}</p>
+            {project.links.filter(link => link.kind === "live").map(link => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="button-secondary gap-2">{link.label}<ArrowUpRight size={18} /></a>)}
+          </header>
+          <div className="grid md:grid-cols-[minmax(0,1fr)_240px] gap-6 items-start mb-12">
+            {project.image && <figure className="overflow-hidden rounded-2xl border border-purple-400/20"><img src={project.image.src} alt={project.image.alt} width="1440" height="1000" className="w-full h-auto" /><figcaption className="p-4 text-sm text-purple-200 bg-[#0a0014]">Desktop — editorial and streetwear homepage.</figcaption></figure>}
+            {detail.mobileImage && <figure className="max-w-[280px] md:max-w-none mx-auto overflow-hidden rounded-2xl border border-purple-400/20"><img src={detail.mobileImage.src} alt={detail.mobileImage.alt} width="390" height="844" loading="lazy" className="w-full h-auto" /><figcaption className="p-4 text-sm text-purple-200 bg-[#0a0014]">Mobile — the same visual identity on a smaller screen.</figcaption></figure>}
+          </div>
+          <nav aria-label="On this page" className="flex flex-wrap gap-3 border-y border-white/10 py-5 mb-12 text-sm text-purple-200">
+            {[['brief','The brief'],['contribution','Our contribution'],['features','Key features'],['design','Design decisions'],['technology','Technology']].map(([id,label]) => <a key={id} href={`#${id}`} className="px-3 py-2 rounded-full border border-purple-400/20 hover:bg-purple-500/20">{label}</a>)}
+          </nav>
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            <section id="brief" className="surface-card p-6 md:p-8 scroll-mt-28"><h2 className="text-2xl mb-4">The brief</h2><p className="leading-relaxed">{project.challenge}</p><p className="leading-relaxed mt-4">{detail.audience}</p></section>
+            <section id="contribution" className="surface-card p-6 md:p-8 scroll-mt-28"><h2 className="text-2xl mb-4">Our contribution</h2><p className="leading-relaxed">{project.implementation}</p><p className="text-sm text-purple-200 mt-5">Role: {project.role}</p></section>
+          </div>
+          <section id="features" className="scroll-mt-28 mb-14"><h2 className="text-3xl mb-6">Key features & delivered work</h2><div className="grid md:grid-cols-3 gap-5">{project.evidence.map(item => <article key={item.title} className="surface-card p-6"><h3 className="text-xl mb-3">{item.title}</h3><p className="text-sm leading-relaxed">{item.detail}</p></article>)}</div></section>
+          <section id="design" className="scroll-mt-28 mb-14"><h2 className="text-3xl mb-6">Design decisions</h2><div className="grid md:grid-cols-3 gap-5">{detail.designDecisions.map(item => <article key={item.title} className="rounded-2xl border border-white/10 bg-[#0a0014] p-6"><h3 className="text-xl mb-3">{item.title}</h3><p className="text-sm leading-relaxed">{item.detail}</p></article>)}</div></section>
+          <section id="technology" className="scroll-mt-28 mb-14"><h2 className="text-3xl mb-5">Technology</h2><ul className="flex flex-wrap gap-3">{project.technologies.map(tool => <li key={tool} className="tag-label normal-case tracking-normal">{tool}</li>)}</ul></section>
+          <aside className="border-l-2 border-purple-400 pl-5 mb-14"><h2 className="text-lg mb-3">Project status</h2><p className="text-sm leading-relaxed max-w-3xl">{detail.status}</p></aside>
+          <section className="surface-card p-7 md:p-12 text-center"><h2 className="text-3xl mb-4">Need something similar?</h2><p className="mb-7 max-w-2xl mx-auto">Let’s turn your brand, publication or business idea into a website with a clear identity and room to grow.</p><Link to={buildProjectInquiryHref(project,"case-study")} className="button-primary gap-2">Build something similar<ArrowUpRight size={18}/></Link></section>
+        </div>
+      </div>
+    </PageShell>
+  </>;
+}

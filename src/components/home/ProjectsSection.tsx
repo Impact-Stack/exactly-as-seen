@@ -59,7 +59,7 @@ export default function ProjectsSection() {
                 </p>
                 <Link
                   className="inline-flex gap-2 items-center text-sm text-purple-300 mt-auto"
-                  to={`/portfolio#${project.id}`}
+                  to={project.caseStudy ? `/case-studies/${project.id}` : `/portfolio#${project.id}`}
                 >
                   Read case study <ArrowUpRight size={16} aria-hidden="true" />
                 </Link>
