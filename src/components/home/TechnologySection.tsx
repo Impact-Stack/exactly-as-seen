@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
   SiReact,
   SiVuedotjs,
@@ -55,6 +56,14 @@ const categories = [
   },
 ];
 export default function TechnologySection() {
+  const [paused, setPaused] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const orbitRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: 0.1 });
+    if (orbitRef.current) observer.observe(orbitRef.current);
+    return () => observer.disconnect();
+  }, []);
   return (
     <section
       className="restored-content section-padding bg-[#0a0a12] border-y border-white/10"
@@ -92,23 +101,31 @@ export default function TechnologySection() {
             ))}
           </div>
         </div>
-        <ul
-          aria-label="Technologies we work with"
-          className="tech-constellation grid grid-cols-3 sm:grid-cols-4 gap-3 md:gap-5 relative"
-        >
-          {technologies.map(({ name, icon: Icon }, index) => (
-            <li
-              key={name}
-              className="tech-tile flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[#11111b] aspect-square text-white p-3"
-              style={{ animationDelay: `${index * -0.6}s` }}
-            >
-              <Icon size={34} className="text-[#ddd8ef]" aria-hidden="true" />
-              <span className="text-[11px] text-[#c3c1d1] text-center">
-                {name}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <div ref={orbitRef} className="tech-orbit-panel">
+          <div className="tech-orbit" data-paused={paused || !visible}>
+            <div className="tech-orbit-core" aria-hidden="true"><span>ISA</span></div>
+            {[0, 1, 2].map(ring => <div key={ring} className={`tech-orbit-track tech-orbit-track-${ring}`} aria-hidden="true" />)}
+            <ul aria-label="Technologies we work with" className="tech-orbit-list">
+              {technologies.map(({ name, icon: Icon }, index) => {
+                const ring = index < 4 ? 0 : index < 10 ? 1 : 2;
+                const offset = ring === 0 ? index : ring === 1 ? index - 4 : index - 10;
+                const count = ring === 0 ? 4 : 6;
+                return <li key={name} className={`tech-orbit-node tech-orbit-node-${ring}`} style={{
+                  "--orbit-duration": `${[56, 76, 96][ring]}s`,
+                  "--orbit-delay": `${-(offset / count + ring * 0.07) * [56, 76, 96][ring]}s`,
+                  "--orbit-direction": ring === 1 ? "reverse" : "normal",
+                } as CSSProperties}>
+                  <div className="tech-orbit-position"><div className="tech-orbit-label">
+                    <Icon size={28} aria-hidden="true" /><span>{name}</span>
+                  </div></div>
+                </li>;
+              })}
+            </ul>
+          </div>
+          <button type="button" className="tech-orbit-toggle button-secondary text-sm mx-auto mt-5" aria-pressed={paused} onClick={() => setPaused(value => !value)}>
+            {paused ? "Resume orbit" : "Pause orbit"}
+          </button>
+        </div>
       </div>
     </section>
   );
