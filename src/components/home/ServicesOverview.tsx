@@ -41,7 +41,7 @@ const icons = [
 export default function ServicesOverview() {
   return (
     <section
-      className="section-padding border-t border-white/10 bg-[#05050A]"
+      className="restored-content section-padding border-t border-white/10 bg-[#05050A]"
       aria-labelledby="services-heading"
     >
       <div className="container-narrow">

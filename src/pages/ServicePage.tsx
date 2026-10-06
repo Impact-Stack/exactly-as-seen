@@ -22,6 +22,7 @@ export default function ServicePage() {
         url={absoluteUrl(`/services/${service.slug}`)}
       />
       <PageShell>
+        <div className="restored-content restored-servicepage">
         <div className="container-narrow py-12 md:py-20">
           <Link
             to="/services"
@@ -121,6 +122,7 @@ export default function ServicePage() {
             </p>
           </section>
         </div>
+      </div>
       </PageShell>
     </>
   );

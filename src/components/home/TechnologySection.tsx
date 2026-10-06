@@ -57,7 +57,7 @@ const categories = [
 export default function TechnologySection() {
   return (
     <section
-      className="section-padding bg-[#0a0a12] border-y border-white/10"
+      className="restored-content section-padding bg-[#0a0a12] border-y border-white/10"
       aria-labelledby="technology-heading"
     >
       <div className="container-narrow grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">

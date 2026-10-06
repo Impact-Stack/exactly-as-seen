@@ -5,7 +5,7 @@ import { featuredProjects } from "@/lib/projects";
 export default function ProjectsSection() {
   return (
     <section
-      className="section-padding bg-[#05050A] border-t border-white/10"
+      className="restored-projects restored-content section-padding bg-[#05050A] border-t border-white/10"
       aria-labelledby="projects-heading"
     >
       <div className="container-narrow">
@@ -29,7 +29,7 @@ export default function ProjectsSection() {
           {featuredProjects.map((project) => (
             <article
               key={project.id}
-              className="surface-card overflow-hidden flex flex-col"
+              className="restored-project-card surface-card overflow-hidden flex flex-col"
             >
               {project.image ? (
                 <img
