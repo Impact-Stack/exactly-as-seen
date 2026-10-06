@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Waitlist } from "@clerk/react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   Bell,
@@ -54,44 +54,10 @@ function PhoneMockup({ src, alt, className = "", loading = "lazy", delay = 0, fl
 const CONTACT_INVESTSWIPE_HREF =
   "/contact?projectType=InvestSwipe%20Partnership";
 
-const proofTicker = [
-  "Education-first beta",
-  "No real deposits",
-  "Paper credits only",
-  "Practice before risk",
-  "Community-shaped",
-  "Private beta access",
-];
-
 const productMoments = [
-  {
-    title: "Learn",
-    copy: "Build market basics through short lessons and guided context before making decisions.",
-    meta: "Education-first",
-    icon: BookOpen,
-    screen: screens.learn,
-  },
-  {
-    title: "Swipe",
-    copy: "Move through market stories and practice intent in a calm short-form flow.",
-    meta: "Practice reel",
-    icon: Play,
-    screen: screens.practice,
-  },
-  {
-    title: "Simulate",
-    copy: "Use paper credits to test choices, read risk prompts, and see the effect without real exposure.",
-    meta: "Paper trading",
-    icon: LineChart,
-    screen: screens.asset,
-  },
-  {
-    title: "Track",
-    copy: "Follow simulated holdings, goal pods, and activity with finance-wallet clarity.",
-    meta: "Portfolio view",
-    icon: Target,
-    screen: screens.goals,
-  },
+  { title: "Learn", copy: "Get to know investing through short lessons and clear market stories.", meta: "Build your knowledge", icon: BookOpen, screen: screens.home },
+  { title: "Practise", copy: "Try investment decisions with paper credits. Explore the outcome without putting real money at risk.", meta: "Try it with paper credits", icon: LineChart, screen: screens.practice },
+  { title: "Track", copy: "Follow your simulated portfolio and goals as you build confidence over time.", meta: "See your progress", icon: Target, screen: screens.portfolio },
 ];
 
 const waitlistCount = Number.parseInt(
@@ -107,12 +73,6 @@ const waitlistSocialProof = waitlistCountLabel
   : null;
 const heroTrustLine =
   waitlistSocialProof ?? "Paper trading only. No real deposits. No custody.";
-
-const screenshotProof = [
-  { label: "Account", value: "Paper portfolio" },
-  { label: "Markets", value: "Swipe discovery" },
-  { label: "Goals", value: "Tracked progress" },
-];
 
 const roadmap = [
   { title: "Research", state: "Completed", isCurrent: false },
@@ -288,14 +248,14 @@ export default function InvestSwipePage() {
         url={absoluteUrl("/investswipe")}
         structuredData={structuredData}
       />
-      <PageShell>
+      <MotionConfig reducedMotion="user"><PageShell>
         <div className="bg-[#05070c] text-[#f5f9ff]">
           <section className="relative overflow-hidden border-b border-white/10">
             <div className="absolute inset-0 bg-[linear-gradient(120deg,#05070c_0%,#07111f_54%,#0b1728_100%)]" />
             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,rgba(20,120,255,0.28),rgba(5,7,12,0)_64%)]" />
             <div className="absolute inset-0 opacity-[0.045] [background-image:linear-gradient(rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:84px_84px]" />
 
-            <div className="container-narrow relative z-10 grid min-h-[calc(100svh-72px)] items-center gap-7 py-10 sm:gap-10 sm:py-14 lg:grid-cols-[0.92fr_1.08fr] lg:py-16">
+            <div className="container-narrow relative z-10 grid items-center gap-8 py-10 sm:gap-10 sm:py-14 lg:min-h-[700px] lg:grid-cols-[1.2fr_0.8fr] lg:py-16">
               <motion.div
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -307,13 +267,14 @@ export default function InvestSwipePage() {
                   Early access waitlist
                 </p>
 
-                <h1 className="mt-5 max-w-3xl text-[2.7rem] font-black leading-[0.96] text-white sm:mt-7 sm:text-6xl lg:text-7xl">
-                  Learn markets before real money.
+                <h1 className="mt-5 max-w-3xl text-[2.5rem] font-black leading-[1.04] text-white sm:mt-7 sm:text-5xl lg:text-6xl">
+                  Learn investing.
+                  <span className="block text-[#21b6ff]">Practise with paper credits.</span>
                 </h1>
                 <p className="mt-4 max-w-xl text-base leading-7 text-[#b7c3d1] sm:mt-6 sm:text-lg sm:leading-8">
-                  Join the InvestSwipe waitlist for short asset stories, paper
-                  trading practice, and simulated portfolio tracking built for
-                  first-time investors.
+                  Understand the basics, try investment decisions, and track a
+                  simulated portfolio. Built for first-time investors in South Africa.
+                  Join the waitlist for the upcoming private beta.
                 </p>
 
                 <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
@@ -326,7 +287,7 @@ export default function InvestSwipePage() {
                         label: "Hero CTA",
                       })
                     }
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1478ff] px-5 py-3.5 text-sm font-bold text-white sm:px-6 sm:py-4 shadow-[0_18px_44px_rgba(20,120,255,0.35)] transition hover:bg-[#21b6ff]"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#21b6ff] px-5 py-3.5 text-sm font-bold text-white sm:px-6 sm:py-4 shadow-[0_18px_44px_rgba(20,120,255,0.35)] transition hover:bg-[#1478ff]"
                   >
                     Get early access
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -340,9 +301,9 @@ export default function InvestSwipePage() {
                         label: "Hero partner CTA",
                       })
                     }
-                    className="inline-flex items-center justify-center rounded-lg border border-white/18 bg-white/[0.04] px-5 py-3.5 text-sm font-bold text-white sm:px-6 sm:py-4 transition hover:border-[#21b6ff]/70"
+                    className="inline-flex items-center justify-center px-3 py-3 text-sm font-semibold text-[#9aacbf] underline underline-offset-4 transition hover:text-[#21b6ff]"
                   >
-                    Build with us
+                    Explore partnerships
                   </Link>
                 </div>
 
@@ -356,163 +317,53 @@ export default function InvestSwipePage() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.08, ease: "easeOut" }}
-                className="relative -mt-8 min-h-[560px] sm:-mt-12 sm:min-h-[620px] lg:mt-0 lg:min-h-[720px]"
+                className="relative mx-auto w-full max-w-[390px]"
               >
-                <div className="absolute left-1/2 top-10 z-0 h-[420px] w-[420px] -translate-x-1/2 rounded-full border border-white/[0.06] sm:top-14 sm:h-[560px] sm:w-[560px]" />
-                <div className="absolute left-1/2 top-20 z-0 h-[320px] w-[320px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(20,120,255,0.2),rgba(5,7,12,0)_68%)] sm:top-24 sm:h-[430px] sm:w-[430px]" />
-                <PhoneMockup
-                  src={screens.home}
-                  alt="InvestSwipe design concept: simulated account home screen"
-                  loading="eager"
-                  delay={0.2}
-                  className="relative z-10 mx-auto w-[min(72vw,310px)] sm:w-[min(86vw,390px)] lg:translate-y-8"
-                />
-                <div className="absolute bottom-2 left-1/2 z-20 w-[min(88%,360px)] -translate-x-1/2 rounded-lg border border-white/10 bg-[#07111f]/78 px-3 py-2.5 text-center text-xs font-medium text-[#c8d4e2] shadow-[0_18px_60px_rgba(0,0,0,0.38)] backdrop-blur sm:bottom-4 sm:w-[min(86%,420px)] sm:px-4 sm:py-3 sm:text-sm">
-                  Design concept preview. Simulated balances only.
-                </div>
+                <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(20,120,255,0.18),transparent_68%)]" />
+                <PhoneMockup src={screens.home} alt="InvestSwipe design concept: simulated account home screen" loading="eager" className="mx-auto w-[min(58vw,230px)] sm:w-[270px]" />
+                <p className="relative mt-3 text-center text-xs leading-5 text-[#9aacbf]">Design concept · simulated balances only</p>
               </motion.div>
             </div>
           </section>
-          <section className="overflow-hidden border-y border-white/10 bg-[#07111f]">
-            <motion.div
-              className="flex w-max gap-3 py-4"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
-            >
-              {[...proofTicker, ...proofTicker].map((item, index) => (
-                <span
-                  key={`${item}-${index}`}
-                  className="mx-2 rounded-full border border-[#20334b] bg-[#0d1b2d] px-5 py-2 text-xs font-semibold uppercase text-[#9aacbf]"
-                >
-                  {item}
-                </span>
-              ))}
-            </motion.div>
-          </section>
-
-          <section className="relative overflow-hidden bg-[#dce5d8] py-20 text-[#111513]">
-            <div className="container-narrow relative z-10">
-              <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-                <div>
-                  <p className="text-sm font-bold uppercase text-[#1478ff]">
-                    Product design previews
-                  </p>
-                  <h2 className="mt-3 max-w-3xl text-4xl font-black leading-tight text-[#111513] md:text-6xl">
-                    Explore the next InvestSwipe experience.
-                  </h2>
-                </div>
-                <p className="max-w-md text-base leading-7 text-[#3c4942]">
-                  These design concepts show the direction for learning,
-                  market discovery, paper trading and goal tracking. They are
-                  visual previews of the planned experience.
-                </p>
-              </div>
-
-              <div className="relative mt-12 min-h-[650px] lg:min-h-[760px]">
-                <p className="absolute left-1/2 top-8 z-0 -translate-x-1/2 select-none text-[72px] font-black leading-none text-[#111513]/10 sm:text-[130px] lg:text-[180px] xl:text-[210px]">
-                  SIMULATED
-                </p>
-                <div className="relative z-10 flex flex-col items-center justify-center gap-8 lg:flex-row">
-                  <PhoneMockup
-                    src={screens.learn}
-                    alt="InvestSwipe design concept: learn screen"
-                    delay={0.2}
-                    className="lg:mt-28 lg:-rotate-7"
-                  />
-                  <PhoneMockup
-                    src={screens.home}
-                    alt="InvestSwipe design concept: home dashboard"
-                    delay={0.55}
-                    className="w-[min(80vw,340px)] lg:rotate-1"
-                  />
-                  <PhoneMockup
-                    src={screens.goals}
-                    alt="InvestSwipe design concept: goal pods screen"
-                    delay={0.9}
-                    className="lg:mt-28 lg:rotate-7"
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-3 border-t border-[#111513]/10 pt-6 sm:grid-cols-3">
-                {screenshotProof.map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-lg border border-[#111513]/10 bg-white/40 p-4 shadow-[0_18px_50px_rgba(17,21,19,0.08)]"
-                  >
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#1478ff]">
-                      {item.label}
-                    </p>
-                    <p className="mt-2 text-lg font-black text-[#111513]">
-                      {item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
+          <section aria-label="Practice boundaries" className="border-y border-white/10 bg-[#07111f]">
+            <div className="container-narrow flex flex-wrap justify-center gap-x-8 gap-y-3 py-5 text-xs font-semibold uppercase tracking-wide text-[#9aacbf]">
+              {["Education first", "Paper credits only", "No real deposits"].map(item => <span key={item} className="flex items-center gap-2"><Check size={14} className="text-[#b8f35c]" aria-hidden="true" />{item}</span>)}
             </div>
           </section>
-
-          <section className="relative overflow-hidden border-y border-white/10 bg-[#05070c] py-24">
+          <section id="product-journey" className="bg-[#05070c] py-14 sm:py-20">
             <div className="container-narrow">
-              <div className="mx-auto max-w-3xl text-center">
-                <SectionLabel>The InvestSwipe journey</SectionLabel>
-                <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
-                  From curiosity to paper-trading confidence.
-                </h2>
-                <p className="mt-5 text-lg leading-8 text-[#9aacbf]">
-                  A guided product path for people who want to understand market
-                  behavior before making real-world financial decisions.
-                </p>
+              <div className="mx-auto max-w-2xl text-center">
+                <SectionLabel>Learn → Practise → Track</SectionLabel>
+                <h2 className="text-3xl font-black leading-tight sm:text-5xl">Build confidence, one decision at a time.</h2>
+                <p className="mt-4 text-[#9aacbf] leading-7">A preview of how InvestSwipe will help you get started. The app is in development; these screens show the planned experience.</p>
               </div>
-
-              <div className="mt-14 grid gap-5 lg:grid-cols-4">
-                {productMoments.map((moment, index) => (
-                  <motion.article
-                    key={moment.title}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-80px" }}
-                    transition={{ duration: 0.45, delay: index * 0.05 }}
-                    whileHover={{ y: -8, borderColor: "rgba(33,182,255,0.45)" }}
-                    className="group rounded-lg border border-[#20334b] bg-[#0d1b2d]/80 p-4 transition-colors duration-300 hover:bg-[#13243a]/80"
-                  >
-                    <div className="mb-5 flex items-center justify-between">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#34506d] bg-[#07111f] text-[#21b6ff]">
-                        <moment.icon className="h-5 w-5" aria-hidden="true" />
-                      </span>
-                      <span className="text-xs font-semibold uppercase text-[#b8f35c]">
-                        {moment.meta}
-                      </span>
-                    </div>
-                    <div className="overflow-hidden rounded-lg border border-white/10 bg-black">
-                      <PhoneMockup src={moment.screen} alt={`InvestSwipe ${moment.title} design concept`} float={false} className="w-full max-w-[240px] mx-auto" />
-                    </div>
-                    <h3 className="mt-5 text-2xl font-bold text-white">
-                      {moment.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-6 text-[#9aacbf]">
-                      {moment.copy}
-                    </p>
-                  </motion.article>
-                ))}
+              <div className="mt-10 grid gap-8 md:grid-cols-3">
+                {productMoments.map((moment, index) => <article key={moment.title} className="rounded-xl border border-[#20334b] bg-[#07111f] p-5 sm:p-6">
+                  <div className="flex items-center justify-between text-[#21b6ff]"><moment.icon size={22} aria-hidden="true" /><span className="text-xs font-semibold text-[#b8f35c]">0{index + 1}</span></div>
+                  <h3 className="mt-4 text-2xl font-bold">{moment.title}</h3>
+                  <p className="mt-3 min-h-[84px] text-sm leading-7 text-[#9aacbf]">{moment.copy}</p>
+                  <PhoneMockup src={moment.screen} alt={`InvestSwipe ${moment.title} design concept`} delay={index * 0.8} className="mx-auto mt-5 w-[min(56vw,220px)]" />
+                  <p className="mt-4 text-center text-xs text-[#9aacbf]">{moment.meta}</p>
+                </article>)}
               </div>
+              <div className="mt-8 text-center"><a href="#waitlist" className="inline-flex items-center gap-2 font-semibold text-[#21b6ff] hover:underline">Join the early access list <ArrowRight size={16} aria-hidden="true" /></a></div>
             </div>
           </section>
 
-          <section id="concept-gallery" aria-labelledby="concept-gallery-heading" className="bg-[#05070c] py-20 border-y border-white/10 scroll-mt-28">
+          <section id="concept-gallery" aria-labelledby="concept-gallery-heading" className="bg-[#07111f] py-12 border-y border-white/10 scroll-mt-28">
             <div className="container-narrow">
               <SectionLabel>Midnight Ledger · design concepts</SectionLabel>
               <h2 id="concept-gallery-heading" className="text-4xl md:text-5xl font-bold mb-5">See the experience, screen by screen.</h2>
-              <p className="max-w-2xl text-[#9aacbf] leading-7 mb-10">Explore all eight concept boards, from the first sign-in to paper-trading practice. Open any board for a closer look. These are visual design references; screens and features may evolve during development.</p>
-              <div className="grid md:grid-cols-2 gap-6">
+              <p className="max-w-2xl text-[#9aacbf] leading-7 mb-10">Take a closer look at onboarding, lessons, paper orders and more. These concepts may evolve during development.</p>
+              <details className="group/gallery rounded-xl border border-[#20334b] p-5"><summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-[#21b6ff] [&::-webkit-details-marker]:hidden">Explore all eight design boards<ChevronDown size={20} className="transition group-open/gallery:rotate-180" aria-hidden="true" /></summary><div className="mt-6 grid md:grid-cols-2 gap-6">
                 {conceptBoards.map((board, index) => <a key={board.file} href={`${CONCEPT_ROOT}/${board.file}.webp`} target="_blank" rel="noopener noreferrer" className="group overflow-hidden rounded-xl border border-[#20334b] bg-[#07111f] hover:border-[#21b6ff]/60 transition-colors" aria-label={`Open ${board.title} concept board in a new tab`}>
                   <img src={`${CONCEPT_ROOT}/${board.file}.webp`} alt={`InvestSwipe design concepts: ${board.description}`} width="1681" height="941" loading="lazy" className="w-full h-auto" />
                   <div className="p-5"><p className="text-xs text-[#21b6ff] mb-2">CONCEPT {String(index + 1).padStart(2, "0")}</p><h3 className="text-xl mb-2 flex justify-between gap-3">{board.title}<ArrowRight size={20} aria-hidden="true" /></h3><p className="text-sm text-[#9aacbf] leading-6">{board.description}</p></div>
                 </a>)}
-              </div>
+              </div></details>
             </div>
           </section>
-          <section className="bg-[#07111f] py-24">
+          <section className="bg-[#05070c] py-14 sm:py-20">
             <div className="container-narrow grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
               <div>
                 <SectionLabel>Early-stage roadmap</SectionLabel>
@@ -568,54 +419,6 @@ export default function InvestSwipePage() {
             </div>
           </section>
 
-          <section className="bg-[#05070c] py-24">
-            <div className="container-narrow">
-              <div className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-                <div>
-                  <SectionLabel>Business model canvas</SectionLabel>
-                  <h2 className="max-w-3xl text-4xl font-black leading-tight text-white md:text-6xl">
-                    How we are thinking about InvestSwipe.
-                  </h2>
-                </div>
-                <p className="max-w-md text-base leading-7 text-[#9aacbf]">
-                  The model will evolve as we validate the product with beta
-                  users, education partners, and early community feedback.
-                </p>
-              </div>
-
-              <div className="grid gap-4 lg:grid-cols-4">
-                {canvas.map((block, index) => (
-                  <motion.article
-                    key={block.title}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-70px" }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
-                    whileHover={{ y: -6, backgroundColor: "rgba(19,36,58,0.82)" }}
-                    className="rounded-lg border border-[#20334b] bg-[#0d1b2d]/78 p-5"
-                  >
-                    <h3 className="text-xl font-bold text-white">{block.title}</h3>
-                    <ul className="mt-5 space-y-3">
-                      {block.items.map((item, itemIndex) => (
-                        <motion.li
-                          key={item}
-                          initial={{ opacity: 0, x: -8 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.28, delay: index * 0.05 + itemIndex * 0.04 }}
-                          className="flex gap-3 text-sm leading-6 text-[#c8d4e2]"
-                        >
-                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#b8f35c]" />
-                          <span>{item}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </motion.article>
-                ))}
-              </div>
-            </div>
-          </section>
-
           <section id="waitlist" className="relative overflow-hidden bg-black py-20 sm:py-24 lg:py-28">
             <div className="absolute inset-0 bg-[linear-gradient(180deg,#05070c_0%,#0a1020_52%,#020306_100%)]" />
             <div className="absolute inset-x-[-10%] bottom-[-34%] h-[560px] rounded-[100%] border-t border-white/35 bg-[radial-gradient(ellipse_at_center,rgba(245,249,255,0.34),rgba(20,120,255,0.18)_32%,rgba(5,7,12,0)_68%)]" />
@@ -641,7 +444,7 @@ export default function InvestSwipePage() {
                 transition={{ duration: 0.48, delay: 0.06, ease: "easeOut" }}
                 className="mx-auto max-w-3xl text-4xl font-black leading-tight text-white sm:text-5xl md:text-7xl"
               >
-                The wait is part of the journey.
+                Be first to practise with InvestSwipe.
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 14 }}
@@ -709,54 +512,14 @@ export default function InvestSwipePage() {
               </div>
             </div>
           </section>
-          <section className="bg-[#dce5d8] py-24 text-[#111513]">
-            <div className="container-narrow grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-              <div className="relative min-h-[540px]">
-                <PhoneMockup
-                  src={screens.profile}
-                  alt="InvestSwipe design concept: profile theme picker"
-                  className="absolute left-0 top-10 hidden -rotate-6 lg:block"
-                />
-                <PhoneMockup
-                  src={screens.topUp}
-                  alt="InvestSwipe design concept: simulated credits top up"
-                  className="relative z-10 mx-auto w-[min(78vw,310px)] lg:translate-x-20 lg:rotate-3"
-                />
-              </div>
-
-              <div>
-                <p className="text-sm font-bold uppercase text-[#1478ff]">
-                  Safe by design
-                </p>
-                <h2 className="mt-3 text-4xl font-black leading-tight text-[#111513] md:text-6xl">
-                  Flashy enough to notice. Serious enough to trust.
-                </h2>
-                <p className="mt-5 text-lg leading-8 text-[#3c4942]">
-                  The page borrows the energy of modern fintech launches while
-                  keeping the product boundary clear: simulated credits,
-                  learning, practice, and beta feedback.
-                </p>
-                <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                  {[
-                    "No real money charged",
-                    "No wallet or custody flow",
-                    "Risk acknowledgment before practice",
-                    "Educational market context",
-                  ].map((item) => (
-                    <div
-                      key={item}
-                      className="flex items-center gap-3 rounded-lg border border-[#111513]/12 bg-white/45 p-4"
-                    >
-                      <Check className="h-5 w-5 shrink-0 text-[#087f5b]" />
-                      <span className="font-semibold">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          <section className="border-y border-white/10 bg-[#07111f] py-14 sm:py-20">
+            <div className="container-narrow grid gap-8 lg:grid-cols-2 lg:items-center">
+              <div><SectionLabel>Learn without financial exposure</SectionLabel><h2 className="text-3xl font-black leading-tight sm:text-5xl">Real learning. Simulated money.</h2><p className="mt-5 text-[#9aacbf] leading-7">Practise decisions with paper credits and understand the risks before investing real money elsewhere. InvestSwipe is an education product and does not execute real trades.</p></div>
+              <div className="grid gap-3 sm:grid-cols-2">{["No real deposits", "No custody of your money", "Risk awareness before practice", "Educational market context"].map(item => <div key={item} className="flex items-center gap-3 rounded-lg border border-[#20334b] p-4"><Check size={20} className="shrink-0 text-[#b8f35c]" aria-hidden="true" /><span className="text-sm font-semibold">{item}</span></div>)}</div>
             </div>
           </section>
 
-          <section className="bg-[#05070c] py-24">
+          <section className="bg-[#05070c] py-14 sm:py-20">
             <div className="container-narrow">
               <div className="mb-10 max-w-2xl">
                 <SectionLabel>Common questions</SectionLabel>
@@ -812,8 +575,56 @@ export default function InvestSwipePage() {
               </div>
             </div>
           </section>
+          <section id="partnerships" className="bg-[#07111f] py-12">
+            <div className="container-narrow">
+              <div className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <SectionLabel>Education partnerships</SectionLabel>
+                  <h2 className="max-w-3xl text-4xl font-black leading-tight text-white md:text-6xl">
+                    Help shape the next generation of investors.
+                  </h2>
+                </div>
+                <p className="max-w-md text-base leading-7 text-[#9aacbf]">
+                  We welcome education partners and campus communities who want to help first-time investors learn. Explore our evolving model or get in touch.
+                </p>
+              </div>
+
+              <Link to={CONTACT_INVESTSWIPE_HREF} className="mb-6 inline-flex items-center gap-2 font-semibold text-[#21b6ff] hover:underline">Discuss a partnership<ArrowRight size={16} aria-hidden="true" /></Link>
+              <details className="group/model rounded-xl border border-[#20334b] p-5"><summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold [&::-webkit-details-marker]:hidden">Explore our business model<ChevronDown size={20} className="transition group-open/model:rotate-180" aria-hidden="true" /></summary><div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {canvas.map((block, index) => (
+                  <motion.article
+                    key={block.title}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-70px" }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                    whileHover={{ y: -6, backgroundColor: "rgba(19,36,58,0.82)" }}
+                    className="rounded-lg border border-[#20334b] bg-[#0d1b2d]/78 p-5"
+                  >
+                    <h3 className="text-xl font-bold text-white">{block.title}</h3>
+                    <ul className="mt-5 space-y-3">
+                      {block.items.map((item, itemIndex) => (
+                        <motion.li
+                          key={item}
+                          initial={{ opacity: 0, x: -8 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.28, delay: index * 0.05 + itemIndex * 0.04 }}
+                          className="flex gap-3 text-sm leading-6 text-[#c8d4e2]"
+                        >
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#b8f35c]" />
+                          <span>{item}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </motion.article>
+                ))}
+              </div></details>
+            </div>
+          </section>
+
         </div>
-      </PageShell>
+      </PageShell></MotionConfig>
     </>
   );
 }
