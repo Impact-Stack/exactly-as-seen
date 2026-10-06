@@ -7,6 +7,7 @@ import ValueProposition from "@/components/home/ValueProposition";
 import ServicesOverview from "@/components/home/ServicesOverview";
 import TechnologySection from "@/components/home/TechnologySection";
 import TrainingSection from "@/components/home/TrainingSection";
+import ProcessSection from "@/components/home/ProcessSection";
 import ProjectsSection from "@/components/home/ProjectsSection";
 import InvestSwipeSection from "@/components/home/InvestSwipeSection";
 import InsightsSection from "@/components/home/InsightsSection";
@@ -114,6 +115,7 @@ const Index = () => {
         <ServicesOverview />
         <ValueProposition />
         <ProjectsSection />
+        <ProcessSection />
         <TechnologySection />
         <InsightsSection />
         <InvestSwipeSection />
