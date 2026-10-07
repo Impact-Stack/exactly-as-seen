@@ -109,6 +109,7 @@ export default function PortfolioPage() {
                   <p className="leading-relaxed max-w-3xl mb-8">
                     {project.summary}
                   </p>
+                  {project.caseStudy?.statusProminent && <p className="border-l-2 border-purple-400 pl-4 text-base leading-relaxed mb-8">{project.caseStudy.status}</p>}
                   <div className="grid md:grid-cols-2 gap-7 mb-8">
                     <div>
                       <h3 className="text-sm mb-3">The brief</h3>

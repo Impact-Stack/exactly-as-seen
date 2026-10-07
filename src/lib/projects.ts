@@ -28,6 +28,15 @@ export interface ProjectEvidence {
   detail: string;
 }
 
+export interface CaseStudySection {
+  id: string;
+  title: string;
+  paragraphs?: string[];
+  items?: ProjectEvidence[];
+  steps?: string[];
+  table?: { headers: string[]; rows: string[][] };
+}
+
 export interface ProjectCase {
   id: string;
   title: string;
@@ -50,7 +59,7 @@ export interface ProjectCase {
   evidence: ProjectEvidence[];
   links: ProjectLink[];
   serviceHref?: string;
-  caseStudy?: { mobileImage?: { src: string; alt: string }; audience: string; designDecisions: ProjectEvidence[]; status: string };
+  caseStudy?: { mobileImage?: { src: string; alt: string }; audience: string; designDecisions: ProjectEvidence[]; status: string; statusProminent?: boolean; sections?: CaseStudySection[] };
 }
 
 export interface ProjectInsightSeed {
@@ -63,6 +72,156 @@ export interface ProjectInsightSeed {
 }
 
 export const allProjects: ProjectCase[] = [
+{
+  "id": "automated-outreach-crm",
+  "title": "Automated Outreach & Reply Tracking",
+  "subtitle": "An internal outreach CRM prototype for small businesses",
+  "summary": "A workflow prototype that brings approved leads, personalised email preparation, limited follow-ups and reply tracking into one process. Built by ImpactStack Africa with n8n, Airtable, PostgreSQL and Titan Mail.",
+  "type": "MVP",
+  "role": "Full-Stack Engineer",
+  "inquiryType": "Other",
+  "filterTags": [
+    "MVP"
+  ],
+  "challenge": "Small teams often manage outreach through spreadsheets, inbox reminders and manual follow-ups. As their lead lists grow, missed conversations and unwanted extra messages become harder to prevent. The brief was to connect lead approval, contact history, follow-up timing and replies while keeping people in control.",
+  "implementation": "Built two inactive n8n workflows: a sequential sender and an IMAP reply handler. Airtable provides the lead CRM; PostgreSQL stores mailbox ownership, send attempts and acceptance receipts. Messages use personalised HTML and plain text, with fresh eligibility checks after each Wait and immediately before sending.",
+  "security": "Only approved, unsuppressed and unreplied leads are eligible. Duplicate addresses are excluded. Passwords and tokens remain in n8n credentials. Uncertain delivery stops for operator review, and recorded acceptance can be reconciled without submitting another email.",
+  "technologies": [
+    "n8n",
+    "Airtable",
+    "PostgreSQL",
+    "Titan Mail",
+    "Docker",
+    "JavaScript",
+    "SMTP / IMAP"
+  ],
+  "evidence": [
+    {
+      "title": "Approved-lead workflow",
+      "detail": "One lead per iteration, a configurable three-to-five-minute Wait, and fresh checks before SMTP submission."
+    },
+    {
+      "title": "Limited follow-up sequence",
+      "detail": "An initial message and up to two follow-ups: three days after the first acceptance, then seven days after the next. Maximum three successful sends per lead."
+    },
+    {
+      "title": "Reply-aware tracking",
+      "detail": "Normalises the From address and marks all matching CRM records as replied, preventing later outreach once that reply is recorded."
+    }
+  ],
+  "links": [],
+  "caseStudy": {
+    "audience": "Designed for service businesses, agencies, consultants and other small teams managing approved email outreach. People choose who to contact and handle the conversation; the workflow manages repeatable preparation, tracking and timing.",
+    "designDecisions": [
+      {
+        "title": "People approve; workflows coordinate",
+        "detail": "Airtable keeps approval, suppression, replies and send history visible to the team. The automation excludes ineligible contacts rather than treating every CRM record as a recipient."
+      },
+      {
+        "title": "Durable attempts, explicit review",
+        "detail": "PostgreSQL ownership and attempt transitions are designed to guard overlapping runs. Uncertain delivery blocks progress for review rather than triggering an automatic resend; live concurrency remains unverified."
+      },
+      {
+        "title": "Validate before activation",
+        "detail": "Local tests use synthetic CRM records and mock email delivery. Both outreach workflows remain inactive while isolated live checks are outstanding."
+      }
+    ],
+    "status": "Development and validation, as of 7 October 2026. Both outreach workflows are inactive. Local n8n mock tests and read-only Airtable checks passed; no real emails were sent during validation. Live delivery, CRM writes and database concurrency still require isolated tests before launch.",
+    "statusProminent": true,
+    "sections": [
+      {
+        "id": "workflow",
+        "title": "How the workflow works",
+        "steps": [
+          "Start with approved Airtable leads. Exclude unapproved, suppressed, replied or duplicate addresses.",
+          "Process one candidate at a time. Wait four minutes by default, configurable between three and five, then recheck the current CRM record.",
+          "Prepare personalised HTML and plain-text email using the lead’s first name, company and the configured business offer. Recheck eligibility immediately before SMTP.",
+          "Record accepted sends and schedule limited follow-ups. PostgreSQL keeps attempts and acceptance receipts for reconciliation.",
+          "Match incoming replies by normalised From address and update every matching CRM record. Later outreach stops once the reply is recorded.",
+          "Hold failed or uncertain delivery for operator review. Recovery uses recorded evidence rather than automatically resubmitting email."
+        ]
+      },
+      {
+        "id": "business-benefits",
+        "title": "How this could help a small business",
+        "paragraphs": [
+          "These are intended operational benefits. Time savings, reply rates, conversions, revenue and customer outcomes have not yet been measured in a real deployment."
+        ],
+        "table": {
+          "headers": [
+            "Business need",
+            "How the prototype addresses it"
+          ],
+          "rows": [
+            [
+              "Consistent follow-up",
+              "Uses due dates and send history instead of relying on reminders alone."
+            ],
+            [
+              "Less repetitive administration",
+              "Prepares personalised messages and coordinates timing and CRM updates."
+            ],
+            [
+              "Team visibility",
+              "Keeps approval, replies, suppression and attempt history in Airtable."
+            ],
+            [
+              "Control over outreach",
+              "Requires approval and excludes replied, suppressed or duplicate contacts."
+            ],
+            [
+              "Failure recovery",
+              "Keeps uncertain attempts blocked and stores receipts for reconciliation without another SMTP submission."
+            ]
+          ]
+        }
+      },
+      {
+        "id": "validation",
+        "title": "What was verified",
+        "paragraphs": [
+          "The project documentation records the following development checks as of 7 October 2026. These checks demonstrate prototype behaviour; they do not establish live campaign performance."
+        ],
+        "items": [
+          {
+            "title": "25 mocked tests passed",
+            "detail": "Covered eligibility, timing, duplicate handling, reply preservation, overlap protection and recovery logic."
+          },
+          {
+            "title": "Real n8n mock executions",
+            "detail": "Checked personalised item linking, empty queues, cancellation and uncertain acceptance stopping before history updates."
+          },
+          {
+            "title": "106 synthetic CRM records",
+            "detail": "Received the correct reply subjects across multiple messages and fixture pages."
+          },
+          {
+            "title": "Wait survived a restart",
+            "detail": "A real four-minute Wait resumed after a local n8n restart with the correct synthetic lead data, taking about four minutes and two seconds. It used persisted fixtures, not the live database-backed outreach path."
+          },
+          {
+            "title": "Read-only Airtable checks",
+            "detail": "Verified access, required field types, the Status formula and lead-selection query. The query returned zero eligible leads; nonempty live pagination and writes remain unverified."
+          },
+          {
+            "title": "Local database checks",
+            "detail": "Schema installation and basic rolled-back function checks passed. Real database concurrency and database-backed recovery remain unverified."
+          }
+        ]
+      },
+      {
+        "id": "limits",
+        "title": "Current limits and the next validation stage",
+        "paragraphs": [
+          "The default batch of 20 is a candidate limit per run, not an enforced mailbox-wide daily quota. Each deployment needs its own mailbox volume policy and testing.",
+          "A reply arriving after the final eligibility check can race with an email already being submitted. That submission cannot be recalled; subsequent sends stop once the reply is recorded. SMTP acceptance does not guarantee inbox delivery.",
+          "Reply matching uses the normalised From address, not message threading or authenticated sender identity. Alternate senders, shared inboxes and bounces may require manual handling.",
+          "Before launch, validate real PostgreSQL concurrency and recovery, isolated Airtable writes and pagination, and Titan SMTP/IMAP authentication and delivery using designated test inboxes. Keep the workflows inactive until those checks and deliberate go-live approval are complete."
+        ]
+      }
+    ]
+  }
+},
   {
     id: "urban-anarchy",
     caseStudy: {
