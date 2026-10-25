@@ -206,6 +206,13 @@ export default function Footer() {
               >
                 Cookie Policy
               </Link>
+              <button
+                type="button"
+                onClick={() => window.openConsentSettings?.()}
+                className="hover:text-white transition-colors"
+              >
+                Cookie settings
+              </button>
             </div>
           </div>
         </div>

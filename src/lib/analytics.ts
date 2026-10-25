@@ -9,6 +9,8 @@ declare global {
   interface Window {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
+    // Defined by public/consent.js; reopens the cookie banner.
+    openConsentSettings?: () => void;
   }
 }
 
