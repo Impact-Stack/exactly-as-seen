@@ -2,7 +2,10 @@ import { Link } from "react-router-dom";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { MdAccessTime, MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
 
-const footerLinks = {
+type FooterLink = { label: string; href: string; plain?: boolean };
+
+// `plain` links point to static HTML pages in /public, so they need a full page load, not client-side routing.
+const footerLinks: { solutions: FooterLink[]; company: FooterLink[] } = {
   solutions: [
     { label: "Government and Public Sector", href: "/industries/government-and-public-sector" },
     { label: "Financial Services", href: "/industries/financial-services" },
@@ -13,6 +16,10 @@ const footerLinks = {
   ],
   company: [
     { label: "Services", href: "/services" },
+    { label: "Custom Business Software for SMEs", href: "/custom-business-software-for-smes", plain: true },
+    { label: "Custom Software Cost Guide", href: "/custom-software-cost-south-africa", plain: true },
+    { label: "Software Development Cape Town", href: "/software-development-cape-town", plain: true },
+    { label: "Technology Consulting", href: "/tech-consulting-south-africa", plain: true },
     { label: "About Us", href: "/about" },
     { label: "Pricing", href: "/pricing" },
     { label: "Case Studies", href: "/portfolio" },
@@ -118,12 +125,21 @@ export default function Footer() {
               <ul className="space-y-2">
                 {footerLinks.company.map((l) => (
                   <li key={l.label}>
-                    <Link
-                      to={l.href}
-                      className="text-sm text-[#A1A1B5] hover:text-white hover:translate-x-1 inline-block transition-all duration-200"
-                    >
-                      {l.label}
-                    </Link>
+                    {l.plain ? (
+                      <a
+                        href={l.href}
+                        className="text-sm text-[#A1A1B5] hover:text-white hover:translate-x-1 inline-block transition-all duration-200"
+                      >
+                        {l.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={l.href}
+                        className="text-sm text-[#A1A1B5] hover:text-white hover:translate-x-1 inline-block transition-all duration-200"
+                      >
+                        {l.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
