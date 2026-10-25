@@ -91,8 +91,8 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="Custom Web Apps & Business Software for SMEs | ImpactStack Africa Cape Town"
-        description="ImpactStack Africa builds web apps, booking systems and dashboards for South African SMEs. Start with a consultation, get a clear scope and proposal, then build. Cape Town."
+        title="Software Development Company South Africa | ImpactStack Africa"
+        description="Cape Town software development company building web apps, booking systems and dashboards for SA SMEs. Start with a consultation, then a clear scope and proposal."
         url={absoluteUrl("/")}
         keywords={[
           "software development company South Africa",
