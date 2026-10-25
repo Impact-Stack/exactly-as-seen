@@ -7,6 +7,9 @@ export interface Service {
   deliverables: string[];
   projectIds: string[];
   priceStart?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  keywords?: string[];
 }
 
 // One catalogue for homepage summaries, navigation and service detail pages.
@@ -27,6 +30,13 @@ export const services: Service[] = [
       "Search metadata, accessibility checks and launch support",
     ],
     projectIds: ["urban-anarchy"],
+    seoTitle: "Website Development Cape Town | ImpactStack Africa",
+    seoDescription:
+      "Responsive business websites designed and built by a Cape Town team: clear page structure, contact forms and enquiry journeys, and launch support.",
+    keywords: [
+      "website development Cape Town",
+      "business website development Cape Town",
+    ],
   },
   {
     slug: "web",
@@ -49,6 +59,20 @@ export const services: Service[] = [
       "moderntech-hr-platform",
     ],
     priceStart: "R 65 000",
+    seoTitle: "Web Application Development Cape Town | ImpactStack Africa",
+    seoDescription:
+      "Custom web applications and customer portals built around your users, data and workflows. Cape Town team serving South African businesses. Start with a consultation.",
+    keywords: [
+      "web application development Cape Town",
+      "web app development company Cape Town",
+      "web application development South Africa",
+      "custom web application development",
+      "client portal development South Africa",
+      "customer portal development South Africa",
+      "internal web application development",
+      "custom web apps for SMEs",
+      "web portal development company South Africa",
+    ],
   },
   {
     slug: "ecommerce",
@@ -66,6 +90,15 @@ export const services: Service[] = [
       "Customer and admin order workflows",
     ],
     projectIds: ["biofuel-ecommerce-platform"],
+    seoTitle: "Ecommerce Development South Africa | ImpactStack Africa",
+    seoDescription:
+      "Online stores with product catalogues, checkout journeys and order workflows for businesses selling online. Built by a Cape Town team for South African retailers and brands.",
+    keywords: [
+      "ecommerce development South Africa",
+      "online store development Cape Town",
+      "ecommerce website developers Cape Town",
+      "custom ecommerce platform development South Africa",
+    ],
   },
   {
     slug: "booking",
@@ -83,6 +116,14 @@ export const services: Service[] = [
       "Notifications and integrations agreed during discovery",
     ],
     projectIds: [],
+    seoTitle: "Booking System Development South Africa | ImpactStack Africa",
+    seoDescription:
+      "Custom booking and appointment systems for service businesses: customer booking, team calendars and availability management. Cape Town team, consultation first.",
+    keywords: [
+      "booking system development South Africa",
+      "custom booking platform development",
+      "online booking system development Cape Town",
+    ],
   },
   {
     slug: "analytics",
@@ -100,6 +141,18 @@ export const services: Service[] = [
       "Access permissions and reporting documentation",
     ],
     projectIds: ["moderntech-hr-platform"],
+    seoTitle: "Custom Dashboard Development South Africa | ImpactStack Africa",
+    seoDescription:
+      "Reporting dashboards that turn scattered spreadsheets and data sources into clear operational views. Built by a Cape Town team for South African businesses.",
+    keywords: [
+      "custom dashboard development South Africa",
+      "business dashboard development Cape Town",
+      "KPI dashboard development services",
+      "management reporting dashboard developer",
+      "sales dashboard development",
+      "automated reporting for small businesses",
+      "Google Sheets dashboard automation",
+    ],
   },
   {
     slug: "automation",
@@ -117,6 +170,21 @@ export const services: Service[] = [
       "Handover documentation and workflow testing",
     ],
     projectIds: ["findr-community-map", "shopwise-price-comparison"],
+    seoTitle: "Business Process Automation South Africa | ImpactStack Africa",
+    seoDescription:
+      "Integrations and workflow automation that cut repeated data entry between your business tools. Built by a Cape Town team for South African businesses.",
+    keywords: [
+      "business process automation South Africa",
+      "business process automation Cape Town",
+      "workflow automation services South Africa",
+      "small business process automation",
+      "automate repetitive business tasks",
+      "API integration services South Africa",
+      "software integration services South Africa",
+      "CRM integration services South Africa",
+      "payment gateway integration developer South Africa",
+      "connect business software systems",
+    ],
   },
   {
     slug: "mobile",

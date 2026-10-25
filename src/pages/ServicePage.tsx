@@ -17,8 +17,9 @@ export default function ServicePage() {
   return (
     <>
       <SEO
-        title={`${service.title} | ImpactStack Africa`}
-        description={service.summary}
+        title={service.seoTitle ?? `${service.title} | ImpactStack Africa`}
+        description={service.seoDescription ?? service.summary}
+        keywords={service.keywords}
         url={absoluteUrl(`/services/${service.slug}`)}
       />
       <PageShell>

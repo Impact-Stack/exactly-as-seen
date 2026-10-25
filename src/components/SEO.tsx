@@ -14,9 +14,9 @@ interface SEOProps {
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const DEFAULT_TITLE = "ImpactStack Africa | Websites, Web Apps & Business Systems";
+const DEFAULT_TITLE = "Custom Web Apps & Business Software for SMEs | ImpactStack Africa Cape Town";
 const DEFAULT_DESCRIPTION =
-  "Websites, web applications and business systems from a Cape Town team. Design, development, deployment and ongoing support.";
+  "ImpactStack Africa builds web apps, booking systems and dashboards for South African SMEs. Start with a consultation, get a clear scope and proposal, then build. Cape Town.";
 const DEFAULT_IMAGE = "/fav-logo.webp";
 const DEFAULT_SITE_NAME = "ImpactStack Africa";
 const DEFAULT_LOCALE = "en_ZA";

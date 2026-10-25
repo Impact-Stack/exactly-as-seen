@@ -91,17 +91,20 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="ImpactStack Africa | Websites, Web Apps & Business Systems"
-        description="Websites, online stores, booking platforms, dashboards and custom applications for businesses, brands and organisations. Plan, build and launch with ImpactStack Africa."
+        title="Custom Web Apps & Business Software for SMEs | ImpactStack Africa Cape Town"
+        description="ImpactStack Africa builds web apps, booking systems and dashboards for South African SMEs. Start with a consultation, get a clear scope and proposal, then build. Cape Town."
         url={absoluteUrl("/")}
         keywords={[
-          "South Africa enterprise software",
-          "Cape Town digital transformation",
-          "government technology partner",
-          "public sector software delivery",
-          "cybersecurity services",
-          "mobile app development South Africa",
-          "IT infrastructure delivery",
+          "software development company South Africa",
+          "software development company Cape Town",
+          "custom software development Cape Town",
+          "software developers Cape Town",
+          "software development agency Cape Town",
+          "custom business software for small businesses South Africa",
+          "web application development Cape Town",
+          "booking system development South Africa",
+          "custom dashboard development South Africa",
+          "software project scoping services",
         ]}
         structuredData={[
           localBusinessStructuredData,
