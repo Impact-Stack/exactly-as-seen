@@ -65,20 +65,28 @@ const legalDocs: Record<string, LegalDoc> = {
   "cookie-policy": {
     title: "Cookie Policy",
     description:
-      "How cookies and analytics technologies are used on the ImpactStack Africa website.",
-    updated: "February 14, 2026",
+      "How cookies, local storage, analytics and advertising technologies are used on the ImpactStack Africa website.",
+    updated: "October 26, 2026",
     sections: [
       {
         heading: "What Cookies Are",
-        body: "Cookies are small files stored on your device to help websites function, remember preferences, and understand usage.",
+        body: "Cookies are small files stored on your device to help websites function, remember preferences, and understand usage. Websites can also keep similar information in your browser's local storage. This policy covers both.",
       },
       {
-        heading: "How We Use Cookies",
-        body: "We use essential cookies for site functionality and optional analytics tools to understand traffic and improve content.",
+        heading: "Your Choices",
+        body: "The first time you visit, a banner asks whether you accept or decline analytics and advertising cookies. Until you choose, and if you decline, Google analytics and advertising storage stays switched off. You can change your choice at any time with \"Cookie settings\" in the footer of any page. Your choice is saved in your browser's local storage (impactstack_consent_v1), so it applies only to the device and browser you used.",
       },
       {
-        heading: "Managing Cookies",
-        body: "You can control or remove cookies through your browser settings. Disabling certain cookies may affect site functionality.",
+        heading: "Advertising and Analytics (Google)",
+        body: "If you accept, we use Google Ads to measure the results of our advertising and to show our ads to people who have visited this site. Google may set cookies such as _gcl_au (kept for about 90 days) and store _gcl_ls in local storage. If we use Google Analytics to understand how the site is used, it follows the same choice. If you decline, these are not set. Google's tag still loads in a restricted mode that does not set these cookies, and Google may receive limited information without cookies, such as that a page was visited. For how Google uses this information, see policies.google.com/technologies/partner-sites.",
+      },
+      {
+        heading: "Sign-in Service (Clerk)",
+        body: "Pages of our main site load Clerk, an authentication service. Clerk sets cookies such as __client_uat and __clerk_db_jwt (kept for up to one year) and stores __clerk_environment in local storage. Cloudflare, which Clerk uses, sets __cf_bm and _cfuvid on Clerk's domain to protect against automated traffic. These are set when the page loads and are not controlled by the cookie banner.",
+      },
+      {
+        heading: "Managing Cookies in Your Browser",
+        body: "You can also control or remove cookies and local storage through your browser settings. Disabling certain cookies may affect site functionality.",
       },
       {
         heading: "Updates",
